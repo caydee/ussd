@@ -17,4 +17,4 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('UssdGateway','UssdController@Menus');
+Route::get('/UssdGateway','UssdController@Menus');
