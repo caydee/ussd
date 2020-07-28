@@ -54,7 +54,7 @@ class UssdController extends Controller
         }
         elseif ($ussd_string_exploded[0] == 1 && $ussd_string_exploded[1] == 2 && $level == 5) {
             // save data in the database
-            $response = "END Your data has been captured successfully! Thank you for registering forSG VAS Platform.";
+            $response = "END Your data has been captured successfully! Thank you for registering for SG VAS Platform.";
         }
         elseif ($text == "2") {
             // Our response a user respond with input 2 from our first level
