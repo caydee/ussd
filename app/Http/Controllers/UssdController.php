@@ -29,7 +29,7 @@ class UssdController extends Controller
             $response .= "2. USSD";
         }
         elseif ($text == "1*1") {
-            // when use response with option django
+            // when use response with option
             $response = "CON Please enter your first name";
         }
         elseif ($ussd_string_exploded[0] == 1 && $ussd_string_exploded[1] == 1 && $level == 3) {
