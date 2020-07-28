@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 class UssdController extends Controller
 {
     public function Menus(Request $request){
-        return trim(strip_tags("CON Menus Here"));
+        $response_string='CON Hello. Welcome to Standard Group PLC:'.PHP_EOL;
+        $response_string.='Please enter your Name';
+        return trim(strip_tags( $response_string));
     }
 }
