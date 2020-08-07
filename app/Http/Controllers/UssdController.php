@@ -9,59 +9,44 @@ class UssdController extends Controller
 {
     public function Menus(Request $request){
 
-        $sessionId   = $request->get('sessionId');
-        $serviceCode = $request->get('serviceCode');
-        $phoneNumber = $request->get('phoneNumber');
+        $sessionId   = $request->get('SESSION_ID');
+        $serviceCode = $request->get('SERVICE_CODE');
+        $phoneNumber = $request->get('MSISDN');
+        $ussdString = $request->get('USSD_STRING');
         $text        = $request->get('text');
-        $ussd_string_exploded = explode("*", $text);
         
-        Log::info( $sessionId . ' - ' .$serviceCode . ' - ' .$phoneNumber . ' - ' .  $text );
+        Log::info( $sessionId . ' - ' .$serviceCode . ' - ' .$phoneNumber . ' - ' .  $ussdString );
 
-        $level = count($ussd_string_exploded);
 
-        if ($text == "") {
+        if ($ussdString == "") {
             // first response when a user dials our ussd code
             $response  = "CON Welcome to  SG SMS \n";
             $response .= "1. Register \n";
             $response .= "2. More";
         }
-        elseif ($text == "1") {
+        elseif ($ussdString == "1") {
             // when user respond with option one to register
             $response = "CON Choose Service \n";
             $response .= "1. SMS \n";
             $response .= "2. USSD";
         }
-        elseif ($text == "1*1") {
+        elseif ($ussdString == "11") {
             // when use response with option
-            $response = "CON Please enter your first name";
+            $response = "CON Please enter your name";
         }
-        elseif ($ussd_string_exploded[0] == 1 && $ussd_string_exploded[1] == 1 && $level == 3) {
-            $response = "CON Please enter your last name";
+        elseif ($ussdString == "12") {
+            // when use response with option
+            $response = "CON Enter your query";
         }
-        elseif ($ussd_string_exploded[0] == 1 && $ussd_string_exploded[1] == 1 && $level == 4) {
-            $response = "CON Please enter your email";
+        elseif (strlen($ussdString)>2 && substr($ussdString,0,2)=='11') {
+            $response = "END Thank you";
         }
-        elseif ($ussd_string_exploded[0] == 1 && $ussd_string_exploded[1] == 1 && $level == 5) {
+        elseif (strlen($ussdString)>2 && substr($ussdString,0,2)=='12') {
+            $response = "END Thank you.Dont call us, we will call you";
+        }       
+        else {
             // save data in the database
-            $response = "END Your data has been captured successfully! Thank you for registering forSG VAS platform.";
-        }
-        elseif ($text == "1*2") {
-            // when use response with option Laravel
-            $response = "CON Please enter your first name. ";
-        }
-        elseif ($ussd_string_exploded[0] == 1 && $ussd_string_exploded[1] == 2 && $level == 3) {
-            $response = "CON Please enter your last name";
-        }
-        elseif ($ussd_string_exploded[0] == 1 && $ussd_string_exploded[1] == 2 && $level == 4) {
-            $response = "CON Please enter your email";
-        }
-        elseif ($ussd_string_exploded[0] == 1 && $ussd_string_exploded[1] == 2 && $level == 5) {
-            // save data in the database
-            $response = "END Your data has been captured successfully! Thank you for registering for SG VAS Platform.";
-        }
-        elseif ($text == "2") {
-            // Our response a user respond with input 2 from our first level
-            $response = "END Thank you for your response.";
+            $response = "END Thank you for contacting SG VAS Platform.";
         }
         // send your response back to the API
         header('Content-type: text/plain');
