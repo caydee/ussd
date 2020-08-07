@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class UssdController extends Controller
 {
     public function Menus(Request $request){
 
+        Log::info($request);
         $sessionId   = $request->get('sessionId');
         $serviceCode = $request->get('serviceCode');
         $phoneNumber = $request->get('phoneNumber');
