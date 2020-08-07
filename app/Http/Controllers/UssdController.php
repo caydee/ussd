@@ -9,12 +9,13 @@ class UssdController extends Controller
 {
     public function Menus(Request $request){
 
-        Log::info($request);
         $sessionId   = $request->get('sessionId');
         $serviceCode = $request->get('serviceCode');
         $phoneNumber = $request->get('phoneNumber');
         $text        = $request->get('text');
         $ussd_string_exploded = explode("*", $text);
+        
+        Log::info( $sessionId . ' - ' .$serviceCode . ' - ' .$phoneNumber . ' - ' .  $text );
 
         $level = count($ussd_string_exploded);
 
