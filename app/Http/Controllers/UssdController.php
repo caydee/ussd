@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Log;
 
 class UssdController extends Controller
@@ -49,7 +50,9 @@ class UssdController extends Controller
             $response = "END Thank you for contacting SG VAS Platform.";
         }
         // send your response back to the API
-        header('Content-type: text/plain');
-        echo $response;
+        //header('Content-type: text/plain');
+        $return=Response::make($response);
+        $return->header('Content-Type', 'text/plain');
+        echo $return;
     }
 }
