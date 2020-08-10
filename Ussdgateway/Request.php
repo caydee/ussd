@@ -1,20 +1,20 @@
 <?php
     header('Content-type: text/plain');
 
-    file_put_contents('ussd1.txt', "\n".json_encode($_REQUEST));
+    file_put_contents('ussdlogs.txt', "\n".json_encode($_REQUEST));
     if( !isset($_GET) )
     {
         echo "CON Not Allowed!";
         sleep(30);
     }
 
-    require_once "/home/standard_digital/httpdocs/X_Common/x_root.php";
+   // require_once "/home/standard_digital/httpdocs/X_Common/x_root.php";
 
-    $x_rt = new x_root();
+  //  $x_rt = new x_root();
 
-    $x_rt->disableErrorReportingHere();
+   // $x_rt->disableErrorReportingHere();
 
-    $x_rt->x_log("Hello USSD",json_encode($_GET));
+  //  $x_rt->x_log("Hello USSD",json_encode($_GET));
 
 
     $text           =   $_GET['USSD_STRING'];
@@ -68,7 +68,7 @@
 
     function farmersMenu(){
         $text   =    "Register for: \n"
-                     ."1. Farm Kenya Connect Eldoret \n"
+                     ."1. Farm Kenya Connect \n"
                      //."2. Eldoret Event \n"
                      ."99. Exit";
 
@@ -167,13 +167,14 @@
             {
                 if($level[1] ==1)
                 {
-                    get_alert(32);
+                   // get_alert(32);
                     //echo "CON \n {$level[0]}\n {$level[1]}";
-
+                    exitUssd();
                 }
                 else if($level[1] == 2)
                 {
-                    get_alert(8);
+                   // get_alert(8);
+                   exitUssd();
 
                 } else if ( $level[1] == 0)
                 {
@@ -208,14 +209,14 @@
                 if($level[1] == 1)
                 {
                     $regType = "initiative";
-                    checkFarmer($phonenumber, $exit);
+                   // checkFarmer($phonenumber, $exit);
                     echo   "CON Welcome to Farm Kenya Connect \n Enter your fullname";
                     // echo "CON \n {$level[0]}\n {$level[1]}";
                 }
                 else if($level[1] == 2)
                 {
                     $regType = "event";
-                    checkFarmer($phonenumber, $exit);
+                   // checkFarmer($phonenumber, $exit);
                     echo   "CON Register for Event\n Enter your fullname";
                     //echo "CON \n {$level[0]}\n {$level[1]}";
                 }
@@ -256,7 +257,7 @@
                         'custname' => ''
                     );
                     //insert to DB
-                    $fb_response = sendFeedback($custfeedback);
+                //    $fb_response = sendFeedback($custfeedback);
                     //echo $fb_response."\n";
                     echo "END Thank you for your valued feedback.";
                 }
@@ -276,7 +277,7 @@
                     'message' => $level[1],
                     'custname' => $level[3]
                 );
-                $results = sendFeedback($custfeedback);
+          //      $results = sendFeedback($custfeedback);
                 echo "END Thank you for your valued feedback, ".$level[3].".\n\n Our Customer Care team will be contacting you soon on matters aforementioned.\n";
             }
         }
@@ -357,7 +358,7 @@
                 $data["attendance"]     =  $level[9];
                 $data["learning"]       =  $level[10];
                 $data["channel"]        =  "USSD";
-                saveFarmers($data);
+               // saveFarmers($data);
                 echo   "END  Thank you ".$level[2].". You are now a member of Farm Kenya Connect";
 
             }
