@@ -1,0 +1,133 @@
+[15-May-2020 15:14:37 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/1040): Too many connections in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[15-May-2020 15:15:01 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/1040): Too many connections in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[15-May-2020 15:15:06 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/1040): Too many connections in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[15-May-2020 15:16:01 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/1040): Too many connections in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[15-May-2020 15:17:01 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/1040): Too many connections in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[15-May-2020 15:18:01 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/1040): Too many connections in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[15-May-2020 15:19:05 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/1040): Too many connections in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[15-May-2020 15:20:09 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/1040): Too many connections in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[15-May-2020 15:21:08 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/1040): Too many connections in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[15-May-2020 15:22:15 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/1040): Too many connections in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[15-May-2020 15:23:08 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/1040): Too many connections in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[15-May-2020 15:26:22 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/1040): Too many connections in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[15-May-2020 15:28:07 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/1040): Too many connections in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[15-May-2020 15:30:14 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/1040): Too many connections in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[15-May-2020 15:32:08 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/1040): Too many connections in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[15-May-2020 15:34:01 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/1040): Too many connections in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[15-May-2020 15:38:03 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/1040): Too many connections in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[15-May-2020 15:39:01 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/1040): Too many connections in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[15-May-2020 15:40:01 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/1040): Too many connections in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[15-May-2020 15:41:01 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/1040): Too many connections in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[15-May-2020 15:43:02 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/1040): Too many connections in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[15-May-2020 15:45:01 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/1040): Too many connections in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[15-May-2020 15:46:01 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/1040): Too many connections in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[15-May-2020 15:48:02 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/1040): Too many connections in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[15-May-2020 15:51:01 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/1040): Too many connections in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[15-May-2020 15:59:13 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/1040): Too many connections in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[15-May-2020 16:00:06 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/1040): Too many connections in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[15-May-2020 16:02:13 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/1040): Too many connections in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[15-May-2020 16:03:09 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/1040): Too many connections in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[15-May-2020 16:04:07 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/1040): Too many connections in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[15-May-2020 16:06:01 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/1040): Too many connections in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[15-May-2020 16:07:04 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/1040): Too many connections in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[15-May-2020 16:09:08 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/1040): Too many connections in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[15-May-2020 16:10:03 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/1040): Too many connections in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[15-May-2020 16:11:02 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/1040): Too many connections in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[15-May-2020 16:17:02 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/1040): Too many connections in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[15-May-2020 16:22:12 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/1040): Too many connections in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[15-May-2020 16:23:04 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/1040): Too many connections in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[15-May-2020 16:25:02 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/1040): Too many connections in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[15-May-2020 16:29:09 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/1040): Too many connections in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[15-May-2020 16:31:01 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/1040): Too many connections in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[15-May-2020 16:38:01 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/1040): Too many connections in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[15-May-2020 16:46:01 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/1040): Too many connections in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[15-May-2020 16:48:01 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/1040): Too many connections in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[15-May-2020 16:56:01 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/1040): Too many connections in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[15-May-2020 16:57:01 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/1040): Too many connections in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[15-May-2020 17:20:01 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/1040): Too many connections in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[15-May-2020 19:41:09 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/1040): Too many connections in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[15-May-2020 19:41:10 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/1040): Too many connections in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[15-May-2020 19:41:11 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/1040): Too many connections in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[15-May-2020 19:41:12 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/1040): Too many connections in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[15-May-2020 20:00:13 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/1040): Too many connections in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[15-May-2020 20:00:13 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/1040): Too many connections in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[15-May-2020 20:00:14 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/1040): Too many connections in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[15-May-2020 20:00:14 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/1040): Too many connections in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[15-May-2020 20:00:16 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/1040): Too many connections in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[15-May-2020 20:01:03 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/1040): Too many connections in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[15-May-2020 20:02:01 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/1040): Too many connections in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[15-May-2020 20:03:01 Africa/Nairobi] PHP Warning:  Packets out of order. Expected 0 received 1. Packet size=23 in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[15-May-2020 20:03:01 Africa/Nairobi] PHP Warning:  mysqli::__construct(): Error while reading greeting packet. PID=17982 in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[15-May-2020 20:03:01 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/2006): MySQL server has gone away in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[15-May-2020 20:04:17 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/1040): Too many connections in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[15-May-2020 20:05:12 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/1040): Too many connections in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[15-May-2020 20:06:10 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/1040): Too many connections in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[15-May-2020 20:07:01 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/1040): Too many connections in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[15-May-2020 20:08:02 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/1040): Too many connections in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[15-May-2020 20:09:01 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/1040): Too many connections in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[15-May-2020 20:10:02 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/1040): Too many connections in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[15-May-2020 20:11:01 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/2002): No such file or directory in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[15-May-2020 20:13:01 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/2002): No such file or directory in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[15-May-2020 21:12:01 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/2002): No such file or directory in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[16-May-2020 12:17:53 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/2002): No such file or directory in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[16-May-2020 12:17:53 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/2002): No such file or directory in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[16-May-2020 12:17:53 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/2002): No such file or directory in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[16-May-2020 12:17:53 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/2002): No such file or directory in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[19-May-2020 07:29:59 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/2002): No such file or directory in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[19-May-2020 07:32:01 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/2002): No such file or directory in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[21-May-2020 09:33:26 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/2002): No such file or directory in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[21-May-2020 09:33:26 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/2002): No such file or directory in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[21-May-2020 11:31:51 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/2002): No such file or directory in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[21-May-2020 11:34:01 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/2002): No such file or directory in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[21-May-2020 14:40:09 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/2002): No such file or directory in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[21-May-2020 14:40:09 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/2002): No such file or directory in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[21-May-2020 14:40:09 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/2002): No such file or directory in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[21-May-2020 14:40:09 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/2002): No such file or directory in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[21-May-2020 14:40:09 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/2002): No such file or directory in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[23-May-2020 15:08:10 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/2002): No such file or directory in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[23-May-2020 15:08:10 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/2002): No such file or directory in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[23-May-2020 15:08:10 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/2002): No such file or directory in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[23-May-2020 15:08:10 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/2002): No such file or directory in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[23-May-2020 15:08:10 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/2002): No such file or directory in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[24-May-2020 09:56:54 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/2002): No such file or directory in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[24-May-2020 09:56:54 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/2002): No such file or directory in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[24-May-2020 09:56:54 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/2002): No such file or directory in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[24-May-2020 09:56:54 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/2002): No such file or directory in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[24-May-2020 09:56:54 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/2002): No such file or directory in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[24-May-2020 09:57:01 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/2002): No such file or directory in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[27-May-2020 07:34:01 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/2002): No such file or directory in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[30-May-2020 09:09:01 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/2002): No such file or directory in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[31-May-2020 09:27:47 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/2002): No such file or directory in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[31-May-2020 09:27:47 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/2002): No such file or directory in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[31-May-2020 09:27:47 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/2002): No such file or directory in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[31-May-2020 09:27:47 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/2002): No such file or directory in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[31-May-2020 09:27:47 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/2002): No such file or directory in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[31-May-2020 13:07:50 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/2002): No such file or directory in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[31-May-2020 13:07:50 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/2002): No such file or directory in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[31-May-2020 13:07:50 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/2002): No such file or directory in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[31-May-2020 13:07:50 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/2002): No such file or directory in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[31-May-2020 13:08:01 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/2002): No such file or directory in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[31-May-2020 20:03:10 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/2002): No such file or directory in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[31-May-2020 20:03:10 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/2002): No such file or directory in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[31-May-2020 20:03:10 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/2002): No such file or directory in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[01-Jun-2020 09:47:22 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/2002): No such file or directory in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[01-Jun-2020 09:47:22 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/2002): No such file or directory in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[01-Jun-2020 09:47:22 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/2002): No such file or directory in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[01-Jun-2020 09:47:22 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/2002): No such file or directory in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[01-Jun-2020 09:47:22 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/2002): No such file or directory in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[01-Jun-2020 16:30:40 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/2002): No such file or directory in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[01-Jun-2020 16:30:40 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/2002): No such file or directory in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[01-Jun-2020 16:30:40 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/2002): No such file or directory in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[01-Jun-2020 16:30:40 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/2002): No such file or directory in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[01-Jun-2020 16:30:40 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/2002): No such file or directory in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[01-Jun-2020 16:31:01 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/2002): No such file or directory in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[02-Jun-2020 06:26:14 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/2002): No such file or directory in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[02-Jun-2020 06:26:14 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/2002): No such file or directory in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[02-Jun-2020 06:26:14 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/2002): No such file or directory in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[02-Jun-2020 06:26:14 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/2002): No such file or directory in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[02-Jun-2020 10:27:21 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/2002): No such file or directory in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[02-Jun-2020 10:27:22 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/2002): No such file or directory in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[02-Jun-2020 10:27:22 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/2002): No such file or directory in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[02-Jun-2020 10:27:22 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/2002): No such file or directory in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[02-Jun-2020 10:27:22 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/2002): No such file or directory in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7
+[02-Jun-2020 10:56:01 Africa/Nairobi] PHP Warning:  mysqli::__construct(): (HY000/2002): No such file or directory in /home/standard_digital/httpdocs/sg_ussd/sendFeedback.php on line 7

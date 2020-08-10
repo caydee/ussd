@@ -10,13 +10,16 @@ class UssdController extends Controller
 {
     public function Menus(Request $request){
 
+
+        log::info($request->input('USSD_STRING'));
+
         $sessionId   = $request->get('SESSION_ID');
         $serviceCode = $request->get('SERVICE_CODE');
         $phoneNumber = $request->get('MSISDN');
         $ussdString = $request->get('USSD_STRING');
         $text        = $request->get('text');
-        
-        Log::info( $sessionId . ' - ' .$serviceCode . ' - ' .$phoneNumber . ' - ' .  $ussdString );
+
+       // Log::info( $sessionId . ' - ' .$serviceCode . ' - ' .$phoneNumber . ' - ' .  $ussdString );
 
 
         if ($ussdString == "") {
@@ -51,7 +54,7 @@ class UssdController extends Controller
         }
         // send your response back to the API
         //header('Content-type: text/plain');
-        $return=Response::make($response);
+        $return=Response::make($response,200);
         $return->header('Content-Type', 'text/plain');
         echo $return;
     }
