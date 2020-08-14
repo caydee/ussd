@@ -19,3 +19,4 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::get('UssdGateway','UssdController@Menus');
+Route::get('Request','UssdController@Request');
