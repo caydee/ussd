@@ -60,6 +60,7 @@ class UssdController extends Controller
     public function Request(Request $request)
     {
         Log::info($request);
+        try{
         $tel = $request->MSISDN;
         $serviceCode = $request->SERVICE_CODE;
         $ussdString = $request->USSD_STRING;
@@ -337,6 +338,10 @@ class UssdController extends Controller
                     ->header('Content-Type', 'text/plain');
             }
         }
+    }catch(Exception $e){
+        return response( $e->getMessage(), 200)
+                    ->header('Content-Type', 'text/plain');
+    }
     
     }
     function conussd($str)
