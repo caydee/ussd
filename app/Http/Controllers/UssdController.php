@@ -339,7 +339,7 @@ class UssdController extends Controller
             }
         }
     }catch(Exception $e){
-        return response( $e->getMessage(), 200)
+        return response( 'END '.$e->getMessage(), 200)
                     ->header('Content-Type', 'text/plain');
     }
     
