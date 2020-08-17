@@ -307,10 +307,10 @@ class UssdController extends Controller
                         ->header('Content-Type', 'text/plain');
                     }
                     if ($subs->language_id == 2) {
-                        return response('END Asante kwa kupendezwa na kutazama sehemu yetu ya huduma ya Thamani. Piga * 207 # ili ujiandikishe na upate vidokezo juu ya anuwai.', 200)
+                        return response('END Asante kwa kujiandikisha katika sehemu yetu ya huduma ya Thamani. Utakuwa ukipokea SMS kwa shilingi 50 kwa mwezi.', 200)
                             ->header('Content-Type', 'text/plain');
                     }
-                    return response('END Thank you for taking interest in viewing our Value Added Service products section. Dial *207# to subscribe and get tips on the various categories.', 200)
+                    return response('END Thank you for registering on our Value Added Service products section. You shall be receiving SMS from the system at Kshs 50 per month.', 200)
                         ->header('Content-Type', 'text/plain');
                     break;
                 default:
