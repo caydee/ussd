@@ -63,7 +63,7 @@ class UssdController extends Controller
         try{
         $tel = $_GET['MSISDN'];
         $serviceCode = $_GET['SERVICE_CODE'];
-        $ussdString = $_GET['USSD_STRING'];
+        $ussdString = substr($_GET['USSD_STRING'],2);
         $sessionId = $_GET['SESSION_ID'];
         $contsess = Session::where('session_id', $sessionId)->first();
         if ($contsess) {
