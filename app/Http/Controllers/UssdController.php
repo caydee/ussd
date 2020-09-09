@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Session;
 use App\Subscriber;
 use App\Subscription;
+use Carbon\Carbon;
 use Exception;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
@@ -292,11 +293,12 @@ class UssdController extends Controller
                         //write DB
                         $issubscribed=Subscription::where([['msisdn','=',$tel],['ussdresult','=',$ussdString]])->first();
                         if(!$issubscribed){
-                            Log::info('New Registration');
                             Subscription::insert([
                                 'language_id'=>$subs->language_id,
                                 'msisdn'=>$tel,
-                                'ussdresult'=>$ussdString
+                                'ussdresult'=>$ussdString,
+                                'created_at'=>Carbon::now(),
+                                'updated_at'=>Carbon::now()
                             ]);
                         }
                         if ($subs->language_id == 2) {
