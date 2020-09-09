@@ -290,7 +290,7 @@ class UssdController extends Controller
                                 ->header('Content-Type', 'text/plain');
                         }
                         //write DB
-                        $issubscribed=Subscription::where([['msisdn','=',$tel],['ussdresult','=',$ussdString]])->any();
+                        $issubscribed=Subscription::where([['msisdn','=',$tel],['ussdresult','=',$ussdString]])->first();
                         if(!$issubscribed){
                             Log::info('New Registration');
                             Subscription::insert([
