@@ -251,7 +251,7 @@ class UssdController extends Controller
                                         ->header('Content-Type', 'text/plain');
                                 }
                                 break;
-                                case 4:
+                                case 5:
                                     if ($userinput != '1' && $userinput != '2') {
                                         return response($this->conussd($this->invalid($subs->language_id, $sessionId)), 200)
                                             ->header('Content-Type', 'text/plain');
