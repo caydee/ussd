@@ -293,6 +293,7 @@ class UssdController extends Controller
                         //write DB
                         $issubscribed=Subscription::where([['msisdn','=',$tel],['ussdresult','=',$ussdString]])->first();
                         if(!$issubscribed){
+
                             Subscription::insert([
                                 'language_id'=>$subs->language_id,
                                 'msisdn'=>$tel,
@@ -300,6 +301,7 @@ class UssdController extends Controller
                                 'created_at'=>Carbon::now(),
                                 'updated_at'=>Carbon::now()
                             ]);
+                            $this->subscribe($tel,'001006919771');
                         }
                         if ($subs->language_id == 2) {
                             return response('END Asante kwa kujiandikisha katika sehemu yetu ya huduma ya Thamani. Utakuwa ukipokea SMS kwa shilingi 50 kwa mwezi.', 200)
@@ -498,5 +500,30 @@ class UssdController extends Controller
         //Log::info($creds[0]);//username
         //Log::warning($creds[1]);//password
         return response()->json($menu);
+    }
+
+    function subscribe($msisdn, $offercode)
+    {
+        try {
+            $apiurl = 'https://ktnkenya.com/vas/public/api/SubscribeUser';
+
+            $client = new Client();
+            $response = $client->request(
+                'POST',
+                $apiurl,
+                [
+                    'headers' => [
+                        'Content-Type' => ' application/json',
+                    ],
+                    'body' => json_encode([
+                        'msisdn' => $msisdn,
+                        'offercode' => $offercode
+                    ])
+                ]
+            );
+            return null;
+        } catch (Exception $ex) {
+            return null;
+        }
     }
 }
