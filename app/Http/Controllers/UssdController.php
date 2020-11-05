@@ -24,6 +24,12 @@ class UssdController extends Controller
             $ussdString = trim(str_replace('*', '', $ussdString));
             $userinput='';
             $sessionId = $_GET['SESSION_ID'];
+            if($serviceCode=='395'){
+                //get menus from moobifun and return to safaricom
+                //$response= http://standardmedia-ussd.moobifun.com/ubc/ussdgtw/standardmedia?msisdn=33612234556&servicecode=333&ussdstring=&sessionid=52324223
+                // return response($response, 200)
+                // ->header('Content-Type', 'text/plain');
+            }
             $contsess = Session::where('session_id', $sessionId)->first();
             if ($contsess) {
                 //continuing
