@@ -18,6 +18,7 @@ class CreateSessionsTable extends Migration
             $table->string('telephone');
             $table->string('session_id');
             $table->string('service_code');
+            $table->string('userchoice')->nullable();
             $table->string('userinput')->nullable();
             $table->string('previoususerinput')->nullable();
             $table->string('mininput')->nullable();

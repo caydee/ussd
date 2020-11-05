@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Confirmedsubscription;
+use App\Mpesatransaction;
+use App\Mpesatransactions;
 use App\Subscriptionrequest;
 use Carbon\Carbon;
 use CreateSubscriptionsTable;
@@ -85,5 +87,48 @@ class ApiController extends Controller
             return 'NOK';
         }
     }
-   
+    public function payment(Request $request)
+    {      
+        $headers = getallheaders();
+        if (!isset($headers['api_key'])) {
+            return response()->json("Access to resource Forbidden", 403);
+        }
+        $apikey = $headers['api_key'];
+        if ($apikey != '4e0bf5d2975c44c3b194aac300dae162') {
+            return response()->json("Invalid API Key", 403);
+        }
+        $rules = array(
+            'sender_phone'  => 'required',
+            'transaction'  => 'required',
+            'amount'  => 'required',
+            'mpesa_code'  => 'required',
+            'type'  => 'required',
+            'origin' => 'required'
+        );
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            $errors = $validator->getMessagebag()->toarray();
+            $array = array_values($errors);
+            $msg = '';
+            for ($i = 1; $i <= sizeof($array); $i++) {
+                $msg .= $array[$i - 1][0] . PHP_EOL;
+            }
+            return response()->json(['errors' =>  $msg], 403);
+        }
+        $p = Mpesatransaction::where('reference', $request->reference)->first();
+        if (!$p) {
+            Mpesatransaction::insert([
+                'msisdn'  => $request->sender_phone,
+                'account'  => $request->transaction,
+                'amount'  => $request->amount,
+                'reference'  => $request->mpesa_code,
+                'mode'  => $request->type,
+                'created_at' > Carbon::now(),
+                'updated_at' > Carbon::now()
+            ]);            
+        } else {
+            return response()->json('Duplicate Payment received', 400);
+        }
+        return response()->json('Payment received');
+    }
 }
