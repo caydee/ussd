@@ -17,6 +17,7 @@ class CreateSubscriptionsTable extends Migration
             $table->id();
             $table->string('msisdn');
             $table->string('ussdresult');
+            $table->tinyInteger('status')->default(0);
             $table->integer('language_id');
             $table->timestamps();
         });
