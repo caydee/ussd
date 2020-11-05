@@ -253,6 +253,7 @@ class UssdController extends Controller
                                         ->header('Content-Type', 'text/plain');
                                 }
                                 break;
+
                                 case 5:
                                     if ($userinput != '1' && $userinput != '2') {
                                         return response($this->conussd($this->invalid($subs->language_id, $sessionId)), 200)
@@ -261,24 +262,30 @@ class UssdController extends Controller
     
                                     if ($userinput == '1') {
                                         if ($subs->language_id == 2) {
-                                            return response('CON Jiandikishe kwa Video za Michezo.' . PHP_EOL . '1. Sawa' . PHP_EOL . '2. Ghairi', 200)
+                                            return response('CON Andikisha Ujumbe Wako.' . PHP_EOL . ' Andika Ujumbe Wako' . PHP_EOL . 200)
                                                 ->header('Content-Type', 'text/plain');
                                         }
-                                        return response('CON Subscribe to Sports Videos.' . PHP_EOL . '1. OK' . PHP_EOL . '2. Cancel', 200)
+                                        return response('CON Give your feedback.' . PHP_EOL . ' Write your feedback'  . PHP_EOL . 200)
                                             ->header('Content-Type', 'text/plain');
+
+                                         
                                     }
                                     if ($userinput == '2') {
                                         if ($subs->language_id == 2) {
-                                            return response('CON Jiandikishe kwa Video za Muziki.' . PHP_EOL . '1. Sawa' . PHP_EOL . '2. Ghairi', 200)
+                                            return response('CON Chagua Gatezi ya kueka Ujumbe.' . PHP_EOL . '1. Standard' . PHP_EOL . '2. Nairobian', 200)
                                                 ->header('Content-Type', 'text/plain');
+                                               
                                         }
-                                        return response('CON Subscribe Music Videos.' . PHP_EOL . '1. OK' . PHP_EOL . '2. Cancel', 200)
+                                        return response('CON Select the newspaper to give feedback on.' . PHP_EOL . '1. Standard' . PHP_EOL . '2. Nairobian', 200)
                                             ->header('Content-Type', 'text/plain');
+                                          
                                     }
                                 break;
+                            
+
                             default:
                                 if ($subs->language_id == 2) {
-                                    return response('END Asante kwa kupendezwa na kutazama sehemu yetu ya huduma ya Thamani. Piga * 207 # ili ujiandikishe na upate vidokezo juu ya anuwai.', 200)
+                                    return response('END Asante kwa kupendezwa na kutazama sehemu yetu ya hudma ya Thamani. Piga * 207 # ili ujiandikishe na upate vidokezo juu ya anuwai.', 200)
                                         ->header('Content-Type', 'text/plain');
                                 }
                                 return response('END Thank you for taking interest in viewing our Value Added Service products section. Dial *207# to subscribe and get tips on the various categories.', 200)
