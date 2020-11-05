@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Feedback;
 use App\Session;
 use App\Subscriber;
 use App\Subscription;
@@ -20,7 +21,8 @@ class UssdController extends Controller
             $tel = $_GET['MSISDN'];
             $serviceCode = $_GET['SERVICE_CODE'];
             $ussdString = $_GET['USSD_STRING'];
-            $ussdString = str_replace('*', '', $_GET['USSD_STRING']);
+            $ussdString = trim(str_replace('*', '', $ussdString));
+            $userinput='';
             $sessionId = $_GET['SESSION_ID'];
             $contsess = Session::where('session_id', $sessionId)->first();
             if ($contsess) {
@@ -41,7 +43,7 @@ class UssdController extends Controller
                                 ->header('Content-Type', 'text/plain');
                         }
                         $subs->update(['language_id' => (int)$userinput]);
-                        $this->updateinput($sessionId, '1', '6','');
+                        $this->updateinput($sessionId, '1', '6', '');
                         return response($this->conussd($this->mainmenu((int) $userinput)), 200)
                             ->header('Content-Type', 'text/plain');
                         break;
@@ -53,32 +55,32 @@ class UssdController extends Controller
                         }
                         if ($userinput == '1') {
                             //findjobs
-                            $this->updateinput($sessionId, '1', '7','Jobs');
+                            $this->updateinput($sessionId, '1', '7', 'Jobs');
 
                             return response($this->conussd($this->findjobs($subs->language_id)), 200)
                                 ->header('Content-Type', 'text/plain');
                         }
-                        if ($userinput == '2') {//healthy living
-                            $this->updateinput($sessionId, '1', '2','Healthy Living');
+                        if ($userinput == '2') { //healthy living
+                            $this->updateinput($sessionId, '1', '2', 'Healthy Living');
                             return response($this->conussd($this->healtyliving($subs->language_id)), 200)
                                 ->header('Content-Type', 'text/plain');
                         }
-                        if ($userinput == '3') {//dating tips
-                            $this->updateinput($sessionId, '1', '5','Dating Tips');
+                        if ($userinput == '3') { //dating tips
+                            $this->updateinput($sessionId, '1', '5', 'Dating Tips');
                             return response($this->conussd($this->datingtips($subs->language_id)), 200)
                                 ->header('Content-Type', 'text/plain');
                         }
-                        if ($userinput == '4') {//farming tips
-                            $this->updateinput($sessionId, '1', '3','Farming Tips');
+                        if ($userinput == '4') { //farming tips
+                            $this->updateinput($sessionId, '1', '3', 'Farming Tips');
                             return response($this->conussd($this->farmingtips($subs->language_id)), 200)
                                 ->header('Content-Type', 'text/plain');
                         }
-                        if ($userinput == '5') {//feedback
-                            $this->updateinput($sessionId, '1', '2','Feedback');
+                        if ($userinput == '5') { //feedback
+                            $this->updateinput($sessionId, '1', '2', 'Feedback');
                             return response($this->conussd($this->feedback($subs->language_id)), 200)
                                 ->header('Content-Type', 'text/plain');
                         }
-                        if ($userinput == '6') {//exit
+                        if ($userinput == '6') { //exit
                             if ($subs->language_id == 2) {
                                 return response('END Asante kwa kupendezwa na kutazama sehemu yetu ya huduma ya Thamani. Piga *207# ili ujiandikishe na upate vidokezo juu ya anuwai.', 200)
                                     ->header('Content-Type', 'text/plain');
@@ -94,74 +96,74 @@ class UssdController extends Controller
                                     return response($this->conussd($this->invalid($subs->language_id, $sessionId)), 200)
                                         ->header('Content-Type', 'text/plain');
                                 }
-                                $this->updateinput($sessionId, '1', '7','Jobs');
+                                $this->updateinput($sessionId, '1', '7', 'Jobs');
                                 if ($userinput == '1') {
                                     if ($subs->language_id == 2) {
-                                        $this->updateinput($sessionId, '1', '2','Kazi za Karani');
+                                        $this->updateinput($sessionId, '1', '2', 'Kazi za Karani');
                                         return response('CON Jiandikishe kwa vidokezo vya kazi ya Karani kwa Ksh.50 kwa mwezi.' . PHP_EOL . '1. Sawa' . PHP_EOL . '2. Ghairi', 200)
                                             ->header('Content-Type', 'text/plain');
                                     }
-                                    $this->updateinput($sessionId, '1', '2','Clerical Jobs');
+                                    $this->updateinput($sessionId, '1', '2', 'Clerical Jobs');
                                     return response('CON Subscribe to Clerical Job tips at Ksh.50 per month.' . PHP_EOL . '1. OK' . PHP_EOL . '2. Cancel', 200)
                                         ->header('Content-Type', 'text/plain');
                                 }
                                 if ($userinput == '2') {
                                     if ($subs->language_id == 2) {
-                                        $this->updateinput($sessionId, '1', '2','Kazi za Uuzaji');
+                                        $this->updateinput($sessionId, '1', '2', 'Kazi za Uuzaji');
                                         return response('CON Jiandikishe kwa vidokezo vya kazi ya Uuzaji kwa Ksh.50 kwa mwezi.' . PHP_EOL . '1. Sawa' . PHP_EOL . '2. Ghairi', 200)
                                             ->header('Content-Type', 'text/plain');
                                     }
-                                    $this->updateinput($sessionId, '1', '2','Marketing Jobs');
+                                    $this->updateinput($sessionId, '1', '2', 'Marketing Jobs');
                                     return response('CON Subscribe to Sales & Marketing Job tips at Ksh.50 per month.' . PHP_EOL . '1. OK' . PHP_EOL . '2. Cancel', 200)
                                         ->header('Content-Type', 'text/plain');
                                 }
                                 if ($userinput == '3') {
                                     if ($subs->language_id == 2) {
-                                        $this->updateinput($sessionId, '1', '2','Kazi ya Huduma ya Wateja');
+                                        $this->updateinput($sessionId, '1', '2', 'Kazi ya Huduma ya Wateja');
                                         return response('CON Jiandikishe kwa vidokezo vya kazi ya Huduma ya Wateja kwa Ksh.50 kwa mwezi.' . PHP_EOL . '1. Sawa' . PHP_EOL . '2. Ghairi', 200)
                                             ->header('Content-Type', 'text/plain');
                                     }
-                                    $this->updateinput($sessionId, '1', '2','Customer Care Job tips');
+                                    $this->updateinput($sessionId, '1', '2', 'Customer Care Job tips');
                                     return response('CON Subscribe to Customer Care Job tips at Ksh.50 per month.' . PHP_EOL . '1. OK' . PHP_EOL . '2. Cancel', 200)
                                         ->header('Content-Type', 'text/plain');
                                 }
                                 if ($userinput == '4') {
                                     if ($subs->language_id == 2) {
-                                        $this->updateinput($sessionId, '1', '2','Kazi ya Usimamizi');
+                                        $this->updateinput($sessionId, '1', '2', 'Kazi ya Usimamizi');
                                         return response('CON Jiandikishe kwa vidokezo vya kazi ya Usimamizi kwa Ksh.50 kwa mwezi.' . PHP_EOL . '1. Sawa' . PHP_EOL . '2. Ghairi', 200)
                                             ->header('Content-Type', 'text/plain');
                                     }
-                                    $this->updateinput($sessionId, '1', '2','Admin Job tips');
+                                    $this->updateinput($sessionId, '1', '2', 'Admin Job tips');
                                     return response('CON Subscribe to Admin Job tips at Ksh.50 per month.' . PHP_EOL . '1. OK' . PHP_EOL . '2. Cancel', 200)
                                         ->header('Content-Type', 'text/plain');
                                 }
                                 if ($userinput == '5') {
                                     if ($subs->language_id == 2) {
-                                        $this->updateinput($sessionId, '1', '2','Kazi za NGO');
+                                        $this->updateinput($sessionId, '1', '2', 'Kazi za NGO');
                                         return response('CON Jiandikishe kwa vidokezo vya kazi za NGO kwa Ksh.50 kwa mwezi.' . PHP_EOL . '1. Sawa' . PHP_EOL . '2. Ghairi', 200)
                                             ->header('Content-Type', 'text/plain');
                                     }
-                                    $this->updateinput($sessionId, '1', '2','NGO Job tips');
+                                    $this->updateinput($sessionId, '1', '2', 'NGO Job tips');
                                     return response('CON Subscribe to NGO Job tips at Ksh.50 per month.' . PHP_EOL . '1. OK' . PHP_EOL . '2. Cancel', 200)
                                         ->header('Content-Type', 'text/plain');
                                 }
                                 if ($userinput == '6') {
                                     if ($subs->language_id == 2) {
-                                        $this->updateinput($sessionId, '1', '2','Kazi za hoteli');
+                                        $this->updateinput($sessionId, '1', '2', 'Kazi za hoteli');
                                         return response('CON Jiandikishe kwa vidokezo vya kazi za hoteli kwa Ksh.50 kwa mwezi.' . PHP_EOL . '1. Sawa' . PHP_EOL . '2. Ghairi', 200)
                                             ->header('Content-Type', 'text/plain');
                                     }
-                                    $this->updateinput($sessionId, '1', '2','Hotel Job tips');
+                                    $this->updateinput($sessionId, '1', '2', 'Hotel Job tips');
                                     return response('CON Subscribe to Hotel Job tips at Ksh.50 per month.' . PHP_EOL . '1. OK' . PHP_EOL . '2. Cancel', 200)
                                         ->header('Content-Type', 'text/plain');
                                 }
                                 if ($userinput == '7') {
                                     if ($subs->language_id == 2) {
-                                        $this->updateinput($sessionId, '1', '2','Kazi za Kuendeleza Biashara');
+                                        $this->updateinput($sessionId, '1', '2', 'Kazi za Kuendeleza Biashara');
                                         return response('CON Jiandikishe kwa vidokezo vya kazi za Kuendeleza Biashara kwa Ksh.50 kwa mwezi.' . PHP_EOL . '1. Sawa' . PHP_EOL . '2. Ghairi', 200)
                                             ->header('Content-Type', 'text/plain');
                                     }
-                                    $this->updateinput($sessionId, '1', '2','Business Development Job tips');
+                                    $this->updateinput($sessionId, '1', '2', 'Business Development Job tips');
                                     return response('CON Subscribe to Business Development Job tips at Ksh.50 per month.' . PHP_EOL . '1. OK' . PHP_EOL . '2. Cancel', 200)
                                         ->header('Content-Type', 'text/plain');
                                 }
@@ -174,21 +176,21 @@ class UssdController extends Controller
                                 // $contsess->update(['correctinput' => $contsess->correctinput . $userinput]);
                                 if ($userinput == '1') {
                                     if ($subs->language_id == 2) {
-                                        $this->updateinput($sessionId, '1', '2','Kuzuia Saratani');
+                                        $this->updateinput($sessionId, '1', '2', 'Kuzuia Saratani');
                                         return response('CON Jiandikishe kwa vidokezo vya Kuzuia Saratani kwa Ksh.50 kwa mwezi.' . PHP_EOL . '1. Sawa' . PHP_EOL . '2. Ghairi', 200)
                                             ->header('Content-Type', 'text/plain');
                                     }
-                                    $this->updateinput($sessionId, '1', '2','Tips to Prevent Cancer');
+                                    $this->updateinput($sessionId, '1', '2', 'Tips to Prevent Cancer');
                                     return response('CON Subscribe to Tips to Prevent Cancer at Ksh.50 per month.' . PHP_EOL . '1. OK' . PHP_EOL . '2. Cancel', 200)
                                         ->header('Content-Type', 'text/plain');
                                 }
                                 if ($userinput == '2') {
                                     if ($subs->language_id == 2) {
-                                        $this->updateinput($sessionId, '1', '2','Vidokezo salama vya Mimba');
+                                        $this->updateinput($sessionId, '1', '2', 'Vidokezo salama vya Mimba');
                                         return response('CON Jiandikishe kwa vidokezo salama vya Mimba kwa Ksh.50 kwa mwezi.' . PHP_EOL . '1. Sawa' . PHP_EOL . '2. Ghairi', 200)
                                             ->header('Content-Type', 'text/plain');
                                     }
-                                    $this->updateinput($sessionId, '1', '2','Safe Pregnancy Tips');
+                                    $this->updateinput($sessionId, '1', '2', 'Safe Pregnancy Tips');
                                     return response('CON Subscribe to Safe Pregnancy Tips at Ksh.50 per month.' . PHP_EOL . '1. OK' . PHP_EOL . '2. Cancel', 200)
                                         ->header('Content-Type', 'text/plain');
                                 }
@@ -201,51 +203,51 @@ class UssdController extends Controller
 
                                 if ($userinput == '1') {
                                     if ($subs->language_id == 2) {
-                                        $this->updateinput($sessionId, '1', '2','Vidokezo vya Wanawake');
+                                        $this->updateinput($sessionId, '1', '2', 'Vidokezo vya Wanawake');
                                         return response('CON Jiandikishe kwa vidokezo Vidokezo vya Wanawake kwa Ksh.50 kwa mwezi.' . PHP_EOL . '1. Sawa' . PHP_EOL . '2. Ghairi', 200)
                                             ->header('Content-Type', 'text/plain');
                                     }
-                                    $this->updateinput($sessionId, '1', '2','Women Tips');
+                                    $this->updateinput($sessionId, '1', '2', 'Women Tips');
                                     return response('CON Subscribe to Women Tips at Ksh.50 per month.' . PHP_EOL . '1. OK' . PHP_EOL . '2. Cancel', 200)
                                         ->header('Content-Type', 'text/plain');
                                 }
                                 if ($userinput == '2') {
                                     if ($subs->language_id == 2) {
-                                        $this->updateinput($sessionId, '1', '2','Vidokezo vya Wanaume');
+                                        $this->updateinput($sessionId, '1', '2', 'Vidokezo vya Wanaume');
                                         return response('CON Jiandikishe kwa vidokezo Vidokezo vya Wanaume kwa Ksh.50 kwa mwezi.' . PHP_EOL . '1. Sawa' . PHP_EOL . '2. Ghairi', 200)
                                             ->header('Content-Type', 'text/plain');
                                     }
-                                    $this->updateinput($sessionId, '1', '2','Men Tips');
+                                    $this->updateinput($sessionId, '1', '2', 'Men Tips');
                                     return response('CON Subscribe to Men Tips at Ksh.50 per month.' . PHP_EOL . '1. OK' . PHP_EOL . '2. Cancel', 200)
                                         ->header('Content-Type', 'text/plain');
                                 }
                                 if ($userinput == '3') {
                                     if ($subs->language_id == 2) {
-                                        $this->updateinput($sessionId, '1', '2','Vidokezo vya Ndoa');
+                                        $this->updateinput($sessionId, '1', '2', 'Vidokezo vya Ndoa');
                                         return response('CON Jiandikishe kwa Vidokezo vya Ndoa kwa Ksh.50 kwa mwezi.' . PHP_EOL . '1. Sawa' . PHP_EOL . '2. Ghairi', 200)
                                             ->header('Content-Type', 'text/plain');
                                     }
-                                    $this->updateinput($sessionId, '1', '2','Marriage Tips');
+                                    $this->updateinput($sessionId, '1', '2', 'Marriage Tips');
                                     return response('CON Subscribe to Marriage Tips at Ksh.50 per month.' . PHP_EOL . '1. OK' . PHP_EOL . '2. Cancel', 200)
                                         ->header('Content-Type', 'text/plain');
                                 }
                                 if ($userinput == '4') {
                                     if ($subs->language_id == 2) {
-                                        $this->updateinput($sessionId, '1', '2','Nukuu za Upendo');
+                                        $this->updateinput($sessionId, '1', '2', 'Nukuu za Upendo');
                                         return response('CON Jiandikishe kwa Nukuu za Upendo kwa Ksh.50 kwa mwezi.' . PHP_EOL . '1. Sawa' . PHP_EOL . '2. Ghairi', 200)
                                             ->header('Content-Type', 'text/plain');
                                     }
-                                    $this->updateinput($sessionId, '1', '2','Love Quotes');
+                                    $this->updateinput($sessionId, '1', '2', 'Love Quotes');
                                     return response('CON Subscribe to Love Quotes at Ksh.50 per month.' . PHP_EOL . '1. OK' . PHP_EOL . '2. Cancel', 200)
                                         ->header('Content-Type', 'text/plain');
                                 }
                                 if ($userinput == '5') {
                                     if ($subs->language_id == 2) {
-                                        $this->updateinput($sessionId, '1', '2','Vidokezo vya Upendo');
+                                        $this->updateinput($sessionId, '1', '2', 'Vidokezo vya Upendo');
                                         return response('CON Jiandikishe Vidokezo vya Upendo kwa Ksh.50 kwa mwezi.' . PHP_EOL . '1. Sawa' . PHP_EOL . '2. Ghairi', 200)
                                             ->header('Content-Type', 'text/plain');
                                     }
-                                    $this->updateinput($sessionId, '1', '2','Crazy Loving Tips');
+                                    $this->updateinput($sessionId, '1', '2', 'Crazy Loving Tips');
                                     return response('CON Subscribe to Crazy Loving Tips at Ksh.50 per month.' . PHP_EOL . '1. OK' . PHP_EOL . '2. Cancel', 200)
                                         ->header('Content-Type', 'text/plain');
                                 }
@@ -258,57 +260,60 @@ class UssdController extends Controller
 
                                 if ($userinput == '1') {
                                     if ($subs->language_id == 2) {
-                                        $this->updateinput($sessionId, '1', '2','Vidokezo vya hali ya hewa');
+                                        $this->updateinput($sessionId, '1', '2', 'Vidokezo vya hali ya hewa');
                                         return response('CON Jiandikishe kwa Vidokezo vya hali ya hewa kwa Ksh.50 kwa mwezi.' . PHP_EOL . '1. Sawa' . PHP_EOL . '2. Ghairi', 200)
                                             ->header('Content-Type', 'text/plain');
                                     }
-                                    $this->updateinput($sessionId, '1', '2','Weather Tips');
+                                    $this->updateinput($sessionId, '1', '2', 'Weather Tips');
                                     return response('CON Subscribe to Weather Tips at Ksh.50 per month.' . PHP_EOL . '1. OK' . PHP_EOL . '2. Cancel', 200)
                                         ->header('Content-Type', 'text/plain');
                                 }
                                 if ($userinput == '2') {
                                     if ($subs->language_id == 2) {
-                                        $this->updateinput($sessionId, '1', '2','Aina za mchanga & Mazao');
+                                        $this->updateinput($sessionId, '1', '2', 'Aina za mchanga & Mazao');
                                         return response('CON Jiandikishe kwa Aina za mchanga & Mazao kwa Ksh.50 kwa mwezi.' . PHP_EOL . '1. Sawa' . PHP_EOL . '2. Ghairi', 200)
                                             ->header('Content-Type', 'text/plain');
                                     }
-                                    $this->updateinput($sessionId, '1', '2','Soil Types & Crops');
+                                    $this->updateinput($sessionId, '1', '2', 'Soil Types & Crops');
                                     return response('CON Subscribe to Soil Types & Crops at Ksh.50 per month.' . PHP_EOL . '1. OK' . PHP_EOL . '2. Cancel', 200)
                                         ->header('Content-Type', 'text/plain');
                                 }
                                 if ($userinput == '3') {
                                     if ($subs->language_id == 2) {
-                                        $this->updateinput($sessionId, '1', '2','Vidokezo vya kilimo');
+                                        $this->updateinput($sessionId, '1', '2', 'Vidokezo vya kilimo');
                                         return response('CON Jiandikishe kwa Vidokezo vya kilimo kwa Ksh.50 kwa mwezi.' . PHP_EOL . '1. Sawa' . PHP_EOL . '2. Ghairi', 200)
                                             ->header('Content-Type', 'text/plain');
                                     }
-                                    $this->updateinput($sessionId, '1', '2','Agricultural Tips');
+                                    $this->updateinput($sessionId, '1', '2', 'Agricultural Tips');
                                     return response('CON Subscribe to Agricultural Tips at Ksh.50 per month.' . PHP_EOL . '1. OK' . PHP_EOL . '2. Cancel', 200)
                                         ->header('Content-Type', 'text/plain');
                                 }
                                 break;
-                                case 5:
-                                    if ($userinput != '1' && $userinput != '2') {
-                                        return response($this->conussd($this->invalid($subs->language_id, $sessionId)), 200)
+                            case 5:
+                                if ($userinput != '1' && $userinput != '2') {
+                                    return response($this->conussd($this->invalid($subs->language_id, $sessionId)), 200)
+                                        ->header('Content-Type', 'text/plain');
+                                }
+
+                                if ($userinput == '1') {
+                                    if ($subs->language_id == 2) {
+                                        $this->updateinput($sessionId, '0', '0', 'Maoni');
+                                        return response('CON Andika maoni yako:', 200)
                                             ->header('Content-Type', 'text/plain');
                                     }
-    
-                                    if ($userinput == '1') {
-                                        if ($subs->language_id == 2) {
-                                            return response('CON Jiandikishe kwa Video za Michezo.' . PHP_EOL . '1. Sawa' . PHP_EOL . '2. Ghairi', 200)
-                                                ->header('Content-Type', 'text/plain');
-                                        }
-                                        return response('CON Subscribe to Sports Videos.' . PHP_EOL . '1. OK' . PHP_EOL . '2. Cancel', 200)
+                                    $this->updateinput($sessionId, '0', '0', 'Feedback');
+                                    return response('CON Enter your feedback message:', 200)
+                                        ->header('Content-Type', 'text/plain');
+                                }
+                                if ($userinput == '2') {
+                                    $this->updateinput($sessionId, '1', '2', 'Gazeti');
+                                    if ($subs->language_id == 2) {
+                                        return response('CON Maoni ya Gazeti' . PHP_EOL . '1. Gazeti la Standard' . PHP_EOL . '2. Gazeti la Nairobian', 200)
                                             ->header('Content-Type', 'text/plain');
                                     }
-                                    if ($userinput == '2') {
-                                        if ($subs->language_id == 2) {
-                                            return response('CON Jiandikishe kwa Video za Muziki.' . PHP_EOL . '1. Sawa' . PHP_EOL . '2. Ghairi', 200)
-                                                ->header('Content-Type', 'text/plain');
-                                        }
-                                        return response('CON Subscribe Music Videos.' . PHP_EOL . '1. OK' . PHP_EOL . '2. Cancel', 200)
-                                            ->header('Content-Type', 'text/plain');
-                                    }
+                                    return response('CON Newspaper Feedback' . PHP_EOL . '1. The Standard' . PHP_EOL . '2. The Nairobian', 200)
+                                        ->header('Content-Type', 'text/plain');
+                                }
                                 break;
                             default:
                                 if ($subs->language_id == 2) {
@@ -320,31 +325,151 @@ class UssdController extends Controller
                         }
                         break;
                     case 4:
+                        if ($contsess->userchoice == 'Feedback' || $contsess->userchoice == 'Maoni') {
+                            $this->updateinput($sessionId, '1', '2', 'EndFeedback');
+                            Feedback::insert([
+                                'sessionid' => $sessionId,
+                                'message' =>$userinput,
+                                'msisdn' => $tel,
+                                'created_at' => Carbon::now(),
+                                'updated_at' => Carbon::now()
+                            ]);
+                            if ($subs->language_id == 2) {
+
+                                return response('CON Je! Ungependa Kuwasiliana?' . PHP_EOL . '1. Ndio' . PHP_EOL . '2. La', 200)
+                                    ->header('Content-Type', 'text/plain');
+                            }
+                            return response('CON Would you like to be contacted?' . PHP_EOL . '1. Yes' . PHP_EOL . '2. No', 200)
+                                ->header('Content-Type', 'text/plain');
+                        }
+                        if ($contsess->userchoice == 'Gazeti') {
+                            if ($subs->language_id == 2) {
+                                $this->updateinput($sessionId, '0', '0', 'Maoni');
+                                return response('CON Andika maoni yako:', 200)
+                                    ->header('Content-Type', 'text/plain');
+                            }
+                            $this->updateinput($sessionId, '0', '0', 'Feedback');
+                            return response('CON Enter your feedback message:', 200)
+                                ->header('Content-Type', 'text/plain');
+                        }
                         //last - write to db
                         if ($userinput != 1 && $userinput != 2) {
                             return response($this->conussd($this->invalid($subs->language_id, $sessionId)), 200)
                                 ->header('Content-Type', 'text/plain');
                         }
                         //write DB
-                        $issubscribed=Subscription::where([['msisdn','=',$tel],['ussdresult','=',$contsess->userchoice]])->first();
-                        if(!$issubscribed){
+                        $issubscribed = Subscription::where([['msisdn', '=', $tel], ['ussdresult', '=', $contsess->userchoice]])->first();
+                        if (!$issubscribed) {
                             Subscription::insert([
-                                'language_id'=>$subs->language_id,
-                                'msisdn'=>$tel,
-                                'ussdresult'=>$contsess->userchoice,
-                                'created_at'=>Carbon::now(),
-                                'updated_at'=>Carbon::now()
+                                'language_id' => $subs->language_id,
+                                'msisdn' => $tel,
+                                'ussdresult' => $contsess->userchoice,
+                                'created_at' => Carbon::now(),
+                                'updated_at' => Carbon::now()
                             ]);
 
-                           // $this->subscribe($tel,'001006919771');
-                            $this->doSTKPush('VS'.$contsess->userchoice,50,$tel);
+                            // $this->subscribe($tel,'001006919771');
+                            $this->doSTKPush('VS' . $contsess->userchoice, 50, $tel);
                         }
                         if ($subs->language_id == 2) {
-                            return response('END Asante kwa kujiandikisha katika sehemu yetu ya huduma ya Thamani. Utakuwa ukipokea '.$contsess->userchoice.' SMS kwa shilingi 50 kwa mwezi.', 200)
+                            return response('END Asante kwa kujiandikisha katika sehemu yetu ya huduma ya Thamani. Utakuwa ukipokea ' . $contsess->userchoice . ' SMS kwa shilingi 50 kwa mwezi.', 200)
                                 ->header('Content-Type', 'text/plain');
                         }
-                        return response('END Thank you for registering on our Value Added Service products section. You shall be receiving '.$contsess->userchoice.' SMS from the system at Kshs 50 per month.', 200)
+                        return response('END Thank you for registering on our Value Added Service products section. You shall be receiving ' . $contsess->userchoice . ' SMS from the system at Kshs 50 per month.', 200)
                             ->header('Content-Type', 'text/plain');
+                        break;
+                    case 5:
+                        if ($contsess->userchoice == 'EndFeedback') {
+                            if ($userinput != 1 && $userinput != 2) {
+                                return response($this->conussd($this->invalid($subs->language_id, $sessionId)), 200)
+                                    ->header('Content-Type', 'text/plain');
+                            }
+                            if ($userinput == 2) {
+                                if ($subs->language_id == 2) {
+                                    $this->updateinput($sessionId, '0', '0', 'EnterName');
+                                    return response('END Asante kwa Maoni yako.', 200)
+                                        ->header('Content-Type', 'text/plain');
+                                }
+                                return response('END Thank you for your Feedback.', 200)
+                                    ->header('Content-Type', 'text/plain');
+                            } else {
+                                $this->updateinput($sessionId, '0', '0', 'EnterName');
+                                if ($subs->language_id == 2) {
+                                    return response('CON Je! Andika Jina Lako:', 200)
+                                        ->header('Content-Type', 'text/plain');
+                                }
+                                return response('CON Enter Your name:', 200)
+                                    ->header('Content-Type', 'text/plain');
+                            }
+                        }
+                        //wasiliana
+                        if ($contsess->userchoice == 'Feedback' || $contsess->userchoice == 'Maoni') {
+                            $this->updateinput($sessionId, '1', '2', 'EndFeedback');
+                            Feedback::insert([
+                                'sessionid' => $sessionId,
+                                'message' =>$userinput,
+                                'msisdn' => $tel,
+                                'created_at' => Carbon::now(),
+                                'updated_at' => Carbon::now()
+                            ]);
+                            if ($subs->language_id == 2) {
+                                return response('CON Je! Ungependa Kuwasiliana?' . PHP_EOL . '1. Ndio' . PHP_EOL . '2. La', 200)
+                                    ->header('Content-Type', 'text/plain');
+                            }
+                            return response('CON Would you like to be contacted?' . PHP_EOL . '1. Yes' . PHP_EOL . '2. No', 200)
+                                ->header('Content-Type', 'text/plain');
+                        }
+                        break;
+                    case 6:
+                        if ($contsess->userchoice == 'EnterName') {
+                            if ($subs->language_id == 2) {
+                               Feedback::where('sessionid',$sessionId)->update([
+                                    'name' =>$userinput,
+                                ]);
+                                $this->updateinput($sessionId, '0', '0', 'EnterName');
+                                return response('END Asante kwa Maoni yako. Wakala wetu wa huduma ya wateja atawasiliana nawe hivi karibuni', 200)
+                                    ->header('Content-Type', 'text/plain');
+                            }
+                            return response('END Thank you for your Feedback. Our customer care agent will contact you soon', 200)
+                                ->header('Content-Type', 'text/plain');
+                        }
+                        if ($contsess->userchoice == 'EndFeedback') {
+                            if ($userinput != 1 && $userinput != 2) {
+                                return response($this->conussd($this->invalid($subs->language_id, $sessionId)), 200)
+                                    ->header('Content-Type', 'text/plain');
+                            }
+                            if ($userinput == 2) {
+                                if ($subs->language_id == 2) {
+                                    $this->updateinput($sessionId, '0', '0', 'EnterName');
+                                    return response('END Asante kwa Maoni yako.', 200)
+                                        ->header('Content-Type', 'text/plain');
+                                }
+                                return response('END Thank you for your Feedback.', 200)
+                                    ->header('Content-Type', 'text/plain');
+                            } else {
+                                $this->updateinput($sessionId, '0', '0', 'EnterName');
+                                if ($subs->language_id == 2) {
+                                    return response('CON Je! Andika Jina Lako:', 200)
+                                        ->header('Content-Type', 'text/plain');
+                                }
+                                return response('CON Enter Your name:', 200)
+                                    ->header('Content-Type', 'text/plain');
+                            }
+                        }
+                        break;
+                    case 7:
+                        if ($contsess->userchoice == 'EnterName') {
+                            Feedback::where('sessionid',$sessionId)->update([
+                                'name' =>$userinput,
+                            ]);
+                            if ($subs->language_id == 2) {
+                                $this->updateinput($sessionId, '0', '0', 'EnterName');
+                                return response('END Asante kwa Maoni yako. Wakala wetu wa huduma ya wateja atawasiliana nawe hivi karibuni', 200)
+                                    ->header('Content-Type', 'text/plain');
+                            }
+                            return response('END Thank you for your Feedback. Our customer care agent will contact you soon', 200)
+                                ->header('Content-Type', 'text/plain');
+                        }
                         break;
                     default:
                         return response($this->conussd($this->invalid($subs->language_id, $sessionId)), 200)
@@ -362,7 +487,7 @@ class UssdController extends Controller
                     'level' => $subs ? 1 : 0
                 ]);
                 if ($subs) {
-                    $this->updateinput($sessionId, '1', '6','');
+                    $this->updateinput($sessionId, '1', '6', '');
                     return response($this->conussd($this->mainmenu($subs->language_id)), 200)
                         ->header('Content-Type', 'text/plain');
                 } else {
@@ -389,9 +514,9 @@ class UssdController extends Controller
         Session::where('session_id', $session)->update(['level' => 1]);
         return $lang == 1 ? 'Sorry. Wrong Selection ' . $this->mainmenu($lang) : 'Samahani. Chaguo lako haliruhusiwi ' . $this->mainmenu($lang);
     }
-    function updateinput($sessionId, $min, $max,$data)
+    function updateinput($sessionId, $min, $max, $data)
     {
-        Session::where('session_id', $sessionId)->update(['mininput' => $min, 'maxinput' => $max,'userchoice'=>$data]);
+        Session::where('session_id', $sessionId)->update(['mininput' => $min, 'maxinput' => $max, 'userchoice' => $data]);
     }
     function topmenu()
     {
@@ -574,20 +699,21 @@ class UssdController extends Controller
         }
     }
 
-    function doSTKPush($account,$amount,$telephone){
+    function doSTKPush($account, $amount, $telephone)
+    {
         $payload = array(
-            'account' =>$account,
+            'account' => $account,
             'group' => 'digital',
             'amount' => $amount,
-            'msisdn' =>$telephone,
+            'msisdn' => $telephone,
             'description' => 'Ussd Subscription'
         );
         $apiurl = 'https://trans.standardmedia.co.ke/api/checkout';
         $client = new Client();
         $response = $client->request('POST', $apiurl, [
-            'form_params' =>$payload,
-            'headers' => ["Accept: application/json","Accept-Language: en-us"]
+            'form_params' => $payload,
+            'headers' => ["Accept: application/json", "Accept-Language: en-us"]
         ]);
-       return 0;
+        return 0;
     }
 }
