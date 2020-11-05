@@ -22,3 +22,6 @@ Route::get('Request','UssdController@Request');
 Route::get('ussdmenus','UssdController@ussdmenus');
 
 Route::get('testussd','UssdController@getussdmenus');
+
+Route::post('SubscribeUser','ApiController@SubscribeUser');
+

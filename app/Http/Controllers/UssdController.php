@@ -19,7 +19,8 @@ class UssdController extends Controller
         try {
             $tel = $_GET['MSISDN'];
             $serviceCode = $_GET['SERVICE_CODE'];
-            $ussdString = str_replace('*', '', substr($_GET['USSD_STRING'], 2));
+            //$ussdString = str_replace('*', '', substr($_GET['USSD_STRING'], 2));
+            $ussdString = $_GET['USSD_STRING'];
             $sessionId = $_GET['SESSION_ID'];
             $contsess = Session::where('session_id', $sessionId)->first();
             if ($contsess) {
@@ -40,13 +41,13 @@ class UssdController extends Controller
                                 ->header('Content-Type', 'text/plain');
                         }
                         $subs->update(['language_id' => (int)$userinput]);
-                        $this->updateinput($sessionId, '1', '5');
+                        $this->updateinput($sessionId, '1', '6');
                         return response($this->conussd($this->mainmenu((int) $userinput)), 200)
                             ->header('Content-Type', 'text/plain');
                         break;
                     case 2:
                         //answers to main menu
-                        if ($userinput != '1' && $userinput != '2' && $userinput != '3' && $userinput != '4' && $userinput != '5') {
+                        if ($userinput != '1' && $userinput != '2' && $userinput != '3' && $userinput != '4' && $userinput != '5' && $userinput != '6') {
                             return response($this->conussd($this->invalid($subs->language_id, $sessionId)), 200)
                                 ->header('Content-Type', 'text/plain');
                         }
@@ -74,12 +75,12 @@ class UssdController extends Controller
                         }
                         if ($userinput == '5') {
                             $this->updateinput($sessionId, '1', '2');
-                            return response($this->conussd($this->videos($subs->language_id)), 200)
+                            return response($this->conussd($this->feedback($subs->language_id)), 200)
                                 ->header('Content-Type', 'text/plain');
                         }
                         if ($userinput == '6') {
                             if ($subs->language_id == 2) {
-                                return response('END Asante kwa kupendezwa na kutazama sehemu yetu ya huduma ya Thamani. Piga * 207 # ili ujiandikishe na upate vidokezo juu ya anuwai.', 200)
+                                return response('END Asante kwa kupendezwa na kutazama sehemu yetu ya huduma ya Thamani. Piga *207# ili ujiandikishe na upate vidokezo juu ya anuwai.', 200)
                                     ->header('Content-Type', 'text/plain');
                             }
                             return response('END Thank you for taking interest in viewing our Value Added Service products section. Dial *207# to subscribe and get tips on the various categories.', 200)
@@ -326,7 +327,7 @@ class UssdController extends Controller
                     'level' => $subs ? 1 : 0
                 ]);
                 if ($subs) {
-                    $this->updateinput($sessionId, '1', '5');
+                    $this->updateinput($sessionId, '1', '6');
                     return response($this->conussd($this->mainmenu($subs->language_id)), 200)
                         ->header('Content-Type', 'text/plain');
                 } else {
@@ -371,7 +372,7 @@ class UssdController extends Controller
         $menu .= '2. Healthy Living' . PHP_EOL;
         $menu .= '3. Dating Tips' . PHP_EOL;
         $menu .= '4. Farming Tips' . PHP_EOL;
-        $menu .= '5. Videos' . PHP_EOL;
+        $menu .= '5. Feedback' . PHP_EOL;
         $menu .= '6. Exit';
         if ($lang == 2) {
             $menu = 'Karibu Standard Group VAS' . PHP_EOL;
@@ -379,7 +380,7 @@ class UssdController extends Controller
             $menu .= '2. Kuishi kwa Afya' . PHP_EOL;
             $menu .= '3. Vidokezo vya Kuchumbiana' . PHP_EOL;
             $menu .= '4. Vidokezo vya Ukulima' . PHP_EOL;
-            $menu .= '5. Video' . PHP_EOL;
+            $menu .= '5. Maoni' . PHP_EOL;
             $menu .= '6. Kutoka';
         }
         return $menu;
@@ -462,10 +463,21 @@ class UssdController extends Controller
         }
         return $menu;
     }
+    function feedback($lang)
+    {
+        $menu = 'Standard Group VAS: Feedback' . PHP_EOL;
+        $menu .= '1. General Feedback' . PHP_EOL;
+        $menu .= '2. Newspaper Feedback' . PHP_EOL;
+        if ($lang == 2) {
+            $menu = 'Standard Group VAS: Maoni' . PHP_EOL;
+            $menu .= '1. Maoni ya Jumla' . PHP_EOL;
+            $menu .= '2. Maoni ya Magazeti' . PHP_EOL;
+        }
+        return $menu;
+    }
 
     public function getussdmenus(Request $request)
     {
-        //return response()->json('Response');
         $sessionid = '62323723';
         $msisdn = '254720076063';
         $servicecode = '*167#';
