@@ -167,7 +167,9 @@ class ApiController extends Controller
         if (!Request()->has('todate')) {
             return response()->json("To date required", 403);
         }
-        return Feedback::whereBetween('created_at', [Carbon::parse($_GET['fromdate'])->toDateString(), Carbon::parse($_GET['todate'])->toDateString()])->get();
+        return Feedback::whereDate('created_at', '>=',Carbon::parse($_GET['fromdate'])->toDateString())
+        ->whereDate('created_at', '<=',Carbon::parse($_GET['todate'])->toDateString())
+        ->get();
     }
     public function subscribers()
     {
