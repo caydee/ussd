@@ -93,13 +93,13 @@ class ApiController extends Controller
     public function payment(Request $request)
     {
         $headers = getallheaders();
-        if (!isset($headers['api_key'])) {
-            return response()->json("Access to resource Forbidden", 403);
-        }
-        $apikey = $headers['api_key'];
-        if ($apikey != '4e0bf5d2975c44c3b194aac300dae162') {
-            return response()->json("Invalid API Key", 403);
-        }
+        // if (!isset($headers['api_key'])) {
+        //     return response()->json("Access to resource Forbidden", 403);
+        // }
+        // $apikey = $headers['api_key'];
+        // if ($apikey != '4e0bf5d2975c44c3b194aac300dae162') {
+        //     return response()->json("Invalid API Key", 403);
+        // }
         $rules = array(
             'sender_phone'  => 'required',
             'transaction'  => 'required',
