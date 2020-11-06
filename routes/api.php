@@ -29,4 +29,8 @@ Route::get('testussd','UssdController@getussdmenus');
 Route::post('SubscribeUser','ApiController@SubscribeUser');
 
 Route::post('ussdpayment', 'ApiController@payment')->name('ussdpayment');
+
 Route::get('subscriptions', 'ApiController@subscriptions')->name('subscriptions');
+Route::get('feedback', 'ApiController@feedback')->name('feedback');
+Route::get('subscribers', 'ApiController@subscribers')->name('subscribers');
+Route::get('categories', 'ApiController@categories')->name('categories');

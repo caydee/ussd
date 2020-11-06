@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Confirmedsubscription;
+use App\Feedback;
 use App\Mpesatransaction;
 use App\Mpesatransactions;
 use App\Subscription;
@@ -149,5 +150,52 @@ class ApiController extends Controller
             $status = $_GET['status'];
         }
         return $status == 0 ? Subscription::where('status', 0)->get() : ($status == 1 ? Subscription::where('status', 1)->get() : Subscription::all());
+    }
+    public function feedback(Request $request)
+    {
+        $headers = getallheaders();
+        if (!isset($headers['api_key'])) {
+            return response()->json("Access to resource Forbidden", 403);
+        }
+        $apikey = $headers['api_key'];
+        if ($apikey != '4e0bf5d2975c44c3b194aac300dae162') {
+            return response()->json("Invalid API Key", 403);
+        }
+        if (!Request()->has('fromdate')) {
+            return response()->json("From date required", 403);
+        }
+        if (!Request()->has('todate')) {
+            return response()->json("To date required", 403);
+        }
+        return Feedback::wheredateBetween('created_at', Carbon::parse($_GET['fromdate'])->toDateString(), Carbon::parse($_GET['todate'])->toDateString())->get();
+    }
+    public function subscribers()
+    {
+        $headers = getallheaders();
+        if (!isset($headers['api_key'])) {
+            return response()->json("Access to resource Forbidden", 403);
+        }
+        $apikey = $headers['api_key'];
+        if ($apikey != '4e0bf5d2975c44c3b194aac300dae162') {
+            return response()->json("Invalid API Key", 403);
+        }
+        if (!Request()->has('category')) {
+            return response()->json("Subscription Category required", 403);
+        }
+        return Subscription::where([['ussdresult', '=', $_GET['category']], ['status', '=', 1]])
+        ->whereDate('subscriptionexpirydate','>=',Carbon::now()->toDateString())
+        ->select('msisdn')->get();
+    }
+    public function categories()
+    {
+        // $headers = getallheaders();
+        // if (!isset($headers['api_key'])) {
+        //     return response()->json("Access to resource Forbidden", 403);
+        // }
+        // $apikey = $headers['api_key'];
+        // if ($apikey != '4e0bf5d2975c44c3b194aac300dae162') {
+        //     return response()->json("Invalid API Key", 403);
+        // }      
+        return Subscription::distinct()->get(['ussdresult']);
     }
 }
