@@ -167,7 +167,7 @@ class ApiController extends Controller
         if (!Request()->has('todate')) {
             return response()->json("To date required", 403);
         }
-        return Feedback::wheredateBetween('created_at', Carbon::parse($_GET['fromdate'])->toDateString(), Carbon::parse($_GET['todate'])->toDateString())->get();
+        return Feedback::whereBetween('created_at', [Carbon::parse($_GET['fromdate'])->toDateString(), Carbon::parse($_GET['todate'])->toDateString()])->get();
     }
     public function subscribers()
     {
@@ -188,14 +188,14 @@ class ApiController extends Controller
     }
     public function categories()
     {
-        // $headers = getallheaders();
-        // if (!isset($headers['api_key'])) {
-        //     return response()->json("Access to resource Forbidden", 403);
-        // }
-        // $apikey = $headers['api_key'];
-        // if ($apikey != '4e0bf5d2975c44c3b194aac300dae162') {
-        //     return response()->json("Invalid API Key", 403);
-        // }      
+        $headers = getallheaders();
+        if (!isset($headers['api_key'])) {
+            return response()->json("Access to resource Forbidden", 403);
+        }
+        $apikey = $headers['api_key'];
+        if ($apikey != '4e0bf5d2975c44c3b194aac300dae162') {
+            return response()->json("Invalid API Key", 403);
+        }      
         return Subscription::distinct()->get(['ussdresult']);
     }
 }
