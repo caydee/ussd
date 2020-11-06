@@ -375,7 +375,7 @@ class UssdController extends Controller
                             ]);
 
                             // $this->subscribe($tel,'001006919771');
-                            $this->doSTKPush('VS' . $contsess->userchoice, 50, $tel);
+                            $this->doSTKPush('VSU' . $contsess->userchoice, 50, $tel);
                         }
                         if ($subs->language_id == 2) {
                             return response('END Asante kwa kujiandikisha katika sehemu yetu ya huduma ya Thamani. Utakuwa ukipokea ' . $contsess->userchoice . ' SMS kwa shilingi 50 kwa mwezi.', 200)
