@@ -17,6 +17,10 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+Route::fallback(fn()=>[
+    'code'=>'404',
+    'reason'=>'Not Defined'
+]);
 
 Route::get('Request','UssdController@Request');
 Route::get('ussdmenus','UssdController@ussdmenus');
