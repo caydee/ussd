@@ -134,12 +134,20 @@ class ApiController extends Controller
         return response()->json('Payment received');
     }
     public function subscriptions(Request $request)
-    {      
-        if(!Request()->has('status')){
-            $status='';
-        }else{
-            $status = $_GET['status'];        
+    {
+        $headers = getallheaders();
+        if (!isset($headers['api_key'])) {
+            return response()->json("Access to resource Forbidden", 403);
         }
-        return $status==0?Subscription::where('status',0)->get():($status==1?Subscription::where('status',1)->get():Subscription::all());
+        $apikey = $headers['api_key'];
+        if ($apikey != '4e0bf5d2975c44c3b194aac300dae162') {
+            return response()->json("Invalid API Key", 403);
+        }
+        if (!Request()->has('status')) {
+            $status = '';
+        } else {
+            $status = $_GET['status'];
+        }
+        return $status == 0 ? Subscription::where('status', 0)->get() : ($status == 1 ? Subscription::where('status', 1)->get() : Subscription::all());
     }
 }
