@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Confirmedsubscription;
 use App\Mpesatransaction;
 use App\Mpesatransactions;
+use App\Subscription;
 use App\Subscriptionrequest;
 use Carbon\Carbon;
 use CreateSubscriptionsTable;
@@ -34,10 +35,10 @@ class ApiController extends Controller
         }
         try {
             Subscriptionrequest::insert([
-                'msisdn'=>$request->msisdn,
-                'offercode'=>$request->offercode,
-                'created_at'=>Carbon::now(),
-                'updated_at'=>Carbon::now()
+                'msisdn' => $request->msisdn,
+                'offercode' => $request->offercode,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now()
             ]);
             return response()->json(['Status' => 000], 200);
         } catch (Exception $ex) {
@@ -59,21 +60,22 @@ class ApiController extends Controller
             return response()->json('Msisdn Must be a valid Kenyan Phone Number (Starting with 2547), length of 12', 400);
         }
         try {
-            $posted=$this->postsubscribed($request->msisdn,$request->offercode,$request->status);
+            $posted = $this->postsubscribed($request->msisdn, $request->offercode, $request->status);
             Confirmedsubscription::insert([
-                'msisdn'=>$request->msisdn,
-                'offercode'=>$request->offercode,
-                'subscriptiontype'=>$request->status,
-                'posted'=>$posted=='OK'?1:0,
-                'created_at'=>Carbon::now(),
-                'updated_at'=>Carbon::now()
+                'msisdn' => $request->msisdn,
+                'offercode' => $request->offercode,
+                'subscriptiontype' => $request->status,
+                'posted' => $posted == 'OK' ? 1 : 0,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now()
             ]);
             return response()->json(['Status' => 000], 200);
         } catch (Exception $ex) {
             return response()->json(['Status' => 999], 500);
         }
     }
-    function postsubscribed($msisdn,$offercode,$status){
+    function postsubscribed($msisdn, $offercode, $status)
+    {
         try {
             $apiurl = '';
             $client = new Client();
@@ -88,7 +90,7 @@ class ApiController extends Controller
         }
     }
     public function payment(Request $request)
-    {      
+    {
         $headers = getallheaders();
         if (!isset($headers['api_key'])) {
             return response()->json("Access to resource Forbidden", 403);
@@ -125,10 +127,15 @@ class ApiController extends Controller
                 'mode'  => $request->type,
                 'created_at' > Carbon::now(),
                 'updated_at' > Carbon::now()
-            ]);            
+            ]);
         } else {
             return response()->json('Duplicate Payment received', 400);
         }
         return response()->json('Payment received');
+    }
+    public function subscriptions()
+    {      
+        $status = $_GET['status'];        
+        return $status==0?Subscription::where('status',0)->get():($status==1?Subscription::where('status',1)->get():Subscription::all());
     }
 }
