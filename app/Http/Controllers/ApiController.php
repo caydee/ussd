@@ -133,9 +133,13 @@ class ApiController extends Controller
         }
         return response()->json('Payment received');
     }
-    public function subscriptions()
+    public function subscriptions(Request $request)
     {      
-        $status = $_GET['status'];        
+        if(!Request()->has('status')){
+            $status='';
+        }else{
+            $status = $_GET['status'];        
+        }
         return $status==0?Subscription::where('status',0)->get():($status==1?Subscription::where('status',1)->get():Subscription::all());
     }
 }
