@@ -9,5 +9,6 @@ class Subscription extends Model
     public $timestamps = true;
 
     protected $fillable = [
-        'msisdn', 'language_id','ussdresult'
-    ];}
+        'msisdn', 'language_id', 'ussdresult', 'updated_at', 'status', 'subscriptiondate', 'subscriptionexpirydate'
+    ];
+}

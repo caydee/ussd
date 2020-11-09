@@ -129,6 +129,19 @@ class ApiController extends Controller
                 'created_at' > Carbon::now(),
                 'updated_at' > Carbon::now()
             ]);
+            $subscription=Subscription::where([['msisdn','=',$request->sender_phone],['account','=',$request->transaction]])->first();
+            if($subscription){
+                //update
+                $subscription->update(
+                    [
+                        'updated_at'=>Carbon::now(),
+                        'status'=>1,
+                        'subscriptiondate'=>Carbon::now(),
+                        'subscriptionexpirydate'=>Carbon::now()->addDays(30)
+                    ]
+                );
+            }
+
         } else {
             return response()->json('Duplicate Payment received', 400);
         }

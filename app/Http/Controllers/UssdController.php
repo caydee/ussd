@@ -22,9 +22,9 @@ class UssdController extends Controller
             $serviceCode = $_GET['SERVICE_CODE'];
             $ussdString = $_GET['USSD_STRING'];
             $ussdString = trim(str_replace('*', '', $ussdString));
-            $userinput='';
+            $userinput = '';
             $sessionId = $_GET['SESSION_ID'];
-            if($serviceCode=='395'){
+            if ($serviceCode == '395') {
                 //get menus from moobifun and return to safaricom
                 //$response= http://standardmedia-ussd.moobifun.com/ubc/ussdgtw/standardmedia?msisdn=33612234556&servicecode=333&ussdstring=&sessionid=52324223
                 // return response($response, 200)
@@ -335,7 +335,7 @@ class UssdController extends Controller
                             $this->updateinput($sessionId, '1', '2', 'EndFeedback');
                             Feedback::insert([
                                 'sessionid' => $sessionId,
-                                'message' =>$userinput,
+                                'message' => $userinput,
                                 'msisdn' => $tel,
                                 'created_at' => Carbon::now(),
                                 'updated_at' => Carbon::now()
@@ -366,17 +366,18 @@ class UssdController extends Controller
                         //write DB
                         $issubscribed = Subscription::where([['msisdn', '=', $tel], ['ussdresult', '=', $contsess->userchoice]])->first();
                         if (!$issubscribed) {
-                            Subscription::insert([
-                                'language_id' => $subs->language_id,
-                                'msisdn' => $tel,
-                                'ussdresult' => $contsess->userchoice,
-                                'service_code' => $serviceCode,
-                                'created_at' => Carbon::now(),
-                                'updated_at' => Carbon::now()
-                            ]);
+                            $sub = new Subscription();
 
+                            $sub->language_id = $subs->language_id;
+                            $sub->msisdn = $tel;
+                            $sub->ussdresult = $contsess->userchoice;
+                            $sub->service_code = $serviceCode;
+                            $sub->account = 'VSU' . $sub->id . '-' . $tel;
+                            $sub->created_at = Carbon::now();
+                            $sub->updated_at = Carbon::now();
+                            $sub->save();
                             // $this->subscribe($tel,'001006919771');
-                            $this->doSTKPush('VSU' . $contsess->userchoice, 50, $tel);
+                            $this->doSTKPush('VSU' .  $tel, 50, $tel);
                         }
                         if ($subs->language_id == 2) {
                             return response('END Asante kwa kujiandikisha katika sehemu yetu ya huduma ya Thamani. Utakuwa ukipokea ' . $contsess->userchoice . ' SMS kwa shilingi 50 kwa mwezi.', 200)
@@ -414,8 +415,8 @@ class UssdController extends Controller
                             $this->updateinput($sessionId, '1', '2', 'EndFeedback');
                             Feedback::insert([
                                 'sessionid' => $sessionId,
-                                'message' =>$userinput,
-                                'service_code' =>$serviceCode,
+                                'message' => $userinput,
+                                'service_code' => $serviceCode,
                                 'msisdn' => $tel,
                                 'created_at' => Carbon::now(),
                                 'updated_at' => Carbon::now()
@@ -431,8 +432,8 @@ class UssdController extends Controller
                     case 6:
                         if ($contsess->userchoice == 'EnterName') {
                             if ($subs->language_id == 2) {
-                               Feedback::where('sessionid',$sessionId)->update([
-                                    'name' =>$userinput,
+                                Feedback::where('sessionid', $sessionId)->update([
+                                    'name' => $userinput,
                                 ]);
                                 $this->updateinput($sessionId, '0', '0', 'EnterName');
                                 return response('END Asante kwa Maoni yako. Wakala wetu wa huduma ya wateja atawasiliana nawe hivi karibuni', 200)
@@ -467,8 +468,8 @@ class UssdController extends Controller
                         break;
                     case 7:
                         if ($contsess->userchoice == 'EnterName') {
-                            Feedback::where('sessionid',$sessionId)->update([
-                                'name' =>$userinput,
+                            Feedback::where('sessionid', $sessionId)->update([
+                                'name' => $userinput,
                             ]);
                             if ($subs->language_id == 2) {
                                 $this->updateinput($sessionId, '0', '0', 'EnterName');
@@ -493,8 +494,8 @@ class UssdController extends Controller
                     'userinput' => '',
                     'previoususerinput' => '',
                     'level' => $subs ? 1 : 0,
-                    'created_at'=>Carbon::now(),
-                    'updated_at'=>Carbon::now()
+                    'created_at' => Carbon::now(),
+                    'updated_at' => Carbon::now()
                 ]);
                 if ($subs) {
                     $this->updateinput($sessionId, '1', '6', '');
