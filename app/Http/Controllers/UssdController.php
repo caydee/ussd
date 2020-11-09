@@ -370,6 +370,7 @@ class UssdController extends Controller
                                 'language_id' => $subs->language_id,
                                 'msisdn' => $tel,
                                 'ussdresult' => $contsess->userchoice,
+                                'service_code' => $serviceCode,
                                 'created_at' => Carbon::now(),
                                 'updated_at' => Carbon::now()
                             ]);
@@ -414,6 +415,7 @@ class UssdController extends Controller
                             Feedback::insert([
                                 'sessionid' => $sessionId,
                                 'message' =>$userinput,
+                                'service_code' =>$serviceCode,
                                 'msisdn' => $tel,
                                 'created_at' => Carbon::now(),
                                 'updated_at' => Carbon::now()
@@ -490,7 +492,9 @@ class UssdController extends Controller
                     'service_code' => $serviceCode,
                     'userinput' => '',
                     'previoususerinput' => '',
-                    'level' => $subs ? 1 : 0
+                    'level' => $subs ? 1 : 0,
+                    'created_at'=>Carbon::now(),
+                    'updated_at'=>Carbon::now()
                 ]);
                 if ($subs) {
                     $this->updateinput($sessionId, '1', '6', '');
