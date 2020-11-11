@@ -223,8 +223,8 @@ class ApiController extends Controller
         $apikey = $headers['api_key'];
         if ($apikey != '4e0bf5d2975c44c3b194aac300dae162') {
             return response()->json("Invalid API Key", 403);
-        }    
-
-        return Session::where('level', '>=', 0)->orderby('created_at','desc')->get();
+        } 
+                
+        return Session::whereDate('created_at','>=',$_GET['fromdate'])->whereDate('created_at','<=',$_GET['todate'])->get();
     }
 }
