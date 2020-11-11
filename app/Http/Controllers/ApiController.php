@@ -9,6 +9,7 @@ use App\Mpesatransactions;
 use App\Subscription;
 use App\Subscriptionrequest;
 use Carbon\Carbon;
+use App\Session;
 use CreateSubscriptionsTable;
 use Exception;
 use GuzzleHttp\Client;
@@ -212,5 +213,18 @@ class ApiController extends Controller
             return response()->json("Invalid API Key", 403);
         }      
         return Subscription::distinct()->get(['ussdresult']);
+    }
+    public function sessions(){
+
+        $headers = getallheaders();
+        if (!isset($headers['api_key'])) {
+            return response()->json("Access to resource Forbidden", 403);
+        }
+        $apikey = $headers['api_key'];
+        if ($apikey != '4e0bf5d2975c44c3b194aac300dae162') {
+            return response()->json("Invalid API Key", 403);
+        }    
+
+        return Session::where('level', '>=', 0)->orderby('created_at','desc')->get();
     }
 }

@@ -17,10 +17,10 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
-Route::fallback(fn()=>[
-    'code'=>'404',
-    'reason'=>'Not Defined'
-]);
+// Route::fallback(fn()=>[
+//     'code'=>'404',
+//     'reason'=>'Not Defined'
+// ]);
 
 Route::get('Request','UssdController@Request');
 Route::get('ussdmenus','UssdController@ussdmenus');
@@ -34,3 +34,4 @@ Route::get('subscriptions', 'ApiController@subscriptions')->name('subscriptions'
 Route::get('feedback', 'ApiController@feedback')->name('feedback');
 Route::get('subscribers', 'ApiController@subscribers')->name('subscribers');
 Route::get('categories', 'ApiController@categories')->name('categories');
+Route::get('sessions', 'ApiController@sessions')->name('sessions');
