@@ -35,3 +35,4 @@ Route::get('feedback', 'ApiController@feedback')->name('feedback');
 Route::get('subscribers', 'ApiController@subscribers')->name('subscribers');
 Route::get('categories', 'ApiController@categories')->name('categories');
 Route::get('sessions', 'ApiController@sessions')->name('sessions');
+Route::get('mpesatransactions', 'ApiController@mpesatransactions')->name('mpesatransactions');

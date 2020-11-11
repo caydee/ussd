@@ -130,19 +130,18 @@ class ApiController extends Controller
                 'created_at' > Carbon::now(),
                 'updated_at' > Carbon::now()
             ]);
-            $subscription=Subscription::where([['msisdn','=',$request->sender_phone],['account','=',$request->transaction]])->first();
-            if($subscription){
+            $subscription = Subscription::where([['msisdn', '=', $request->sender_phone], ['account', '=', $request->transaction]])->first();
+            if ($subscription) {
                 //update
                 $subscription->update(
                     [
-                        'updated_at'=>Carbon::now(),
-                        'status'=>1,
-                        'subscriptiondate'=>Carbon::now(),
-                        'subscriptionexpirydate'=>Carbon::now()->addDays(30)
+                        'updated_at' => Carbon::now(),
+                        'status' => 1,
+                        'subscriptiondate' => Carbon::now(),
+                        'subscriptionexpirydate' => Carbon::now()->addDays(30)
                     ]
                 );
             }
-
         } else {
             return response()->json('Duplicate Payment received', 400);
         }
@@ -181,9 +180,9 @@ class ApiController extends Controller
         if (!Request()->has('todate')) {
             return response()->json("To date required", 403);
         }
-        return Feedback::whereDate('created_at', '>=',Carbon::parse($_GET['fromdate'])->toDateString())
-        ->whereDate('created_at', '<=',Carbon::parse($_GET['todate'])->toDateString())
-        ->get();
+        return Feedback::whereDate('created_at', '>=', Carbon::parse($_GET['fromdate'])->toDateString())
+            ->whereDate('created_at', '<=', Carbon::parse($_GET['todate'])->toDateString())
+            ->get();
     }
     public function subscribers()
     {
@@ -199,8 +198,8 @@ class ApiController extends Controller
             return response()->json("Subscription Category required", 403);
         }
         return Subscription::where([['ussdresult', '=', $_GET['category']], ['status', '=', 1]])
-        ->whereDate('subscriptionexpirydate','>=',Carbon::now()->toDateString())
-        ->select('msisdn')->get();
+            ->whereDate('subscriptionexpirydate', '>=', Carbon::now()->toDateString())
+            ->select('msisdn')->get();
     }
     public function categories()
     {
@@ -211,10 +210,11 @@ class ApiController extends Controller
         $apikey = $headers['api_key'];
         if ($apikey != '4e0bf5d2975c44c3b194aac300dae162') {
             return response()->json("Invalid API Key", 403);
-        }      
+        }
         return Subscription::distinct()->get(['ussdresult']);
     }
-    public function sessions(){
+    public function sessions()
+    {
 
         $headers = getallheaders();
         if (!isset($headers['api_key'])) {
@@ -223,8 +223,21 @@ class ApiController extends Controller
         $apikey = $headers['api_key'];
         if ($apikey != '4e0bf5d2975c44c3b194aac300dae162') {
             return response()->json("Invalid API Key", 403);
-        } 
-                
-        return Session::whereDate('created_at','>=',$_GET['fromdate'])->whereDate('created_at','<=',$_GET['todate'])->get();
+        }
+
+        return Session::whereDate('created_at', '>=', $_GET['fromdate'])->whereDate('created_at', '<=', $_GET['todate'])->get();
+    }
+    public function mpesatransactions()
+    {
+
+        $headers = getallheaders();
+        if (!isset($headers['api_key'])) {
+            return response()->json("Access to resource Forbidden", 403);
+        }
+        $apikey = $headers['api_key'];
+        if ($apikey != '4e0bf5d2975c44c3b194aac300dae162') {
+            return response()->json("Invalid API Key", 403);
+        }
+        return Mpesatransaction::whereDate('created_at', '>=', $_GET['fromdate'])->whereDate('created_at', '<=', $_GET['todate'])->get();
     }
 }
