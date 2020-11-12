@@ -44,9 +44,14 @@ class UssdController extends Controller
                 $client = new Client();
                 $response = $client->request('GET', $apiurl, [
                     'headers' => ['Content-Type' => 'application/json'],
-                    'query' => ['msisdn' => $tel, 'servicecode' => $serviceCode, 'ussdstring' => $ussdString, 'sessionid' => $sessionId]
+                    'query' => ['msisdn' => $tel, 'servicecode' => $serviceCode, 
+                    'ussdstring' => $ussdString, 'sessionid' => $sessionId]
                 ]);
                 $body = json_decode($response->getBody(), true);
+                if(trim($body)==''){
+                    return response('END This service is currently under maintenance. Please try again later.', 200)
+                    ->header('Content-Type', 'text/plain');
+                }
                 return response($body, 200)
                     ->header('Content-Type', 'text/plain');
             }
