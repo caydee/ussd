@@ -24,11 +24,31 @@ class UssdController extends Controller
             $ussdString = trim(str_replace('*', '', $ussdString));
             $userinput = '';
             $sessionId = $_GET['SESSION_ID'];
-            if ($serviceCode == '395') {
+            if ($serviceCode == '*395#') {
+                $contsess = Session::where('session_id', $sessionId)->first();
+                if (!$contsess) {
+                    Session::insert([
+                        'session_id' => $sessionId,
+                        'telephone' => $tel,
+                        'service_code' => $serviceCode,
+                        'userinput' => 'Forwarded to Moobifun',
+                        'userchoice'=>$serviceCode,
+                        'previoususerinput' => '',
+                        'level' =>  0,
+                        'created_at' => Carbon::now(),
+                        'updated_at' => Carbon::now()
+                    ]);
+                }
                 //get menus from moobifun and return to safaricom
-                //$response= http://standardmedia-ussd.moobifun.com/ubc/ussdgtw/standardmedia?msisdn=33612234556&servicecode=333&ussdstring=&sessionid=52324223
-                // return response($response, 200)
-                // ->header('Content-Type', 'text/plain');
+                $apiurl = 'http://standardmedia-ussd.moobifun.com/ubc/ussdgtw/standardmedia';
+                $client = new Client();
+                $response = $client->request('GET', $apiurl, [
+                    'headers' => ['Content-Type' => 'application/json'],
+                    'query' => ['msisdn' => $tel, 'servicecode' => $serviceCode, 'ussdstring' => $ussdString, 'sessionid' => $sessionId]
+                ]);
+                $body = json_decode($response->getBody(), true);
+                return response($body, 200)
+                    ->header('Content-Type', 'text/plain');
             }
             $contsess = Session::where('session_id', $sessionId)->first();
             if ($contsess) {
