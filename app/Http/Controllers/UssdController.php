@@ -44,7 +44,7 @@ class UssdController extends Controller
                 $client = new Client();
                 $response = $client->request('GET', $apiurl, [
                     'headers' => ['Content-Type' => 'application/json'],
-                    'query' => ['msisdn' => $tel, 'servicecode' => $serviceCode, 
+                    'query' => ['msisdn' => $tel, 'servicecode' => 395, 
                     'ussdstring' => $ussdString, 'sessionid' => $sessionId]
                 ]);
                 $body = json_decode($response->getBody(), true);
