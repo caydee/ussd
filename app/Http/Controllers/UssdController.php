@@ -47,7 +47,7 @@ class UssdController extends Controller
                     'query' => ['msisdn' => $tel, 'servicecode' => 395, 
                     'ussdstring' => $ussdString, 'sessionid' => $sessionId]
                 ]);
-                $body = json_decode($response->getBody(), true);
+                $body = $response->getBody();
                 if(trim($body)==''){
                     return response('END This service is currently under maintenance. Please try again later.', 200)
                     ->header('Content-Type', 'text/plain');
