@@ -240,4 +240,23 @@ class ApiController extends Controller
         }
         return Mpesatransaction::whereDate('created_at', '>=', $_GET['fromdate'])->whereDate('created_at', '<=', $_GET['todate'])->get();
     }
+    public function testussd()
+    {
+        //return "ok";
+        $apiurl = 'http://standardmedia-ussd.moobifun.com/ubc/ussdgtw/standardmedia';
+        $client = new Client();
+        $response = $client->request('GET', $apiurl, [
+            'query' => [
+                'msisdn' => '254720076063', 'servicecode' => 395,
+                'ussdstring' => '', 'sessionid' => '1234556675'
+            ]
+        ]);
+        $body = $response->getBody();
+        if (trim($body) == '') {
+            return response('END This service is currently under maintenance. Please try again later.', 200)
+                ->header('Content-Type', 'text/plain');
+        }
+        return response($body, 200)
+            ->header('Content-Type', 'text/plain');
+    }
 }
