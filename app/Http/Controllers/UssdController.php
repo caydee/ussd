@@ -20,9 +20,7 @@ class UssdController extends Controller
         try {
             $tel = $_GET['MSISDN'];
             $serviceCode = $_GET['SERVICE_CODE'];
-            $ussdString = $_GET['USSD_STRING'];
-            $ussdString = trim(str_replace('*', '', $ussdString));
-            $userinput = '';
+            $ussdString = $_GET['USSD_STRING'];            
             $sessionId = $_GET['SESSION_ID'];
             if ($serviceCode == '*395#') {
                 $contsess = Session::where('session_id', $sessionId)->first();
@@ -55,6 +53,9 @@ class UssdController extends Controller
                 return response($body, 200)
                     ->header('Content-Type', 'text/plain');
             }
+            
+            $ussdString = trim(str_replace('*', '', $ussdString));
+            $userinput = '';
             $contsess = Session::where('session_id', $sessionId)->first();
             if ($contsess) {
                 //continuing
