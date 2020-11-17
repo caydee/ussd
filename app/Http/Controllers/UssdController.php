@@ -759,7 +759,6 @@ class UssdController extends Controller
     {
         try {
             $apiurl = 'https://feedback.standardmedia.co.ke/USSD/feedback.php';
-            $apiurl = $webhook;
             $client = new Client();
             $response = $client->request('POST', $apiurl, [
                 'body' => json_encode([
