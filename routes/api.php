@@ -25,6 +25,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::get('Request','UssdController@Request');
 Route::get('ussdmenus','UssdController@ussdmenus');
 
+Route::post('sendfeedback','UssdController@postfeedback');
 Route::get('testussd','UssdController@getussdmenus');
 Route::post('SubscribeUser','ApiController@SubscribeUser');
 
