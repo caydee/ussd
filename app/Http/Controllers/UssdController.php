@@ -20,7 +20,7 @@ class UssdController extends Controller
         try {
             $tel = $_GET['MSISDN'];
             $serviceCode = $_GET['SERVICE_CODE'];
-            $ussdString = $_GET['USSD_STRING'];            
+            $ussdString = $_GET['USSD_STRING'];
             $sessionId = $_GET['SESSION_ID'];
             if ($serviceCode == '*395#') {
                 $contsess = Session::where('session_id', $sessionId)->first();
@@ -30,7 +30,7 @@ class UssdController extends Controller
                         'telephone' => $tel,
                         'service_code' => $serviceCode,
                         'userinput' => 'Forwarded to Moobifun',
-                        'userchoice'=>$serviceCode,
+                        'userchoice' => $serviceCode,
                         'previoususerinput' => '',
                         'level' =>  0,
                         'created_at' => Carbon::now(),
@@ -42,18 +42,20 @@ class UssdController extends Controller
                 $client = new Client();
                 $response = $client->request('GET', $apiurl, [
                     'headers' => ['Content-Type' => 'application/json'],
-                    'query' => ['msisdn' => $tel, 'servicecode' => 395, 
-                    'ussdstring' => $ussdString, 'sessionid' => $sessionId]
+                    'query' => [
+                        'msisdn' => $tel, 'servicecode' => 395,
+                        'ussdstring' => $ussdString, 'sessionid' => $sessionId
+                    ]
                 ]);
                 $body = $response->getBody();
-                if(trim($body)==''){
+                if (trim($body) == '') {
                     return response('END This service is currently under maintenance. Please try again later.', 200)
-                    ->header('Content-Type', 'text/plain');
+                        ->header('Content-Type', 'text/plain');
                 }
                 return response($body, 200)
                     ->header('Content-Type', 'text/plain');
             }
-            
+
             $ussdString = trim(str_replace('*', '', $ussdString));
             $userinput = '';
             $contsess = Session::where('session_id', $sessionId)->first();
@@ -751,6 +753,26 @@ class UssdController extends Controller
             'form_params' => $payload,
             'headers' => ["Accept: application/json", "Accept-Language: en-us"]
         ]);
+        return 0;
+    }
+    function postfeedback($msisdn, $message, $webhook, $customer)
+    {
+        try {
+            $apiurl = 'https://feedback.standardmedia.co.ke/USSD/feedback.php';
+            $apiurl = $webhook;
+            $client = new Client();
+            $response = $client->request('POST', $apiurl, [
+                'body' => json_encode([
+                    "msisdn" => $msisdn,
+                    "message" => $message,
+                    "customername" => $customer,
+                    "feedbacktime" => Carbon::now()->toDateString()
+                ]),
+                'headers' => ['Content-Type' => 'application/json'],
+            ]);
+            $response = json_decode($response->getBody(), true);
+        } catch (Exception $ex) {
+        }
         return 0;
     }
 }
