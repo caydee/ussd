@@ -369,7 +369,7 @@ class UssdController extends Controller
                                 'updated_at' => Carbon::now()
                                
                             ]);
-                            // $this->postfeedback($userinput, $fd->message, '');
+                            $this->postfeedback($tel,$userinput, '');
 
                             
                             
@@ -454,7 +454,7 @@ class UssdController extends Controller
                                 'created_at' => Carbon::now(),
                                 'updated_at' => Carbon::now()
                             ]);
-                            // $this->postfeedback($fd->msisdn, $fd->message, '');
+                            $this->postfeedback($tel, $userinput, '');
                             if ($subs->language_id == 2) {
                                 return response('CON Je! Ungependa Kuwasiliana?' . PHP_EOL . '1. Ndio' . PHP_EOL . '2. La', 200)
                                     ->header('Content-Type', 'text/plain');
@@ -466,14 +466,14 @@ class UssdController extends Controller
                     case 6:
                         if ($contsess->userchoice == 'EnterName') {
                             if ($subs->language_id == 2) {
-                                Feedback::where('sessionid', $sessionId)->update([
+                                // Feedback::where('sessionid', $sessionId)->update([
+                                //     'name' => $userinput,
+                                // ]);
+                               $fd= Feedback::where('sessionid', $sessionId)->first();
+                               $fd->update([
                                     'name' => $userinput,
                                 ]);
-                            //    $fd= Feedback::where('sessionid', $sessionId)->first();
-                            //    $fd->update([
-                            //         'name' => $userinput,
-                            //     ]);
-                            //     $this->postfeedback($fd->msisdn, $fd->message, $userinput);
+                                $this->postfeedback($fd->msisdn, $fd->message, $userinput);
                                 $this->updateinput($sessionId, '0', '0', 'EnterName');
                                 return response('END Asante kwa Maoni yako. Wakala wetu wa huduma ya wateja atawasiliana nawe hivi karibuni', 200)
                                     ->header('Content-Type', 'text/plain');
@@ -507,14 +507,14 @@ class UssdController extends Controller
                         break;
                     case 7:
                         if ($contsess->userchoice == 'EnterName') {
-                            Feedback::where('sessionid', $sessionId)->update([
+                            // Feedback::where('sessionid', $sessionId)->update([
+                            //     'name' => $userinput,
+                            // ]);
+                           $fd= Feedback::where('sessionid', $sessionId)->first();
+                           $fd->update([
                                 'name' => $userinput,
                             ]);
-                        //    $fd= Feedback::where('sessionid', $sessionId)->first();
-                        //    $fd->update([
-                        //         'name' => $userinput,
-                        //     ]);
-                        //     $this->postfeedback($fd->msisdn, $fd->message, $userinput);
+                            $this->postfeedback($fd->msisdn, $fd->message, $userinput);
                            
                             if ($subs->language_id == 2) {
                                 $this->updateinput($sessionId, '0', '0', 'EnterName');
