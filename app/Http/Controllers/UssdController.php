@@ -453,8 +453,7 @@ class UssdController extends Controller
                                 'msisdn' => $tel,
                                 'created_at' => Carbon::now(),
                                 'updated_at' => Carbon::now()
-                            ]);
-                            $this->postfeedback($tel, $userinput, '');
+                            ]);                            
                             if ($subs->language_id == 2) {
                                 return response('CON Je! Ungependa Kuwasiliana?' . PHP_EOL . '1. Ndio' . PHP_EOL . '2. La', 200)
                                     ->header('Content-Type', 'text/plain');
@@ -465,11 +464,8 @@ class UssdController extends Controller
                         break;
                     case 6:
                         if ($contsess->userchoice == 'EnterName') {
-                            if ($subs->language_id == 2) {
-                                // Feedback::where('sessionid', $sessionId)->update([
-                                //     'name' => $userinput,
-                                // ]);
-                               $fd= Feedback::where('sessionid', $sessionId)->first();
+                            $fd= Feedback::where('sessionid', $sessionId)->first();
+                            if ($subs->language_id == 2) {                                                            
                                $fd->update([
                                     'name' => $userinput,
                                 ]);
@@ -478,6 +474,7 @@ class UssdController extends Controller
                                 return response('END Asante kwa Maoni yako. Wakala wetu wa huduma ya wateja atawasiliana nawe hivi karibuni', 200)
                                     ->header('Content-Type', 'text/plain');
                             }
+                            $this->postfeedback($fd->msisdn, $fd->message,'');
                             return response('END Thank you for your Feedback. Our customer care agent will contact you soon', 200)
                                 ->header('Content-Type', 'text/plain');
                         }
@@ -487,6 +484,8 @@ class UssdController extends Controller
                                     ->header('Content-Type', 'text/plain');
                             }
                             if ($userinput == 2) {
+                                $fd= Feedback::where('sessionid', $sessionId)->first();
+                                $this->postfeedback($fd->msisdn, $fd->message,'');
                                 if ($subs->language_id == 2) {
                                     $this->updateinput($sessionId, '0', '0', 'EnterName');
                                     return response('END Asante kwa Maoni yako.', 200)
@@ -506,10 +505,7 @@ class UssdController extends Controller
                         }
                         break;
                     case 7:
-                        if ($contsess->userchoice == 'EnterName') {
-                            // Feedback::where('sessionid', $sessionId)->update([
-                            //     'name' => $userinput,
-                            // ]);
+                        if ($contsess->userchoice == 'EnterName') {                            
                            $fd= Feedback::where('sessionid', $sessionId)->first();
                            $fd->update([
                                 'name' => $userinput,
