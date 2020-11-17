@@ -367,7 +367,12 @@ class UssdController extends Controller
                                 'msisdn' => $tel,
                                 'created_at' => Carbon::now(),
                                 'updated_at' => Carbon::now()
+                               
                             ]);
+                            $this->postfeedback('msisdn', 'message', '');
+
+                            
+                            
                             if ($subs->language_id == 2) {
 
                                 return response('CON Je! Ungependa Kuwasiliana?' . PHP_EOL . '1. Ndio' . PHP_EOL . '2. La', 200)
@@ -449,6 +454,7 @@ class UssdController extends Controller
                                 'created_at' => Carbon::now(),
                                 'updated_at' => Carbon::now()
                             ]);
+                            $this->postfeedback('msisdn', 'message', '');
                             if ($subs->language_id == 2) {
                                 return response('CON Je! Ungependa Kuwasiliana?' . PHP_EOL . '1. Ndio' . PHP_EOL . '2. La', 200)
                                     ->header('Content-Type', 'text/plain');
@@ -463,6 +469,7 @@ class UssdController extends Controller
                                 Feedback::where('sessionid', $sessionId)->update([
                                     'name' => $userinput,
                                 ]);
+                                $this->postfeedback('', '', 'name');
                                 $this->updateinput($sessionId, '0', '0', 'EnterName');
                                 return response('END Asante kwa Maoni yako. Wakala wetu wa huduma ya wateja atawasiliana nawe hivi karibuni', 200)
                                     ->header('Content-Type', 'text/plain');
@@ -499,6 +506,7 @@ class UssdController extends Controller
                             Feedback::where('sessionid', $sessionId)->update([
                                 'name' => $userinput,
                             ]);
+                           
                             if ($subs->language_id == 2) {
                                 $this->updateinput($sessionId, '0', '0', 'EnterName');
                                 return response('END Asante kwa Maoni yako. Wakala wetu wa huduma ya wateja atawasiliana nawe hivi karibuni', 200)
@@ -755,7 +763,7 @@ class UssdController extends Controller
         ]);
         return 0;
     }
-    function postfeedback($msisdn, $message, $webhook, $customer)
+    function postfeedback($msisdn, $message, $customer)
     {
         try {
             $apiurl = 'https://feedback.standardmedia.co.ke/USSD/feedback.php';
@@ -773,5 +781,8 @@ class UssdController extends Controller
         } catch (Exception $ex) {
         }
         return 0;
+
+        
     }
 }
+
