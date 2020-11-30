@@ -469,7 +469,7 @@ class UssdController extends Controller
                                $fd->update([
                                     'name' => $userinput,
                                 ]);
-                                $this->postfeedback($fd->msisdn, $fd->message, $userinput);
+                                // $this->postfeedback($fd->msisdn, $fd->message, $userinput);
                                 $this->updateinput($sessionId, '0', '0', 'EnterName');
                                 return response('END Asante kwa Maoni yako. Wakala wetu wa huduma ya wateja atawasiliana nawe hivi karibuni', 200)
                                     ->header('Content-Type', 'text/plain');
