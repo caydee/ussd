@@ -474,7 +474,7 @@ class UssdController extends Controller
                                 return response('END Asante kwa Maoni yako. Wakala wetu wa huduma ya wateja atawasiliana nawe hivi karibuni', 200)
                                     ->header('Content-Type', 'text/plain');
                             }
-                            $this->postfeedback($fd->msisdn, $fd->message,'');
+                            $this->postfeedback($fd->msisdn, $fd->message, $userinput);
                             return response('END Thank you for your Feedback. Our customer care agent will contact you soon', 200)
                                 ->header('Content-Type', 'text/plain');
                         }
