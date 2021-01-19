@@ -120,6 +120,9 @@ class UssdController extends Controller
         $userinput =$shortcut==1?$selection: substr($ussdString, $len);
         if ($session->expected_input == 0) {
             if ((int)$userinput < (int)$session->min_selection || (int)$userinput > (int)$session->max_selection) {
+                Log::info($userinput);
+                Log::info($session->min_selection);
+                Log::info($session->max_selection);
                 $menu_items = $this->MainMenu();
                 $session->update(
                     [
