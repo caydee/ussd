@@ -64,7 +64,7 @@ class UssdController extends Controller
         $session = Session::where('session_id', $sessionId)->first();
         if (!$session) {
             //new session
-            $menu_items = $this->MainMenu();
+            $menu_items = 'CON '.$this->MainMenu();
             Session::insert(
                 [
                     'session_id' => $sessionId,
