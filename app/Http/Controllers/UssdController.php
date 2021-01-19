@@ -85,8 +85,19 @@ class UssdController extends Controller
             $userinput = substr($ussdString, $len);
             if ($session->expected_input == 0) {
                 if ((int)$userinput < (int)$session->min_selection || (int)$userinput > (int)$session->max_selection) {
-
-                    return response('CON Invalid Selection.' . PHP_EOL . $session->menus, 200)
+                    $menu_items = $this->MainMenu();
+                    $session->update(
+                        [
+                            'min_selection' => 1,
+                            'max_selection' => 7,
+                            'menus' => $menu_items,
+                            'ussd_level' => 1,
+                            'expected_input' => 0,
+                            'current_selection' => $userinput,
+                            'ussd_string' => $ussdString
+                        ]
+                    );
+                    return response('CON Invalid Selection.' . PHP_EOL .  $menu_items, 200)
                         ->header('Content-Type', 'text/plain');
                 }
             }
