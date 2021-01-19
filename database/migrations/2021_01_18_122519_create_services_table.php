@@ -1,10 +1,11 @@
 <?php
 
+use Carbon\Carbon;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateConfirmedsubscriptionsTable extends Migration
+class CreateServicesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +14,12 @@ class CreateConfirmedsubscriptionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('confirmedsubscriptions', function (Blueprint $table) {
+        Schema::create('services', function (Blueprint $table) {
             $table->id();
-            $table->string('msisdn');
+            $table->string('name');
             $table->string('offercode');
-            $table->string('subscriptiontype');
-            $table->tinyInteger('posted')->default(0);
-            $table->timestamps();
+            $table->dateTime('created_on')->default(Carbon::now());
+            $table->dateTime('updated_on')->default(Carbon::now());
         });
     }
 
@@ -30,6 +30,6 @@ class CreateConfirmedsubscriptionsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('confirmedsubscriptions');
+        Schema::dropIfExists('services');
     }
 }

@@ -1,10 +1,11 @@
 <?php
 
+use Carbon\Carbon;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateSubscriptionsTable extends Migration
+class CreateSongofthehoursTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +14,13 @@ class CreateSubscriptionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('subscriptions', function (Blueprint $table) {
+        Schema::create('songofthehours', function (Blueprint $table) {
             $table->id();
-            $table->string('msisdn');
-            $table->string('ussdresult');
-            $table->tinyInteger('status')->default(0);
-            $table->integer('language_id');
-            $table->timestamps();
+            $table->integer('menunumber');
+            $table->string('name');
+            $table->string('url')->nullable();
+            $table->dateTime('date')->default(Carbon::now());
+
         });
     }
 
@@ -30,6 +31,6 @@ class CreateSubscriptionsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('subscriptions');
+        Schema::dropIfExists('songofthehours');
     }
 }

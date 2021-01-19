@@ -6,9 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Subscription extends Model
 {
-    public $timestamps = true;
-
+    public $timestamps = false;
     protected $fillable = [
-        'msisdn', 'language_id', 'ussdresult', 'updated_at', 'status', 'subscriptiondate', 'subscriptionexpirydate'
+        'service',
+        'offercode',
+        'msisdn',
+        'status',
+        'subscriptiondate'
     ];
 }

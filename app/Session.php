@@ -6,7 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class Session extends Model
 {
+    public $timestamps = false;
     protected $fillable = [
-        'telephone', 'session_id', 'service_code', 'userinput', 'previoususerinput','userchoice', 'level'
+        'menus',
+        'ussd_string',
+        'ussd_level',
+        'current_selection',
+        'expected_input',
+        'min_selection',
+        'max_selection'
     ];
 }

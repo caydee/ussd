@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddAccountToSubscriptions extends Migration
+class AddSongToSubscriptions extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,7 @@ class AddAccountToSubscriptions extends Migration
     public function up()
     {
         Schema::table('subscriptions', function (Blueprint $table) {
-            $table->string('account')->nullable();
+            $table->string('song')->nullable()->default(null);
         });
     }
 
@@ -26,7 +26,7 @@ class AddAccountToSubscriptions extends Migration
     public function down()
     {
         Schema::table('subscriptions', function (Blueprint $table) {
-            $table->dropColumn(['account']);
+            $table->dropColumn('song');
         });
     }
 }

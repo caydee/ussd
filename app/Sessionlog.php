@@ -4,7 +4,8 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Category extends Model
+class Sessionlog extends Model
 {
-    //
+    public $timestamps = false;
+
 }

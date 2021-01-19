@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Subscriptionrequest extends Model
+class Menu extends Model
 {
-    //
+    public $timestamps = true;
 }

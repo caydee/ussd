@@ -1,10 +1,11 @@
 <?php
 
+use Carbon\Carbon;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateFeedbackTable extends Migration
+class CreateSubscriptionsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +14,13 @@ class CreateFeedbackTable extends Migration
      */
     public function up()
     {
-        Schema::create('feedback', function (Blueprint $table) {
+        Schema::create('subscriptions', function (Blueprint $table) {
             $table->id();
-            $table->string('sessionid');
+            $table->string('service');
+            $table->string('offercode');
             $table->string('msisdn');
-            $table->string('name')->nullable();
-            $table->string('subject')->nullable();
-            $table->string('message');
-            $table->tinyInteger('status')->default(0);
-            $table->timestamps();
+            $table->integer('status')->default(1);
+            $table->dateTime('subscriptiondate')->default(Carbon::now());
         });
     }
 
@@ -32,6 +31,6 @@ class CreateFeedbackTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('feedback');
+        Schema::dropIfExists('subscriptions');
     }
 }

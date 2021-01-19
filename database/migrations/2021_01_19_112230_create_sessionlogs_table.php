@@ -1,10 +1,11 @@
 <?php
 
+use Carbon\Carbon;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateSubscriptionrequestsTable extends Migration
+class CreateSessionlogsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +14,13 @@ class CreateSubscriptionrequestsTable extends Migration
      */
     public function up()
     {
-        Schema::create('subscriptionrequests', function (Blueprint $table) {
+        Schema::create('sessionlogs', function (Blueprint $table) {
             $table->id();
+            $table->string('session_id');
             $table->string('msisdn');
-            $table->string('offercode');
-            $table->tinyInteger('posted')->default(0);
-            $table->timestamps();
+            $table->string('ussd_string');
+            $table->string('service_code');
+            $table->dateTime('session_date')->default(Carbon::now());
         });
     }
 
@@ -29,6 +31,6 @@ class CreateSubscriptionrequestsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('subscriptionrequests');
+        Schema::dropIfExists('sessionlogs');
     }
 }

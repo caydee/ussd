@@ -23,19 +23,12 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 // ]);
 
 Route::get('Request','UssdController@Request');
-Route::get('ussdmenus','UssdController@ussdmenus');
-
-Route::post('sendfeedback','UssdController@postfeedback');
-Route::get('testussd','UssdController@getussdmenus');
-Route::post('SubscribeUser','ApiController@SubscribeUser');
 
 Route::post('ussdpayment', 'ApiController@payment')->name('ussdpayment');
 
-Route::get('subscriptions', 'ApiController@subscriptions')->name('subscriptions');
-Route::get('feedback', 'ApiController@feedback')->name('feedback');
-Route::get('subscribers', 'ApiController@subscribers')->name('subscribers');
-Route::get('categories', 'ApiController@categories')->name('categories');
-Route::get('sessions', 'ApiController@sessions')->name('sessions');
-Route::get('mpesatransactions', 'ApiController@mpesatransactions')->name('mpesatransactions');
+Route::get('GetSubscribers', 'ApiController@GetSubscribers')->name('GetSubscribers');
+Route::get('GetSessions', 'ApiController@GetSessions')->name('GetSessions');
+Route::get('Songs', 'ApiController@Songs')->name('Songs');
 
-Route::get('testussd', 'ApiController@testussd')->name('testussd');
+Route::post('AddSongs', 'ApiController@AddSongs')->name('AddSongs');
+Route::post('EditSongs', 'ApiController@EditSongs')->name('EditSongs');
