@@ -25,7 +25,8 @@ class UssdController extends Controller
     public function Request(Request $request)
     {
 
-        $menu_level = 0;
+        $min = 1;
+        $max = 7;
         $menu_items = '';
         $msisdn = $_GET['MSISDN'];
         $serviceCode = $_GET['SERVICE_CODE'];
@@ -64,42 +65,81 @@ class UssdController extends Controller
         $session = Session::where('session_id', $sessionId)->first();
         if (!$session) {
             //new session
-            $menu_items = 'CON '.$this->MainMenu();
             Session::insert(
                 [
                     'session_id' => $sessionId,
                     'msisdn' => $msisdn,
                     'ussd_string' => $ussdString,
                     'service_code' => $serviceCode,
-                    'min_selection' => 1,
-                    'max_selection' => 7,
+                    'min_selection' => $min,
+                    'max_selection' => $max,
                     'menus' => $menu_items,
                     'ussd_level' => 1,
                     'expected_input' => 0
                 ]
             );
-        } else {
-            //continuing session
-            $menu_level = $session->ussd_level + 1;
-            $len = strlen($session->ussd_string);
-            $userinput = substr($ussdString, $len);
-            if ($session->expected_input == 0) {
-                if ((int)$userinput < (int)$session->min_selection || (int)$userinput > (int)$session->max_selection) {
-                    $menu_items = $this->MainMenu();
+            $session = Session::where('session_id', $sessionId)->first();
+            switch ($ussdString) {
+                case '10':
+                    $menu_items = $this->Ussdmenus($session, 1, $msisdn,1);
+                    break;
+                case '11':
+                    $menu_items = $this->Ussdmenus($session, 2, $msisdn,1);
+                    break;
+                case '12':
+                    $menu_items = $this->Ussdmenus($session, 3, $msisdn,1);
+                    break;
+                case '13':
+                    $menu_items = $this->Ussdmenus($session, 4, $msisdn,1);
+                    break;
+                case '14':
+                    $menu_items = $this->Ussdmenus($session, 5, $msisdn,1);
+                    break;
+                case '15':
+                    $menu_items = $this->Ussdmenus($session, 6, $msisdn,1);
+                    break;
+                case '16':
+                    $menu_items = $this->Ussdmenus($session, 7, $msisdn,1);
+                    break;
+                default:
+                    $menu_items = 'CON ' . $this->MainMenu();
                     $session->update(
                         [
                             'min_selection' => 1,
                             'max_selection' => 7,
-                            'menus' => $menu_items,
-                            'ussd_level' => 1,
-                            'expected_input' => 0,
-                            'current_selection' => $userinput,
-                            'ussd_string' => $ussdString
                         ]
                     );
-                    return response('CON Invalid Selection.' . PHP_EOL .  $menu_items, 200)
-                        ->header('Content-Type', 'text/plain');
-                }
+            }
+        } else {
+            $menu_items = $this->Ussdmenus($session, $ussdString, $msisdn,0);
+        }
+        return response($menu_items, 200)
+            ->header('Content-Type', 'text/plain');
+    }
+
+    function Ussdmenus($session, $ussdString, $msisdn,$shortcut)
+    {
+        $menu_items = '';
+        //continuing session
+        $menu_level = $session->ussd_level + 1;
+        $len = strlen($session->ussd_string);
+        $userinput =$shortcut==1?$ussdString: substr($ussdString, $len);
+        if ($session->expected_input == 0) {
+            if ((int)$userinput < (int)$session->min_selection || (int)$userinput > (int)$session->max_selection) {
+                $menu_items = $this->MainMenu();
+                $session->update(
+                    [
+                        'min_selection' => 1,
+                        'max_selection' => 7,
+                        'menus' => $menu_items,
+                        'ussd_level' => 1,
+                        'expected_input' => 0,
+                        'current_selection' => $userinput,
+                        'ussd_string' => $ussdString
+                    ]
+                );
+                $menu_items = 'CON Invalid Selection.' . PHP_EOL .  $menu_items;
+                return $menu_items;
             }
             //expecting a string input - Move to the next
             //load next menus
@@ -355,11 +395,9 @@ class UssdController extends Controller
                         }
                     }
                     break;
-                default:
             }
         }
-        return response($menu_items, 200)
-            ->header('Content-Type', 'text/plain');
+        return $menu_items;
     }
 
     function getsongs($genre)
