@@ -59,7 +59,7 @@ class ApiController extends Controller
         $fromdate = $_GET['fromdate'];
         $todate = $_GET['todate'];
 
-        return Session::wheredate('session_date', '>=', Carbon::parse($fromdate))->whereDate('session_date', '<=', Carbon::parse($todate))->get();
+        return Session::wheredate('session_date', '>=', Carbon::parse($fromdate)->toDateString())->whereDate('session_date', '<=', Carbon::parse($todate)->toDateString())->get();
     }
     public function Songs()
     {
