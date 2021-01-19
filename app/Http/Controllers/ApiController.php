@@ -31,10 +31,10 @@ class ApiController extends Controller
         if ($apikey != '4e0bf5d2975c44c3b194aac300dae162') {
             return response()->json("Invalid API Key", 403);
         }
-        if (!Request()->has('status')) {
-            $status = '';
-        } else {
+        if (array_key_exists("status", $_GET)) {
             $status = $_GET['status'];
+        } else {
+            $status = '';
         }
         return $status == 0 ? Subscription::where('status', 0)->get() : ($status == 1 ? Subscription::where('status', 1)->get() : Subscription::all());
     }
@@ -48,12 +48,13 @@ class ApiController extends Controller
         if ($apikey != '4e0bf5d2975c44c3b194aac300dae162') {
             return response()->json("Invalid API Key", 403);
         }
-        if (!Request()->has('fromdate')) {
+        if (!array_key_exists("fromdate", $_GET)) {
             return response()->json('From date required.');
         }
-        if (!Request()->has('todate')) {
+        if (!array_key_exists("todate", $_GET)) {
             return response()->json('To date required.');
         }
+       
         $fromdate = $_GET['fromdate'];
         $todate = $_GET['todate'];
 
@@ -69,8 +70,8 @@ class ApiController extends Controller
         if ($apikey != '4e0bf5d2975c44c3b194aac300dae162') {
             return response()->json("Invalid API Key", 403);
         }
-        if (!Request()->has('genre')) {
-            return response()->json('To date required.');
+        if (!array_key_exists("genre", $_GET)) {
+            return response()->json('Music Genre required.');
         }
         $genre = $_GET['genre'];
         switch ($genre) {
