@@ -34,10 +34,10 @@ class ApiController extends Controller
         if (array_key_exists("status", $_GET)) {
             $status = $_GET['status'];
         } else {
-            $status = '';
+            $status = 9;
         }
-        return Subscription::all();
-       // return $status == 0 ? Subscription::where('status', 0)->get() : ($status == 1 ? Subscription::where('status', 1)->get() : Subscription::all());
+       
+        return $status == 0 ? Subscription::where('status', 0)->get() : ($status == 1 ? Subscription::where('status', 1)->get() : Subscription::all());
     }
     public function GetSessions()
     {
@@ -59,7 +59,8 @@ class ApiController extends Controller
         $fromdate = $_GET['fromdate'];
         $todate = $_GET['todate'];
 
-        return Session::wheredate('session_date', '>=', Carbon::parse($fromdate)->toDateString())->whereDate('session_date', '<=', Carbon::parse($todate)->toDateString())->get();
+        return Session::wheredate('session_date', '>=', Carbon::parse($fromdate)->toDateString())
+        ->whereDate('session_date', '<=', Carbon::parse($todate)->toDateString())->get();
     }
     public function Songs()
     {
@@ -75,6 +76,9 @@ class ApiController extends Controller
             return response()->json('Music Genre required.');
         }
         $genre = $_GET['genre'];
+        return $this->getmusic($genre);
+    }
+    function getmusic($genre){
         switch ($genre) {
             case "Songofthehour":
                 return Songofthehour::all();
@@ -123,7 +127,7 @@ class ApiController extends Controller
                 ]);
                 break;
         }
-        return response()->json('Song Added to list.');
+        return $this->getmusic($request->genre);
     }
     public function EditSongs(Request $request)
     {
@@ -161,7 +165,6 @@ class ApiController extends Controller
                 ]);
                 break;
         }
-        
-        return response()->json('Song Edited.');
+        return $this->getmusic($request->genre);
     }
 }
