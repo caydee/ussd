@@ -79,51 +79,45 @@ class UssdController extends Controller
                 ]
             );
             $session = Session::where('session_id', $sessionId)->first();
-            switch ($ussdString) {
-                case '10':
-                    $menu_items = $this->Ussdmenus($session, 1, $msisdn,1);
+            switch ((int)$ussdString) {
+                case 10:
+                    $menu_items = $this->Ussdmenus($session,$ussdString, 1, $msisdn,1);
                     break;
-                case '11':
-                    $menu_items = $this->Ussdmenus($session, 2, $msisdn,1);
+                case 11:
+                    $menu_items = $this->Ussdmenus($session, $ussdString,2, $msisdn,1);
                     break;
-                case '12':
-                    $menu_items = $this->Ussdmenus($session, 3, $msisdn,1);
+                case 12:
+                    $menu_items = $this->Ussdmenus($session,$ussdString, 3, $msisdn,1);
                     break;
-                case '13':
-                    $menu_items = $this->Ussdmenus($session, 4, $msisdn,1);
+                case 13:
+                    $menu_items = $this->Ussdmenus($session,$ussdString, 4, $msisdn,1);
                     break;
-                case '14':
-                    $menu_items = $this->Ussdmenus($session, 5, $msisdn,1);
+                case 14:
+                    $menu_items = $this->Ussdmenus($session,$ussdString, 5, $msisdn,1);
                     break;
-                case '15':
-                    $menu_items = $this->Ussdmenus($session, 6, $msisdn,1);
+                case 15:
+                    $menu_items = $this->Ussdmenus($session,$ussdString, 6, $msisdn,1);
                     break;
-                case '16':
-                    $menu_items = $this->Ussdmenus($session, 7, $msisdn,1);
+                case 16:
+                    $menu_items = $this->Ussdmenus($session,$ussdString, 7, $msisdn,1);
                     break;
                 default:
-                    $menu_items = 'CON ' . $this->MainMenu();
-                    $session->update(
-                        [
-                            'min_selection' => 1,
-                            'max_selection' => 7,
-                        ]
-                    );
+                    $menu_items = 'CON ' . $this->MainMenu();                    
             }
         } else {
-            $menu_items = $this->Ussdmenus($session, $ussdString, $msisdn,0);
+            $menu_items = $this->Ussdmenus($session,$ussdString, '', $msisdn,0);
         }
         return response($menu_items, 200)
             ->header('Content-Type', 'text/plain');
     }
 
-    function Ussdmenus($session, $ussdString, $msisdn,$shortcut)
+    function Ussdmenus($session, $ussdString,$selection, $msisdn,$shortcut)
     {
         $menu_items = '';
         //continuing session
         $menu_level = $session->ussd_level + 1;
         $len = strlen($session->ussd_string);
-        $userinput =$shortcut==1?$ussdString: substr($ussdString, $len);
+        $userinput =$shortcut==1?$selection: substr($ussdString, $len);
         if ($session->expected_input == 0) {
             if ((int)$userinput < (int)$session->min_selection || (int)$userinput > (int)$session->max_selection) {
                 $menu_items = $this->MainMenu();
@@ -165,7 +159,7 @@ class UssdController extends Controller
                         //ask user to subscribe
                         $sub = $this->checksubscripton('Life Quotes', $msisdn, 'QUOTES') == 0 ? 'Subscribe to Life Quotes' : 'Unsubscribe';
                         $menu_items = 'CON Confirm' . PHP_EOL;
-                        $menu_items = '1. ' . $sub . PHP_EOL;
+                        $menu_items .= '1. ' . $sub . PHP_EOL;
                         $menu_items .= '2. Back' . PHP_EOL;
                         $session->update(
                             [
@@ -216,7 +210,7 @@ class UssdController extends Controller
                         //ask user to subscribe
                         $sub = $this->checksubscripton('Funny Jokes', $msisdn, 'JOKES') == 0 ? 'Subscribe to Funny Jokes' : 'Unsubscribe';
                         $menu_items = 'CON Confirm' . PHP_EOL;
-                        $menu_items = '1. ' . $sub . PHP_EOL;
+                        $menu_items .= '1. ' . $sub . PHP_EOL;
                         $menu_items .= '2. Back' . PHP_EOL;
                         $session->update(
                             [
@@ -235,7 +229,7 @@ class UssdController extends Controller
                         //ask user to subscribe
                         $sub = $this->checksubscripton('Breaking News', $msisdn, 'NEWS') == 0 ? 'Subscribe to Breaking News' : 'Unsubscribe';
                         $menu_items = 'CON Confirm' . PHP_EOL;
-                        $menu_items = '1. ' . $sub . PHP_EOL;
+                        $menu_items .= '1. ' . $sub . PHP_EOL;
                         $menu_items .= '2. Back' . PHP_EOL;
                         $session->update(
                             [
