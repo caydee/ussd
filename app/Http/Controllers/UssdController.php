@@ -26,7 +26,7 @@ class UssdController extends Controller
     {
 
         $menu_level = 0;
-        $menu_items = 'CON Welcome to Standard VAS USSD' . PHP_EOL;
+        $menu_items = '';
         $msisdn = $_GET['MSISDN'];
         $serviceCode = $_GET['SERVICE_CODE'];
         $ussdString = $_GET['USSD_STRING'];
@@ -72,7 +72,7 @@ class UssdController extends Controller
                     'ussd_string' => $ussdString,
                     'service_code' => $serviceCode,
                     'min_selection' => 1,
-                    'max_selection' => 6,
+                    'max_selection' => 7,
                     'menus' => $menu_items,
                     'ussd_level' => 1,
                     'expected_input' => 0
@@ -373,7 +373,7 @@ class UssdController extends Controller
 
     function MainMenu()
     {
-        $menu = 'CON welcome to the Standard VAS' . PHP_EOL;
+        $menu = 'Welcome to the Standard VAS' . PHP_EOL;
         $menu .= '1. Song of The hour' . PHP_EOL;
         $menu .= '2. Life Quotes' . PHP_EOL;
         $menu .= '3. Top Gospel Songs Songs' . PHP_EOL;
