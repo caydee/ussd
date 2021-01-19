@@ -36,7 +36,8 @@ class ApiController extends Controller
         } else {
             $status = '';
         }
-        return $status == 0 ? Subscription::where('status', 0)->get() : ($status == 1 ? Subscription::where('status', 1)->get() : Subscription::all());
+        return Subscription::all();
+       // return $status == 0 ? Subscription::where('status', 0)->get() : ($status == 1 ? Subscription::where('status', 1)->get() : Subscription::all());
     }
     public function GetSessions()
     {
