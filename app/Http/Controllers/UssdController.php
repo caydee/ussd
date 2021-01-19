@@ -81,25 +81,25 @@ class UssdController extends Controller
             $session = Session::where('session_id', $sessionId)->first();
             switch ((int)$ussdString) {
                 case 10:
-                    $menu_items = $this->Ussdmenus($session,$ussdString, 1, $msisdn,1);
+                    $menu_items = $this->Ussdmenus($session,$ussdString, '1', $msisdn,1);
                     break;
                 case 11:
-                    $menu_items = $this->Ussdmenus($session, $ussdString,2, $msisdn,1);
+                    $menu_items = $this->Ussdmenus($session, $ussdString,'2', $msisdn,1);
                     break;
                 case 12:
-                    $menu_items = $this->Ussdmenus($session,$ussdString, 3, $msisdn,1);
+                    $menu_items = $this->Ussdmenus($session,$ussdString, '3', $msisdn,1);
                     break;
                 case 13:
-                    $menu_items = $this->Ussdmenus($session,$ussdString, 4, $msisdn,1);
+                    $menu_items = $this->Ussdmenus($session,$ussdString, '4', $msisdn,1);
                     break;
                 case 14:
-                    $menu_items = $this->Ussdmenus($session,$ussdString, 5, $msisdn,1);
+                    $menu_items = $this->Ussdmenus($session,$ussdString, '5', $msisdn,1);
                     break;
                 case 15:
-                    $menu_items = $this->Ussdmenus($session,$ussdString, 6, $msisdn,1);
+                    $menu_items = $this->Ussdmenus($session,$ussdString, '6', $msisdn,1);
                     break;
                 case 16:
-                    $menu_items = $this->Ussdmenus($session,$ussdString, 7, $msisdn,1);
+                    $menu_items = $this->Ussdmenus($session,$ussdString, '7', $msisdn,1);
                     break;
                 default:
                     $menu_items = 'CON ' . $this->MainMenu();                    
