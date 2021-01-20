@@ -114,7 +114,9 @@ class UssdController extends Controller
 
     function Ussdmenus($session, $ussdString,$selection, $msisdn,$shortcut)
     {
-        Log($ussdString.','.$selection.','.$shortcut);
+        Log($ussdString);
+        Log($selection);
+        Log($shortcut);
         $menu_items = '';
         //continuing session
         $menu_level = $session->ussd_level + 1;
