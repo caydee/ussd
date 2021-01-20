@@ -62,7 +62,7 @@ class UssdController extends Controller
             return response($body, 200)
                 ->header('Content-Type', 'text/plain');
         }
-        Log::alert($_SERVER['QUERY_STRING']);
+        //Log::alert($_SERVER['QUERY_STRING']);
         $ussdString = trim(str_replace('*', '', $ussdString));
         $mainsession = Session::where('session_id', $sessionId)->first();
         if (!$mainsession) {
@@ -108,35 +108,9 @@ class UssdController extends Controller
                     $menu_items = 'CON ' . $this->MainMenu();                    
             }
         } else {
-           if($mainsession->ussd_level==1){
-            switch ((int)$ussdString) {
-                case 10:
-                    $menu_items = $this->Ussdmenus($mainsession,$ussdString, 1, $msisdn,1);
-                    break;
-                case 11:
-                    $menu_items = $this->Ussdmenus($mainsession, $ussdString,2, $msisdn,1);
-                    break;
-                case 12:
-                    $menu_items = $this->Ussdmenus($mainsession,$ussdString, 3, $msisdn,1);
-                    break;
-                case 13:
-                    $menu_items = $this->Ussdmenus($mainsession,$ussdString, 4, $msisdn,1);
-                    break;
-                case 14:
-                    $menu_items = $this->Ussdmenus($mainsession,$ussdString, 5, $msisdn,1);
-                    break;
-                case 15:
-                    $menu_items = $this->Ussdmenus($mainsession,$ussdString, 6, $msisdn,1);
-                    break;
-                case 16:
-                    $menu_items = $this->Ussdmenus($mainsession,$ussdString, 7, $msisdn,1);
-                    break;
-                default:
-                    $menu_items = 'CON ' . $this->MainMenu();                    
-            }               
-            }else{
+          
                $menu_items = $this->Ussdmenus($mainsession,$ussdString, '', $msisdn,0);
-           }
+           
         }
         return response($menu_items, 200)
             ->header('Content-Type', 'text/plain');
@@ -490,6 +464,7 @@ class UssdController extends Controller
                 ]);
             }
             //call subscription API
+            $this->subscribe($msisdn,$s->offercode);
         }
         return 0;
     }
@@ -499,6 +474,20 @@ class UssdController extends Controller
         if ($subscribed) {
             return $subscribed->status;
         }
+        return 0;
+    }
+
+    function subscribe($telephone,$offercode){
+        $apiurl = 'https://ktnkenya.com/vas/public/api/SubscribeUser';
+        $payload = [
+            'msisdn' => $this->FormatTelephone($telephone),
+            'offercode' => $offercode
+        ];
+        $client = new Client();
+        $response = $client->request('POST', $apiurl, [
+            'body' => json_encode($payload),
+            'headers' => ['Content-Type' => 'application/json', 'app_key' => '12345'],
+        ]);
         return 0;
     }
 }
