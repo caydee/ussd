@@ -37,8 +37,8 @@ class ApiController extends Controller
         } else {
             $status = 9;
         }
-       
-        return $status == 0 ? Subscription::where('status', 0)->get() : ($status == 1 ? Subscription::where('status', 1)->get() : Subscription::all());
+       $response=$status == 0 ? Subscription::where('status', 0)->get() : ($status == 1 ? Subscription::where('status', 1)->get() : Subscription::all());
+        return response()->json($response->toArray());
     }
     public function GetSessions()
     {
@@ -60,8 +60,8 @@ class ApiController extends Controller
         $fromdate = $_GET['fromdate'];
         $todate = $_GET['todate'];
 
-        return Session::wheredate('session_date', '>=', Carbon::parse($fromdate)->toDateString())
-        ->whereDate('session_date', '<=', Carbon::parse($todate)->toDateString())->get();
+        return response()->json(Session::wheredate('session_date', '>=', Carbon::parse($fromdate)->toDateString())
+        ->whereDate('session_date', '<=', Carbon::parse($todate)->toDateString())->get()->toArray());
     }
     public function Songs()
     {
