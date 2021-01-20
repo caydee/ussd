@@ -108,7 +108,35 @@ class UssdController extends Controller
                     $menu_items = 'CON ' . $this->MainMenu();                    
             }
         } else {
-            $menu_items = $this->Ussdmenus($mainsession,$ussdString, '', $msisdn,0);
+           if($mainsession->ussd_level==1){
+            switch ((int)$ussdString) {
+                case 10:
+                    $menu_items = $this->Ussdmenus($mainsession,$ussdString, 1, $msisdn,1);
+                    break;
+                case 11:
+                    $menu_items = $this->Ussdmenus($mainsession, $ussdString,2, $msisdn,1);
+                    break;
+                case 12:
+                    $menu_items = $this->Ussdmenus($mainsession,$ussdString, 3, $msisdn,1);
+                    break;
+                case 13:
+                    $menu_items = $this->Ussdmenus($mainsession,$ussdString, 4, $msisdn,1);
+                    break;
+                case 14:
+                    $menu_items = $this->Ussdmenus($mainsession,$ussdString, 5, $msisdn,1);
+                    break;
+                case 15:
+                    $menu_items = $this->Ussdmenus($mainsession,$ussdString, 6, $msisdn,1);
+                    break;
+                case 16:
+                    $menu_items = $this->Ussdmenus($mainsession,$ussdString, 7, $msisdn,1);
+                    break;
+                default:
+                    $menu_items = 'CON ' . $this->MainMenu();                    
+            }               
+            }else{
+               $menu_items = $this->Ussdmenus($mainsession,$ussdString, '', $msisdn,0);
+           }
         }
         return response($menu_items, 200)
             ->header('Content-Type', 'text/plain');
