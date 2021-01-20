@@ -177,7 +177,7 @@ class ApiController extends Controller
         if ($apikey != '4e0bf5d2975c44c3b194aac300dae162') {
             return response()->json("Invalid API Key", 403);
         }
-        return response()->json(Service::all());
+        return response()->json(Service::all()->toArray());
     }
     public function UpdateSubscriber(Request $request){
         $headers = getallheaders();
