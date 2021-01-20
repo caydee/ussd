@@ -117,6 +117,7 @@ class UssdController extends Controller
         //continuing session
         $menu_level = $session->ussd_level + 1;
         $len = strlen($session->ussd_string);
+        
         $userinput =$shortcut==1?$selection: substr($ussdString, $len);
         if ($session->expected_input == 0) {
             if ((int)$userinput < (int)$session->min_selection || (int)$userinput > (int)$session->max_selection) {

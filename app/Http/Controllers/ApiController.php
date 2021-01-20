@@ -6,6 +6,7 @@ use App\Confirmedsubscription;
 use App\Feedback;
 use App\Mpesatransaction;
 use App\Mpesatransactions;
+use App\Service;
 use App\Subscription;
 use App\Subscriptionrequest;
 use Carbon\Carbon;
@@ -166,5 +167,28 @@ class ApiController extends Controller
                 break;
         }
         return $this->getmusic($request->genre);
+    }
+    public function GetServices(){
+        $headers = getallheaders();
+        if (!isset($headers['api_key'])) {
+            return response()->json("Access to resource Forbidden", 403);
+        }
+        $apikey = $headers['api_key'];
+        if ($apikey != '4e0bf5d2975c44c3b194aac300dae162') {
+            return response()->json("Invalid API Key", 403);
+        }
+        return Service::all();
+    }
+    public function UpdateSubscriber(Request $request){
+        $headers = getallheaders();
+        if (!isset($headers['api_key'])) {
+            return response()->json("Access to resource Forbidden", 403);
+        }
+        $apikey = $headers['api_key'];
+        if ($apikey != '4e0bf5d2975c44c3b194aac300dae162') {
+            return response()->json("Invalid API Key", 403);
+        }
+        Subscription::where([['msisdn','=',$request->msisdn],['offercode','=',$request->offercode]])->update(['status'=>$request->status]);
+        return 0;
     }
 }
