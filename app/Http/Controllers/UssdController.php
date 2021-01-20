@@ -79,6 +79,7 @@ class UssdController extends Controller
                 ]
             );
             $session = Session::where('session_id', $sessionId)->first();
+            Log::alert($ussdString);
             switch ((int)$ussdString) {
                 case 10:
                     $menu_items = $this->Ussdmenus($session,$ussdString, '1', $msisdn,1);
