@@ -32,6 +32,7 @@ class UssdController extends Controller
         $serviceCode = $_GET['SERVICE_CODE'];
         $ussdString = $_GET['USSD_STRING'];
         $sessionId = $_GET['SESSION_ID'];
+        
         //Log the session
         $sess = Sessionlog::where('session_id', $sessionId)->first();
         if (!$sess) {
@@ -61,6 +62,7 @@ class UssdController extends Controller
             return response($body, 200)
                 ->header('Content-Type', 'text/plain');
         }
+        Log::alert($_SERVER['QUERY_STRING']);
         $ussdString = trim(str_replace('*', '', $ussdString));
         $mainsession = Session::where('session_id', $sessionId)->first();
         if (!$mainsession) {
@@ -114,11 +116,7 @@ class UssdController extends Controller
 
     function Ussdmenus($session, $ussdString,$selection, $msisdn,$shortcut)
     {
-        Log::info($ussdString);
-        Log::info($selection);
-        Log::info($shortcut);
         $menu_items = '';
-        //continuing session
         $menu_level = $session->ussd_level + 1;
         $len = strlen($session->ussd_string);        
         $userinput =$shortcut==1?$selection: substr($ussdString, $len);
