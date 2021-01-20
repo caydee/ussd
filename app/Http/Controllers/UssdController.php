@@ -62,8 +62,8 @@ class UssdController extends Controller
                 ->header('Content-Type', 'text/plain');
         }
         $ussdString = trim(str_replace('*', '', $ussdString));
-        $session = Session::where('session_id', $sessionId)->first();
-        if (!$session) {
+        $mainsession = Session::where('session_id', $sessionId)->first();
+        if (!$mainsession) {
             //new session
             Session::insert(
                 [
@@ -79,34 +79,34 @@ class UssdController extends Controller
                 ]
             );
             $session = Session::where('session_id', $sessionId)->first();
-            Log::alert($ussdString);
+           
             switch ((int)$ussdString) {
                 case 10:
-                    $menu_items = $this->Ussdmenus($session,$ussdString, '1', $msisdn,1);
+                    $menu_items = $this->Ussdmenus($session,$ussdString, 1, $msisdn,1);
                     break;
                 case 11:
-                    $menu_items = $this->Ussdmenus($session, $ussdString,'2', $msisdn,1);
+                    $menu_items = $this->Ussdmenus($session, $ussdString,2, $msisdn,1);
                     break;
                 case 12:
-                    $menu_items = $this->Ussdmenus($session,$ussdString, '3', $msisdn,1);
+                    $menu_items = $this->Ussdmenus($session,$ussdString, 3, $msisdn,1);
                     break;
                 case 13:
-                    $menu_items = $this->Ussdmenus($session,$ussdString, '4', $msisdn,1);
+                    $menu_items = $this->Ussdmenus($session,$ussdString, 4, $msisdn,1);
                     break;
                 case 14:
-                    $menu_items = $this->Ussdmenus($session,$ussdString, '5', $msisdn,1);
+                    $menu_items = $this->Ussdmenus($session,$ussdString, 5, $msisdn,1);
                     break;
                 case 15:
-                    $menu_items = $this->Ussdmenus($session,$ussdString, '6', $msisdn,1);
+                    $menu_items = $this->Ussdmenus($session,$ussdString, 6, $msisdn,1);
                     break;
                 case 16:
-                    $menu_items = $this->Ussdmenus($session,$ussdString, '7', $msisdn,1);
+                    $menu_items = $this->Ussdmenus($session,$ussdString, 7, $msisdn,1);
                     break;
                 default:
                     $menu_items = 'CON ' . $this->MainMenu();                    
             }
         } else {
-            $menu_items = $this->Ussdmenus($session,$ussdString, '', $msisdn,0);
+            $menu_items = $this->Ussdmenus($mainsession,$ussdString, '', $msisdn,0);
         }
         return response($menu_items, 200)
             ->header('Content-Type', 'text/plain');
@@ -114,12 +114,13 @@ class UssdController extends Controller
 
     function Ussdmenus($session, $ussdString,$selection, $msisdn,$shortcut)
     {
+        Log($ussdString.','.$selection.','.$shortcut);
         $menu_items = '';
         //continuing session
         $menu_level = $session->ussd_level + 1;
-        $len = strlen($session->ussd_string);
-        
+        $len = strlen($session->ussd_string);        
         $userinput =$shortcut==1?$selection: substr($ussdString, $len);
+
         if ($session->expected_input == 0) {
             if ((int)$userinput < (int)$session->min_selection || (int)$userinput > (int)$session->max_selection) {
                 Log::info($userinput);
