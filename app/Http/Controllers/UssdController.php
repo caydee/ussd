@@ -32,7 +32,7 @@ class UssdController extends Controller
         $serviceCode = $_GET['SERVICE_CODE'];
         $ussdString = $_GET['USSD_STRING'];
         $sessionId = $_GET['SESSION_ID'];
-        
+
         //Log the session
         $sess = Sessionlog::where('session_id', $sessionId)->first();
         if (!$sess) {
@@ -80,48 +80,48 @@ class UssdController extends Controller
                     'expected_input' => 0
                 ]
             );
-            $session = Session::where('session_id', $sessionId)->first();
-           
-            switch ((int)$ussdString) {
-                case 10:
-                    $menu_items = $this->Ussdmenus($session,$ussdString, 1, $msisdn,1);
-                    break;
-                case 11:
-                    $menu_items = $this->Ussdmenus($session, $ussdString,2, $msisdn,1);
-                    break;
-                case 12:
-                    $menu_items = $this->Ussdmenus($session,$ussdString, 3, $msisdn,1);
-                    break;
-                case 13:
-                    $menu_items = $this->Ussdmenus($session,$ussdString, 4, $msisdn,1);
-                    break;
-                case 14:
-                    $menu_items = $this->Ussdmenus($session,$ussdString, 5, $msisdn,1);
-                    break;
-                case 15:
-                    $menu_items = $this->Ussdmenus($session,$ussdString, 6, $msisdn,1);
-                    break;
-                case 16:
-                    $menu_items = $this->Ussdmenus($session,$ussdString, 7, $msisdn,1);
-                    break;
-                default:
-                    $menu_items = 'CON ' . $this->MainMenu();                    
-            }
+            $menu_items = 'CON ' . $this->MainMenu();
         } else {
-          
-               $menu_items = $this->Ussdmenus($mainsession,$ussdString, '', $msisdn,0);
-           
+            if ($mainsession->ussd_string == $ussdString) {
+                switch ((int)$ussdString) {
+                    case 10:
+                        $menu_items = $this->Ussdmenus($mainsession, $ussdString, 1, $msisdn, 1);
+                        break;
+                    case 11:
+                        $menu_items = $this->Ussdmenus($mainsession, $ussdString, 2, $msisdn, 1);
+                        break;
+                    case 12:
+                        $menu_items = $this->Ussdmenus($mainsession, $ussdString, 3, $msisdn, 1);
+                        break;
+                    case 13:
+                        $menu_items = $this->Ussdmenus($mainsession, $ussdString, 4, $msisdn, 1);
+                        break;
+                    case 14:
+                        $menu_items = $this->Ussdmenus($mainsession, $ussdString, 5, $msisdn, 1);
+                        break;
+                    case 15:
+                        $menu_items = $this->Ussdmenus($mainsession, $ussdString, 6, $msisdn, 1);
+                        break;
+                    case 16:
+                        $menu_items = $this->Ussdmenus($mainsession, $ussdString, 7, $msisdn, 1);
+                        break;
+                    default:
+                        $menu_items = 'CON ' . $this->MainMenu();
+                }
+            } else {
+                $menu_items = $this->Ussdmenus($mainsession, $ussdString, '', $msisdn, 0);
+            }
         }
         return response($menu_items, 200)
             ->header('Content-Type', 'text/plain');
     }
 
-    function Ussdmenus($session, $ussdString,$selection, $msisdn,$shortcut)
+    function Ussdmenus($session, $ussdString, $selection, $msisdn, $shortcut)
     {
         $menu_items = '';
         $menu_level = $session->ussd_level + 1;
-        $len = strlen($session->ussd_string);        
-        $userinput =$shortcut==1?$selection: substr($ussdString, $len);
+        $len = strlen($session->ussd_string);
+        $userinput = $shortcut == 1 ? $selection : substr($ussdString, $len);
 
         if ($session->expected_input == 0) {
             if ((int)$userinput < (int)$session->min_selection || (int)$userinput > (int)$session->max_selection) {
@@ -464,7 +464,7 @@ class UssdController extends Controller
                 ]);
             }
             //call subscription API
-            $this->subscribe($msisdn,$s->offercode);
+            $this->subscribe($msisdn, $s->offercode);
         }
         return 0;
     }
@@ -477,7 +477,8 @@ class UssdController extends Controller
         return 0;
     }
 
-    function subscribe($telephone,$offercode){
+    function subscribe($telephone, $offercode)
+    {
         $apiurl = 'https://ktnkenya.com/vas/public/api/SubscribeUser';
         $payload = [
             'msisdn' => $this->FormatTelephone($telephone),
