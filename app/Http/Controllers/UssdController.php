@@ -427,7 +427,7 @@ class UssdController extends Controller
         $menu = 'Welcome to the Standard VAS' . PHP_EOL;
         $menu .= '1. Song of The hour' . PHP_EOL;
         $menu .= '2. Life Quotes' . PHP_EOL;
-        $menu .= '3. Top Gospel Songs Songs' . PHP_EOL;
+        $menu .= '3. Top Gospel Songs' . PHP_EOL;
         $menu .= '4. Top Music' . PHP_EOL;
         $menu .= '5. Funny Jokes' . PHP_EOL;
         $menu .= '6. Breaking News' . PHP_EOL;

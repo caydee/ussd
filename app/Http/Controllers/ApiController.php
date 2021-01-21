@@ -77,7 +77,7 @@ class ApiController extends Controller
             return response()->json('Music Genre required.');
         }
         $genre = $_GET['genre'];
-        return $this->getmusic($genre);
+        return response()->json($this->getmusic($genre));
     }
     function getmusic($genre){
         switch ($genre) {
