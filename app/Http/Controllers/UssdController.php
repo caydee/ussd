@@ -481,7 +481,7 @@ class UssdController extends Controller
     {
         $apiurl = 'https://ktnkenya.com/vas/public/api/SubscribeUser';
         $payload = [
-            'msisdn' => $this->FormatTelephone($telephone),
+            'msisdn' =>$telephone,
             'offercode' => $offercode
         ];
         $client = new Client();
