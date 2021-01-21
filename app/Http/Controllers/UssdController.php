@@ -300,7 +300,7 @@ class UssdController extends Controller
                             $s = $this->checksubscripton('Life Quotes', $msisdn, 'QUOTES');
                             $this->SubscribeUser($msisdn, 'Life Quotes', 'QUOTES', $s);
                             if ($s == 0) {
-                                $menu_items = 'END Thank you for subscribing to Life Quotes. In case you wanna change your subscription, please dial *207#';
+                                $menu_items = 'END Thank you for subscribing to Life Quotes. Please select 1 in the following menu to confirm subscription. In case you wanna change your subscription, please dial *207#';
                             } else {
                                 $menu_items = 'END You have successfully unsubscribed from Life Quotes. Dial *207# for more options';
                             }
@@ -311,14 +311,14 @@ class UssdController extends Controller
                         $song = Topgospel::where('menunumber', (int)$userinput)->first();
                         $s = $this->checksubscripton('Top Gospel Songs', $msisdn, $song->name);
                         $this->SubscribeUser($msisdn, 'Top Gospel Songs', $song->name, $s);
-                        $menu_items = 'END Thank you for subscribing to Top Gospel Songs (' . $song->name . '). In case you wanna change your subscription, please dial *207#';
+                        $menu_items = 'END Thank you for subscribing to Top Gospel Songs (' . $song->name . '). Please select 1 in the following menu to confirm subscription. In case you wanna change your subscription, please dial *207#';
                     }
                     if ((int)$session->current_selection == 4) {
                         //Top Music selected
                         $song = Topmusic::where('menunumber', (int)$userinput)->first();
                         $s = $this->checksubscripton('Top Music', $msisdn, $song->name);
                         $this->SubscribeUser($msisdn, 'Top Music', $song->name, $s);
-                        $menu_items = 'END Thank you for subscribing to Top Music (' . $song->name . '). In case you wanna change your subscription, please dial *207#';
+                        $menu_items = 'END Thank you for subscribing to Top Music (' . $song->name . '). Please select 1 in the following menu to confirm subscription. In case you wanna change your subscription, please dial *207#';
                     }
                     if ((int)$session->current_selection == 5) {
                         //subscription to funny jokes
@@ -340,7 +340,7 @@ class UssdController extends Controller
                             $this->SubscribeUser($msisdn, 'Funy Jokes', 'JOKES', $s);
                             if ($s == 0) {
                                 $this->SubscribeUser($msisdn, 'Top Music', 'JOKES', $s);
-                                $menu_items = 'END Thank you for subscribing to Funny Jokes. In case you wanna change your subscription, please dial *207#';
+                                $menu_items = 'END Thank you for subscribing to Funny Jokes. Please select 1 in the following menu to confirm subscription. In case you wanna change your subscription, please dial *207#';
                             } else {
                                 $menu_items = 'END You have successfully unsubscribed from Funny Jokes. Dial *207# for more options';
                             }
@@ -365,7 +365,7 @@ class UssdController extends Controller
                             $s = $this->checksubscripton('Breaking News', $msisdn, 'NEWS');
                             $this->SubscribeUser($msisdn, 'Breaking News', 'NEWS', $s);
                             if ($s == 0) {
-                                $menu_items = 'END Thank you for subscribing to Breaking News. In case you wanna change your subscription, please dial *207#';
+                                $menu_items = 'END Thank you for subscribing to Breaking News. Please select 1 in the following menu to confirm subscription. In case you wanna change your subscription, please dial *207#';
                             } else {
                                 $menu_items = 'END You have successfully unsubscribed from Breaking News. Dial *207# for more options';
                             }
@@ -390,7 +390,7 @@ class UssdController extends Controller
                             $s = $this->checksubscripton('Sports News', $msisdn, 'SPORTS');
                             $this->SubscribeUser($msisdn, 'Sports News', 'SPORTS', $s);
                             if ($s == 0) {
-                                $menu_items = 'END Thank you for subscribing to Sports News. In case you wanna change your subscription, please dial *207#';
+                                $menu_items = 'END Thank you for subscribing to Sports News. Please select 1 in the following menu to confirm subscription. In case you wanna change your subscription, please dial *207#';
                             } else {
                                 $menu_items = 'END You have successfully unsubscribed from Sports News. Dial *207# for more options';
                             }
