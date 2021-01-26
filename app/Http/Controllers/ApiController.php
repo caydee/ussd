@@ -128,7 +128,7 @@ class ApiController extends Controller
                 ]);
                 break;
         }
-        return $this->getmusic($request->genre);
+        return response()->json($this->getmusic($request->genre));
     }
     public function EditSongs(Request $request)
     {
@@ -166,7 +166,7 @@ class ApiController extends Controller
                 ]);
                 break;
         }
-        return $this->getmusic($request->genre);
+        return response()->json($this->getmusic($request->genre));
     }
     public function GetServices(){
         $headers = getallheaders();
