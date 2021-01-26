@@ -107,6 +107,7 @@ class ApiController extends Controller
                 Songofthehour::insert([
                     'menunumber' => $request->menunumber,
                     'name' => $request->name,
+                    'genre' => $request->genre,
                     'url' => $request->url,
                     'date' => Carbon::parse($request->date)
                 ]);
@@ -115,6 +116,7 @@ class ApiController extends Controller
                 Topgospel::insert([
                     'menunumber' => $request->menunumber,
                     'name' => $request->name,
+                    'genre' => $request->genre,
                     'url' => $request->url,
                     'date' => Carbon::parse($request->date)
                 ]);
@@ -123,6 +125,7 @@ class ApiController extends Controller
                 Topmusic::insert([
                     'menunumber' => $request->menunumber,
                     'name' => $request->name,
+                    'genre' => $request->genre,
                     'url' => $request->url,
                     'date' => Carbon::parse($request->date)
                 ]);
@@ -144,6 +147,7 @@ class ApiController extends Controller
             case "Songofthehour":
                 Songofthehour::where('id', $request->id)->update([
                     'menunumber' => $request->menunumber,
+                    'genre' => $request->genre,
                     'name' => $request->name,
                     'url' => $request->url,
                     'date' => Carbon::parse($request->date)
@@ -152,6 +156,7 @@ class ApiController extends Controller
             case "Topgospel":
                 Topgospel::where('id', $request->id)->update([
                     'menunumber' => $request->menunumber,
+                    'genre' => $request->genre,
                     'name' => $request->name,
                     'url' => $request->url,
                     'date' => Carbon::parse($request->date)
@@ -160,6 +165,7 @@ class ApiController extends Controller
             case "Topmusic":
                 Topmusic::where('id', $request->id)->update([
                     'menunumber' => $request->menunumber,
+                    'genre' => $request->genre,
                     'name' => $request->name,
                     'url' => $request->url,
                     'date' => Carbon::parse($request->date)
