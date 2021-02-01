@@ -87,7 +87,7 @@ class ApiController extends Controller
             case "Topgospel":
                 return Topgospel::all();
                 break;
-            case "Topmusic":
+            case "KesiMashinani":
                 return Topmusic::all();
                 break;
         }
