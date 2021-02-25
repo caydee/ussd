@@ -104,8 +104,9 @@ class UssdController extends Controller
                 }
             } else {
                 $len = strlen($session->USSD_STRING);
-                $selection = substr($ussdString, 0,  $len);
-                $response = $this->get_menus($session, 2, $selection);
+                $selection = substr($ussdString,  $len);
+                Log::alert($selection);
+                $response = $this->get_menus($session, $session->LEVEL + 1, $selection);
                 $menu_items = $response[0];
                 $min = $response[1];
                 $max = $response[2];
@@ -113,7 +114,7 @@ class UssdController extends Controller
             }
         } else {
             //new
-            $response = $this->get_menus(null, 1, null);
+            $response = $this->get_menus('', 1, '');
             $menu_items = $response[0];
             $min = $response[1];
             $max = $response[2];
@@ -143,7 +144,7 @@ class UssdController extends Controller
             'LEVEL' => $session->LEVEL + 1,
             'MENU' => $menus,
             'MIN_VAL' => (int)$min,
-            'MAX_VAL' =>(int) $max,
+            'MAX_VAL' => (int) $max,
             'SESSION_DATE' => Carbon::now()
         ]);
     }
@@ -152,6 +153,21 @@ class UssdController extends Controller
         $menu = '';
         $min = 0;
         $max = 0;
+        if ($session != null) {
+            if ((int)$selection < (int)$session->MIN_VAL || (int)$selection > (int)$session->MIN_VAL) {
+                //wrong selection, return previous Menu
+                if ((int)$selection == 0) {
+                    $menu = 'END Thank you for checking out Standard VAS. Dial *207# for more options.';
+                    return [$menu, 0, 0];
+                }
+                if ((int)$selection == 99) {
+                    $session->update([
+                        'LEVEL' => $session->LEVEL - 1,
+                    ]);
+                    return [$session->MENU, $session->MIN_VAL, $session->MAX_VAL];
+                }
+            }
+        }
 
         switch ($level) {
             case 1:
@@ -167,26 +183,45 @@ class UssdController extends Controller
                 $max = 6;
                 break;
             case 2:
-                if ((int)$selection < 1 || (int)$selection > 6) {
-                    //wrong selection, return previous Menu
-
-                }
                 switch ($selection) {
                     case 1:
                         $menu = 'END Thank you for subscribing to Betting Tips.';
                         $this->subscribe($session->MSISDN, '001006928145');
                         break;
                     case 2:
-                        //list available content
+                        $menu = 'CON Wrong Number. Select' . PHP_EOL;
+                        $menu .= '1. Content 1' . PHP_EOL;
+                        $menu .= '2. Content 2' . PHP_EOL;
+                        $menu .= '99. Back' . PHP_EOL;
+                        $min = 1;
+                        $max = 2;
                         break;
                     case 3:
                         //list available content
+                        $menu = 'CON Adult in the Room. Select' . PHP_EOL;
+                        $menu .= '1. Content 1' . PHP_EOL;
+                        $menu .= '2. Content 2' . PHP_EOL;
+                        $menu .= '99. Back' . PHP_EOL;
+                        $min = 1;
+                        $max = 2;
                         break;
                     case 4:
                         //list available content
+                        $menu = 'CON Kesi Mashinani. Select' . PHP_EOL;
+                        $menu .= '1. Kesi 1' . PHP_EOL;
+                        $menu .= '2. Kesi 2' . PHP_EOL;
+                        $menu .= '99. Back' . PHP_EOL;
+                        $min = 1;
+                        $max = 2;
                         break;
                     case 5:
                         //list available content
+                        $menu = 'CON situation Room. Select' . PHP_EOL;
+                        $menu .= '1. Content 1' . PHP_EOL;
+                        $menu .= '2. Content 2' . PHP_EOL;
+                        $menu .= '99. Back' . PHP_EOL;
+                        $min = 1;
+                        $max = 2;
                         break;
                     case 6:
                         $menu = 'END Thank you for subscribing to Eur News.';
@@ -196,6 +231,7 @@ class UssdController extends Controller
                 }
                 break;
             case 3:
+                $menu = 'END Thank you for subscribing to Euro News.';
                 break;
             case 4:
                 break;
