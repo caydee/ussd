@@ -105,8 +105,12 @@ class UssdController extends Controller
             }
         } else {
             //new
-            $menu_items = $this->get_menus(null, 1, null);
+            $response = $this->get_menus(null, 1, null);
+            $menu_items = $response[0];
+            $min = $response[1];
+            $max = $response[2];
             $selection = $ussdString;
+
             Session::insert([
                 'SESSION_ID' => $sessionId,
                 'SERVICE_CODE' => $serviceCode,
@@ -115,8 +119,8 @@ class UssdController extends Controller
                 'LEVEL' => 1,
                 'SELECTION' =>  $selection,
                 'MENU' => $menu_items,
-                'MIN_VAL' => 1,
-                'MAX_VAL' => 6,
+                'MIN_VAL' => $min,
+                'MAX_VAL' => $max,
                 'SESSION_DATE' => Carbon::now()
             ]);
         }
