@@ -140,7 +140,7 @@ class UssdController extends Controller
         $session->update([
             'USSD_STRING' => $ussdstring,
             'SELECTION' =>  $selection,
-            'LEVEL' => $session + 1,
+            'LEVEL' => $session->LEVEL + 1,
             'MENU' => $menus,
             'MIN_VAL' => $min,
             'MAX_VAL' => $max,
