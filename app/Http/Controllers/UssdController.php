@@ -102,6 +102,14 @@ class UssdController extends Controller
                         $this->update_session($session, $ussdString, $menu_items, 1, $min, $max);
                         break;
                 }
+            } else {
+                $len = strlen($session->USSD_STRING);
+                $selection = substr($ussdString, 0,  $len);
+                $response = $this->get_menus($session, 2, $selection);
+                $menu_items = $response[0];
+                $min = $response[1];
+                $max = $response[2];
+                $this->update_session($session, $ussdString, $menu_items,  $selection, $min, $max);
             }
         } else {
             //new
@@ -148,13 +156,13 @@ class UssdController extends Controller
         switch ($level) {
             case 1:
                 $menu = 'CON Welcome to The Standard VAS. Select' . PHP_EOL;
-                $menu .= '1. For Betting Tips' . PHP_EOL;
-                $menu .= '2. For Wrong Number' . PHP_EOL;
-                $menu .= '3. For Adult in the Room' . PHP_EOL;
-                $menu .= '4. For Kesi Mashinani' . PHP_EOL;
-                $menu .= '5. For Situation Room' . PHP_EOL;
-                $menu .= '6. For Euro News' . PHP_EOL;
-                $menu .= '0. To Exit';
+                $menu .= '1. Betting Tips' . PHP_EOL;
+                $menu .= '2. Wrong Number' . PHP_EOL;
+                $menu .= '3. Adult in the Room' . PHP_EOL;
+                $menu .= '4. Kesi Mashinani' . PHP_EOL;
+                $menu .= '5. Situation Room' . PHP_EOL;
+                $menu .= '6. Euro News' . PHP_EOL;
+                $menu .= '0. Exit';
                 $min = 1;
                 $max = 6;
                 break;
