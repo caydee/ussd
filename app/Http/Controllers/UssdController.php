@@ -51,7 +51,7 @@ class UssdController extends Controller
             return response($body, 200)
                 ->header('Content-Type', 'text/plain');
         }
-
+        $ussdString = str_replace('*', '', $ussdString);
         $session = Session::where('SESSION_ID', $sessionId)->first();
         if ($session) {
             //ongoing
