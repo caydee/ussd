@@ -147,7 +147,7 @@ class UssdController extends Controller
 
         switch ($level) {
             case 1:
-                $menu = 'Welcome to The Standard VAS. Select' . PHP_EOL;
+                $menu = 'CON Welcome to The Standard VAS. Select' . PHP_EOL;
                 $menu .= '1. For Betting Tips' . PHP_EOL;
                 $menu .= '2. For Wrong Number' . PHP_EOL;
                 $menu .= '3. For Adult in the Room' . PHP_EOL;
