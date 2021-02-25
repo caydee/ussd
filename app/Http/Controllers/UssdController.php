@@ -64,42 +64,42 @@ class UssdController extends Controller
                         $menu_items = $response[0];
                         $min = $response[1];
                         $max = $response[2];
-                        $this->update_session($session, $ussdString, $menu_items, 1, $min, $max);
+                        $this->update_session($session, $ussdString, $menu_items, 1, $min, $max, 'Betting Tips');
                         break;
                     case 11:
                         $response = $this->get_menus($session, 2, 2);
                         $menu_items = $response[0];
                         $min = $response[1];
                         $max = $response[2];
-                        $this->update_session($session, $ussdString, $menu_items, 1, $min, $max);
+                        $this->update_session($session, $ussdString, $menu_items, 1, $min, $max, 'Wrong Number');
                         break;
                     case 12:
                         $response = $this->get_menus($session, 2, 3);
                         $menu_items = $response[0];
                         $min = $response[1];
                         $max = $response[2];
-                        $this->update_session($session, $ussdString, $menu_items, 1, $min, $max);
+                        $this->update_session($session, $ussdString, $menu_items, 1, $min, $max, 'Adult in the Room');
                         break;
                     case 13:
                         $response = $this->get_menus($session, 2, 4);
                         $menu_items = $response[0];
                         $min = $response[1];
                         $max = $response[2];
-                        $this->update_session($session, $ussdString, $menu_items, 1, $min, $max);
+                        $this->update_session($session, $ussdString, $menu_items, 1, $min, $max, 'Kesi Mashinani');
                         break;
                     case 14:
                         $response = $this->get_menus($session, 2, 5);
                         $menu_items = $response[0];
                         $min = $response[1];
                         $max = $response[2];
-                        $this->update_session($session, $ussdString, $menu_items, 1, $min, $max);
+                        $this->update_session($session, $ussdString, $menu_items, 1, $min, $max, 'Situation Room');
                         break;
                     case 20:
                         $response = $this->get_menus($session, 2, 6);
                         $menu_items = $response[0];
                         $min = $response[1];
                         $max = $response[2];
-                        $this->update_session($session, $ussdString, $menu_items, 1, $min, $max);
+                        $this->update_session($session, $ussdString, $menu_items, 1, $min, $max, 'Euro News');
                         break;
                 }
             } else {
