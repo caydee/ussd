@@ -22,6 +22,7 @@ class CreateSessionsTable extends Migration
             $table->string('USSD_STRING');
             $table->integer('LEVEL');
             $table->text('MENU');
+            $table->string('TITLE')->nullable();
             $table->integer('SELECTION');
             $table->integer('MIN_VAL');
             $table->integer('MAX_VAL');

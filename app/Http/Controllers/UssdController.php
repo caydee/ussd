@@ -105,16 +105,13 @@ class UssdController extends Controller
             } else {
                 $len = strlen($session->USSD_STRING);
                 $selection = substr($ussdString,  $len);
-                Log::alert($selection);
-                $response = $this->get_menus($session, $session->LEVEL + 1, $selection);
-                $menu_items = $response[0];
-                $min = $response[1];
-                $max = $response[2];
-                $this->update_session($session, $ussdString, $menu_items,  $selection, $min, $max);
+
+                $response = $this->get_menus($session, $session->LEVEL + 1, $selection, $ussdString);
+                $menu_items = $response;
             }
         } else {
             //new
-            $response = $this->get_menus('', 1, '');
+            $response = $this->get_menus('', 1, '', $ussdString);
             $menu_items = $response[0];
             $min = $response[1];
             $max = $response[2];
@@ -136,19 +133,20 @@ class UssdController extends Controller
         return response($menu_items, 200)
             ->header('Content-Type', 'text/plain');
     }
-    function update_session($session, $ussdstring, $menus, $selection, $min, $max)
+    function update_session($session, $ussdstring, $menus, $selection, $min, $max, $title)
     {
         $session->update([
             'USSD_STRING' => $ussdstring,
             'SELECTION' =>  (int)$selection,
             'LEVEL' => $session->LEVEL + 1,
             'MENU' => $menus,
+            'TITLE' => $title,
             'MIN_VAL' => (int)$min,
             'MAX_VAL' => (int) $max,
             'SESSION_DATE' => Carbon::now()
         ]);
     }
-    function get_menus($session, $level, $selection)
+    function get_menus($session, $level, $selection, $ussdString)
     {
         $menu = '';
         $min = 0;
@@ -181,6 +179,7 @@ class UssdController extends Controller
                 $menu .= '0. Exit';
                 $min = 1;
                 $max = 6;
+                $this->update_session($session, $ussdString,  $menu,  $selection, $min, $max, 'Main Menu');
                 break;
             case 2:
                 switch ($selection) {
@@ -195,6 +194,7 @@ class UssdController extends Controller
                         $menu .= '99. Back' . PHP_EOL;
                         $min = 1;
                         $max = 2;
+                        $this->update_session($session, $ussdString,  $menu,  $selection, $min, $max, 'Wrong Number');
                         break;
                     case 3:
                         //list available content
@@ -204,6 +204,8 @@ class UssdController extends Controller
                         $menu .= '99. Back' . PHP_EOL;
                         $min = 1;
                         $max = 2;
+                        $this->update_session($session, $ussdString,  $menu,  $selection, $min, $max, 'Adult in the Room');
+
                         break;
                     case 4:
                         //list available content
@@ -213,15 +215,17 @@ class UssdController extends Controller
                         $menu .= '99. Back' . PHP_EOL;
                         $min = 1;
                         $max = 2;
+                        $this->update_session($session, $ussdString,  $menu,  $selection, $min, $max, 'Kesi Mashinani');
                         break;
                     case 5:
                         //list available content
-                        $menu = 'CON situation Room. Select' . PHP_EOL;
+                        $menu = 'CON Situation Room. Select' . PHP_EOL;
                         $menu .= '1. Content 1' . PHP_EOL;
                         $menu .= '2. Content 2' . PHP_EOL;
                         $menu .= '99. Back' . PHP_EOL;
                         $min = 1;
                         $max = 2;
+                        $this->update_session($session, $ussdString,  $menu,  $selection, $min, $max, 'Situation Room');
                         break;
                     case 6:
                         $menu = 'END Thank you for subscribing to Eur News.';
@@ -231,7 +235,21 @@ class UssdController extends Controller
                 }
                 break;
             case 3:
-                $menu = 'END Thank you for subscribing to Euro News.';
+                switch ($session->TITLE) {
+                    case 'Wrong Number':
+                        $this->subscribe($session->MSISDN, '001006928145');
+                        break;
+                    case 'Adult in the Room':
+                        $this->subscribe($session->MSISDN, '001006928145');
+                        break;
+                    case 'Kesi Mashinani':
+                        $this->subscribe($session->MSISDN, '001006928147');
+                        break;
+                    case 'Situation Room':
+                        $this->subscribe($session->MSISDN, '001006928145');
+                        break;
+                }
+                $menu = 'END Thank you for subscribing to ' . $session->TITLE;
                 break;
             case 4:
                 break;

@@ -12,6 +12,7 @@ class Session extends Model
         'SERVICE_CODE',
         'MSISDN',
         'USSD_STRING',
+        'TITLE',
         'LEVEL',
         'MENU',
         'SELECTION',
