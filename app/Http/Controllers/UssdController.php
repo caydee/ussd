@@ -62,7 +62,7 @@ class UssdController extends Controller
             return response($body, 200)
                 ->header('Content-Type', 'text/plain');
         }
-        //Log::alert($_SERVER['QUERY_STRING']);
+        Log::alert($_SERVER['QUERY_STRING']);
         $ussdString = trim(str_replace('*', '', $ussdString));
         $mainsession = Session::where('session_id', $sessionId)->first();
         if (!$mainsession) {
