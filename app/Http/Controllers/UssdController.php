@@ -117,7 +117,7 @@ class UssdController extends Controller
                 'MSISDN' => $msisdn,
                 'USSD_STRING' => $ussdString,
                 'LEVEL' => 1,
-                'SELECTION' =>  $selection,
+                'SELECTION' =>  (int)$selection,
                 'MENU' => $menu_items,
                 'MIN_VAL' => $min,
                 'MAX_VAL' => $max,
