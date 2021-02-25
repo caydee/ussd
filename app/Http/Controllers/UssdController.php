@@ -25,24 +25,13 @@ class UssdController extends Controller
     public function Request(Request $request)
     {
 
-        $min = 1;
-        $max = 7;
         $menu_items = '';
         $msisdn = $_GET['MSISDN'];
         $serviceCode = $_GET['SERVICE_CODE'];
         $ussdString = $_GET['USSD_STRING'];
         $sessionId = $_GET['SESSION_ID'];
+        $selection = '';
 
-        //Log the session
-        $sess = Sessionlog::where('session_id', $sessionId)->first();
-        if (!$sess) {
-            Sessionlog::insert([
-                'session_id' => $sessionId,
-                'msisdn' => $msisdn,
-                'ussd_string' => $ussdString,
-                'service_code' => $serviceCode
-            ]);
-        }
         if ($serviceCode == '*395#') {
             //get menus from moobifun and return to safaricom
             $apiurl = 'http://standardmedia-ussd.moobifun.com/ubc/ussdgtw/standardmedia';
@@ -62,426 +51,153 @@ class UssdController extends Controller
             return response($body, 200)
                 ->header('Content-Type', 'text/plain');
         }
-        Log::alert($_SERVER['QUERY_STRING']);
-        $ussdString = trim(str_replace('*', '', $ussdString));
-        $mainsession = Session::where('session_id', $sessionId)->first();
-        if (!$mainsession) {
-            //new session
-            Session::insert(
-                [
-                    'session_id' => $sessionId,
-                    'msisdn' => $msisdn,
-                    'ussd_string' => $ussdString,
-                    'service_code' => $serviceCode,
-                    'min_selection' => $min,
-                    'max_selection' => $max,
-                    'menus' => $menu_items,
-                    'ussd_level' => 1,
-                    'expected_input' => 0
-                ]
-            );
-            $menu_items = 'CON ' . $this->MainMenu();
-        } else {
-            if ($mainsession->ussd_string == $ussdString) {
-                switch ((int)$ussdString) {
+
+        $session = Session::where('SESSION_ID', $sessionId)->first();
+        if ($session) {
+            //ongoing
+            //get the selection
+            if (strlen($ussdString) == 2 &&  $ussdString == $session->SELECTION &&  $session->LEVEL == 1) {
+                //shortcuts
+                switch ((int) $ussdString) {
                     case 10:
-                        $menu_items = $this->Ussdmenus($mainsession, $ussdString, 1, $msisdn, 1);
+                        $response = $this->get_menus($session, 2, 1);
+                        $menu_items = $response[0];
+                        $min = $response[1];
+                        $max = $response[2];
+                        $this->update_session($session, $ussdString, $menu_items, 1, $min, $max);
                         break;
                     case 11:
-                        $menu_items = $this->Ussdmenus($mainsession, $ussdString, 2, $msisdn, 1);
+                        $response = $this->get_menus($session, 2, 2);
+                        $menu_items = $response[0];
+                        $min = $response[1];
+                        $max = $response[2];
+                        $this->update_session($session, $ussdString, $menu_items, 1, $min, $max);
                         break;
                     case 12:
-                        $menu_items = $this->Ussdmenus($mainsession, $ussdString, 3, $msisdn, 1);
+                        $response = $this->get_menus($session, 2, 3);
+                        $menu_items = $response[0];
+                        $min = $response[1];
+                        $max = $response[2];
+                        $this->update_session($session, $ussdString, $menu_items, 1, $min, $max);
                         break;
                     case 13:
-                        $menu_items = $this->Ussdmenus($mainsession, $ussdString, 4, $msisdn, 1);
+                        $response = $this->get_menus($session, 2, 4);
+                        $menu_items = $response[0];
+                        $min = $response[1];
+                        $max = $response[2];
+                        $this->update_session($session, $ussdString, $menu_items, 1, $min, $max);
                         break;
                     case 14:
-                        $menu_items = $this->Ussdmenus($mainsession, $ussdString, 5, $msisdn, 1);
+                        $response = $this->get_menus($session, 2, 5);
+                        $menu_items = $response[0];
+                        $min = $response[1];
+                        $max = $response[2];
+                        $this->update_session($session, $ussdString, $menu_items, 1, $min, $max);
                         break;
-                    case 15:
-                        $menu_items = $this->Ussdmenus($mainsession, $ussdString, 6, $msisdn, 1);
+                    case 20:
+                        $response = $this->get_menus($session, 2, 6);
+                        $menu_items = $response[0];
+                        $min = $response[1];
+                        $max = $response[2];
+                        $this->update_session($session, $ussdString, $menu_items, 1, $min, $max);
                         break;
-                    case 16:
-                        $menu_items = $this->Ussdmenus($mainsession, $ussdString, 7, $msisdn, 1);
-                        break;
-                    default:
-                        $menu_items = 'CON ' . $this->MainMenu();
                 }
-            } else {
-                $menu_items = $this->Ussdmenus($mainsession, $ussdString, '', $msisdn, 0);
             }
+        } else {
+            //new
+            $menu_items = $this->get_menus(null, 1, null);
+            $selection = $ussdString;
+            Session::insert([
+                'SESSION_ID' => $sessionId,
+                'SERVICE_CODE' => $serviceCode,
+                'MSISDN' => $msisdn,
+                'USSD_STRING' => $ussdString,
+                'LEVEL' => 1,
+                'SELECTION' =>  $selection,
+                'MENU' => $menu_items,
+                'MIN_VAL' => 1,
+                'MAX_VAL' => 6,
+                'SESSION_DATE' => Carbon::now()
+            ]);
         }
         return response($menu_items, 200)
             ->header('Content-Type', 'text/plain');
     }
-
-    function Ussdmenus($session, $ussdString, $selection, $msisdn, $shortcut)
+    function update_session($session, $ussdstring, $menus, $selection, $min, $max)
     {
-        $menu_items = '';
-        $menu_level = $session->ussd_level + 1;
-        $len = strlen($session->ussd_string);
-        $userinput = $shortcut == 1 ? $selection : substr($ussdString, $len);
-
-        if ($session->expected_input == 0) {
-            if ((int)$userinput < (int)$session->min_selection || (int)$userinput > (int)$session->max_selection) {
-                Log::info($userinput);
-                Log::info($session->min_selection);
-                Log::info($session->max_selection);
-                $menu_items = $this->MainMenu();
-                $session->update(
-                    [
-                        'min_selection' => 1,
-                        'max_selection' => 7,
-                        'menus' => $menu_items,
-                        'ussd_level' => 1,
-                        'expected_input' => 0,
-                        'current_selection' => $userinput,
-                        'ussd_string' => $ussdString
-                    ]
-                );
-                $menu_items = 'CON Invalid Selection.' . PHP_EOL .  $menu_items;
-                return $menu_items;
-            }
-            //expecting a string input - Move to the next
-            //load next menus
-            switch ($menu_level) {
-                case 2:
-                    if ((int)$userinput == 1) {
-                        //list song of hour
-                        $res = $this->getsongs('Songofhour');
-                        $menu_items = $res[0];
-                        $session->update(
-                            [
-                                'min_selection' => 1,
-                                'max_selection' => $res[1],
-                                'menus' => $menu_items,
-                                'ussd_level' => $menu_level,
-                                'expected_input' => 0,
-                                'current_selection' => $userinput,
-                                'ussd_string' => $ussdString
-                            ]
-                        );
-                    }
-                    if ((int)$userinput == 2) {
-                        //ask user to subscribe
-                        $sub = $this->checksubscripton('Life Quotes', $msisdn, 'QUOTES') == 0 ? 'Subscribe to Life Quotes' : 'Unsubscribe';
-                        $menu_items = 'CON Confirm' . PHP_EOL;
-                        $menu_items .= '1. ' . $sub . PHP_EOL;
-                        $menu_items .= '2. Back' . PHP_EOL;
-                        $session->update(
-                            [
-                                'min_selection' => 1,
-                                'max_selection' => 2,
-                                'menus' => $menu_items,
-                                'ussd_level' => $menu_level,
-                                'expected_input' => 0,
-                                'current_selection' => $userinput,
-                                'ussd_string' => $ussdString
-                            ]
-                        );
-                    }
-                    if ((int)$userinput == 3) {
-                        //list top gospel songs
-                        $res = $this->getsongs('Topgospel');
-                        //  return $res;
-                        $menu_items = $res[0];
-                        $session->update(
-                            [
-                                'min_selection' => 1,
-                                'max_selection' => $res[1],
-                                'menus' => $menu_items,
-                                'ussd_level' => $menu_level,
-                                'expected_input' => 0,
-                                'current_selection' => $userinput,
-                                'ussd_string' => $ussdString
-                            ]
-                        );
-                    }
-                    if ((int)$userinput == 4) {
-                        $res = $this->getsongs('KesiMashinani');
-                        $menu_items = $res[0];
-                        $session->update(
-                            [
-                                'min_selection' => 1,
-                                'max_selection' => $res[1],
-                                'menus' => $menu_items,
-                                'ussd_level' => $menu_level,
-                                'expected_input' => 0,
-                                'current_selection' => $userinput,
-                                'ussd_string' => $ussdString
-                            ]
-                        );
-                    }
-                    if ((int)$userinput == 5) {
-                        //ask user to subscribe to funny jokes
-                        //ask user to subscribe
-                        $sub = $this->checksubscripton('Funny Jokes', $msisdn, 'JOKES') == 0 ? 'Subscribe to Funny Jokes' : 'Unsubscribe';
-                        $menu_items = 'CON Confirm' . PHP_EOL;
-                        $menu_items .= '1. ' . $sub . PHP_EOL;
-                        $menu_items .= '2. Back' . PHP_EOL;
-                        $session->update(
-                            [
-                                'min_selection' => 1,
-                                'max_selection' => 2,
-                                'menus' => $menu_items,
-                                'ussd_level' => $menu_level,
-                                'expected_input' => 0,
-                                'current_selection' => $userinput,
-                                'ussd_string' => $ussdString
-                            ]
-                        );
-                    }
-                    if ((int)$userinput == 6) {
-                        //ask user to subscribe to News
-                        //ask user to subscribe
-                        $sub = $this->checksubscripton('Breaking News', $msisdn, 'NEWS') == 0 ? 'Subscribe to Breaking News' : 'Unsubscribe';
-                        $menu_items = 'CON Confirm' . PHP_EOL;
-                        $menu_items .= '1. ' . $sub . PHP_EOL;
-                        $menu_items .= '2. Back' . PHP_EOL;
-                        $session->update(
-                            [
-                                'min_selection' => 1,
-                                'max_selection' => 2,
-                                'menus' => $menu_items,
-                                'ussd_level' => $menu_level,
-                                'expected_input' => 0,
-                                'current_selection' => $userinput,
-                                'ussd_string' => $ussdString
-                            ]
-                        );
-                    }
-                    if ((int)$userinput == 7) {
-                        //ask user to subscribe to Sports
-                        //ask user to subscribe
-                        $sub = $this->checksubscripton('Sports News', $msisdn, 'SPORTS') == 0 ? 'Subscribe to Sports News' : 'Unsubscribe';
-                        $menu_items = 'CON Confirm' . PHP_EOL;
-                        $menu_items .= '1. ' . $sub . PHP_EOL;
-                        $menu_items .= '2. Back' . PHP_EOL;
-                        $session->update(
-                            [
-                                'min_selection' => 1,
-                                'max_selection' => 2,
-                                'menus' => $menu_items,
-                                'ussd_level' => $menu_level,
-                                'expected_input' => 0,
-                                'current_selection' => $userinput,
-                                'ussd_string' => $ussdString
-                            ]
-                        );
-                    }
-                    break;
-                case 3:
-                    //
-                    if ((int)$session->current_selection == 1) {
-                        //song of the hour selected    
-                        //get top song chosen
-                        $song = Songofthehour::where('menunumber', (int)$userinput)->first();
-                        $s = $this->checksubscripton('Song of the Hour', $msisdn, $song->name);
-                        $this->SubscribeUser($msisdn, 'Song of the Hour', $song->name, $s);
-                        $menu_items = 'END Thank you for subscribing to Song of the hour (' . $song->name . '). You will receive content shortly.';
-                    }
-                    if ((int)$session->current_selection == 2) {
-                        //subscription to life quotes
-                        if ((int)$userinput == 2) {
-                            $menu_items = $this->MainMenu();
-                            $session->update(
-                                [
-                                    'min_selection' => 1,
-                                    'max_selection' => 6,
-                                    'menus' => $menu_items,
-                                    'ussd_level' => 1,
-                                    'expected_input' => 0,
-                                    'current_selection' => $userinput,
-                                    'ussd_string' => $ussdString
-                                ]
-                            );
-                        } else {
-                            $s = $this->checksubscripton('Life Quotes', $msisdn, 'QUOTES');
-                            $this->SubscribeUser($msisdn, 'Life Quotes', 'QUOTES', $s);
-                            if ($s == 0) {
-                                $menu_items = 'END Thank you for subscribing to Life Quotes. You will receive content shortly.';
-                            } else {
-                                $menu_items = 'END You have successfully unsubscribed from Life Quotes. Dial *207# for more options';
-                            }
-                        }
-                    }
-                    if ((int)$session->current_selection == 3) {
-                        //Top gospel selected
-                        $song = Topgospel::where('menunumber', (int)$userinput)->first();
-                        $s = $this->checksubscripton('Top Gospel Songs', $msisdn, $song->name);
-                        $this->SubscribeUser($msisdn, 'Top Gospel Songs', $song->name, $s);
-                        $menu_items = 'END Thank you for subscribing to Top Gospel Songs (' . $song->name . '). You will receive content shortly.';
-                    }
-                    if ((int)$session->current_selection == 4) {
-                        //Kesi Mashinani selected
-                        $song = Topmusic::where('menunumber', (int)$userinput)->first();
-                        $s = $this->checksubscripton('Kesi Mashinani', $msisdn, $song->name);
-                        $this->SubscribeUser($msisdn, 'Kesi Mashinani', $song->name, $s);
-                        $menu_items = 'END Thank you for subscribing to Kesi Mashinani (' . $song->name . '). You will receive content shortly.';
-                    }
-                    if ((int)$session->current_selection == 5) {
-                        //subscription to funny jokes
-                        if ((int)$userinput == 2) {
-                            $menu_items = $this->MainMenu();
-                            $session->update(
-                                [
-                                    'min_selection' => 1,
-                                    'max_selection' => 6,
-                                    'menus' => $menu_items,
-                                    'ussd_level' => 1,
-                                    'expected_input' => 0,
-                                    'current_selection' => $userinput,
-                                    'ussd_string' => $ussdString
-                                ]
-                            );
-                        } else {
-                            $s = $this->checksubscripton('Funny Jokes', $msisdn, 'JOKES');
-                            $this->SubscribeUser($msisdn, 'Funy Jokes', 'JOKES', $s);
-                            if ($s == 0) {
-                                $this->SubscribeUser($msisdn, 'Kesi Mashinani', 'JOKES', $s);
-                                $menu_items = 'END Thank you for subscribing to Funny Jokes. You will receive content shortly.';
-                            } else {
-                                $menu_items = 'END You have successfully unsubscribed from Funny Jokes. Dial *207# for more options';
-                            }
-                        }
-                    }
-                    if ((int)$session->current_selection == 6) {
-                        //subscription to breaking news
-                        if ((int)$userinput == 2) {
-                            $menu_items = $this->MainMenu();
-                            $session->update(
-                                [
-                                    'min_selection' => 1,
-                                    'max_selection' => 6,
-                                    'menus' => $menu_items,
-                                    'ussd_level' => 1,
-                                    'expected_input' => 0,
-                                    'current_selection' => $userinput,
-                                    'ussd_string' => $ussdString
-                                ]
-                            );
-                        } else {
-                            $s = $this->checksubscripton('Breaking News', $msisdn, 'NEWS');
-                            $this->SubscribeUser($msisdn, 'Breaking News', 'NEWS', $s);
-                            if ($s == 0) {
-                                $menu_items = 'END Thank you for subscribing to Breaking News. You will receive content shortly.';
-                            } else {
-                                $menu_items = 'END You have successfully unsubscribed from Breaking News. Dial *207# for more options';
-                            }
-                        }
-                    }
-                    if ((int)$session->current_selection == 7) {
-                        //subscription to sports
-                        if ((int)$userinput == 2) {
-                            $menu_items = $this->MainMenu();
-                            $session->update(
-                                [
-                                    'min_selection' => 1,
-                                    'max_selection' => 6,
-                                    'menus' => $menu_items,
-                                    'ussd_level' => 1,
-                                    'expected_input' => 0,
-                                    'current_selection' => $userinput,
-                                    'ussd_string' => $ussdString
-                                ]
-                            );
-                        } else {
-                            $s = $this->checksubscripton('Sports News', $msisdn, 'SPORTS');
-                            $this->SubscribeUser($msisdn, 'Sports News', 'SPORTS', $s);
-                            if ($s == 0) {
-                                $menu_items = 'END Thank you for subscribing to Sports News. You will receive content shortly.';
-                            } else {
-                                $menu_items = 'END You have successfully unsubscribed from Sports News. Dial *207# for more options';
-                            }
-                        }
-                    }
-                    break;
-            }
-        }
-        return $menu_items;
+        $session->update([
+            'USSD_STRING' => $ussdstring,
+            'SELECTION' =>  $selection,
+            'LEVEL' => $session + 1,
+            'MENU' => $menus,
+            'MIN_VAL' => $min,
+            'MAX_VAL' => $max,
+            'SESSION_DATE' => Carbon::now()
+        ]);
     }
-
-    function getsongs($genre)
+    function get_menus($session, $level, $selection)
     {
-        $songs = Songofthehour::orderby('menunumber', 'asc')->get();
-        $list = "CON Songs of the Hour" . PHP_EOL;
-        if ($genre == 'Topgospel') {
-            $songs = Topgospel::orderby('menunumber', 'asc')->get();
-            $list = "CON Top Gospel Songs Tracks" . PHP_EOL;
-        }
-        if ($genre == 'KesiMashinani') {
-            $songs = Topmusic::orderby('menunumber', 'asc')->get();
-            $list = "CON Kesi Mashinani" . PHP_EOL;
-        }
+        $menu = '';
+        $min = 0;
+        $max = 0;
 
-        foreach ($songs as $song) {
-            $list .= $song->menunumber . '. ' . $song->name . PHP_EOL;
-        }
+        switch ($level) {
+            case 1:
+                $menu = 'Welcome to The Standard VAS. Select' . PHP_EOL;
+                $menu .= '1. For Betting Tips' . PHP_EOL;
+                $menu .= '2. For Wrong Number' . PHP_EOL;
+                $menu .= '3. For Adult in the Room' . PHP_EOL;
+                $menu .= '4. For Kesi Mashinani' . PHP_EOL;
+                $menu .= '5. For Situation Room' . PHP_EOL;
+                $menu .= '6. For Euro News' . PHP_EOL;
+                $menu .= '0. To Exit';
+                $min = 1;
+                $max = 6;
+                break;
+            case 2:
+                if ((int)$selection < 1 || (int)$selection > 6) {
+                    //wrong selection, return previous Menu
 
-        return [$list, count($songs)];
-    }
-
-    function MainMenu()
-    {
-        $menu = 'Welcome to the Standard VAS' . PHP_EOL;
-        $menu .= '1. Song of The hour' . PHP_EOL;
-        $menu .= '2. Life Quotes' . PHP_EOL;
-        $menu .= '3. Top Gospel Songs' . PHP_EOL;
-        $menu .= '4. Kesi Mashinani' . PHP_EOL;
-        $menu .= '5. Funny Jokes' . PHP_EOL;
-        $menu .= '6. Breaking News' . PHP_EOL;
-        $menu .= '7. Sports News' . PHP_EOL;
-        return $menu;
-    }
-    function SubscribeUser($msisdn, $service, $song, $state)
-    {
-        $s = Service::where('name', $service)->first();
-        if ($s) {
-            if ($state == 0) { //not subscribed
-                $subs = Subscription::where('offercode', $s->offercode)->where('msisdn', $msisdn)->where('song', $song)->first();
-                if ($subs) {
-                    $subs->update([
-                        'status' => 1,
-                        'subscriptiondate' => Carbon::now()
-                    ]);
-                } else {
-                    Subscription::insert([
-                        'service' => $s->name,
-                        'song' => $song,
-                        'offercode' => $s->offercode,
-                        'msisdn' => $msisdn,
-                        'status' => 1,
-                    ]);
                 }
-            } else {
-                Subscription::insert([
-                    'service' => $s->name,
-                    'song' => $song,
-                    'offercode' => $s->offercode,
-                    'msisdn' => $msisdn,
-                    'status' => 1,
-                ]);
-            }
-            //call subscription API
-            $this->subscribe($msisdn, $s->offercode);
+                switch ($selection) {
+                    case 1:
+                        $menu = 'END Thank you for subscribing to Betting Tips.';
+                        $this->subscribe($session->MSISDN, '001006928145');
+                        break;
+                    case 2:
+                        //list available content
+                        break;
+                    case 3:
+                        //list available content
+                        break;
+                    case 4:
+                        //list available content
+                        break;
+                    case 5:
+                        //list available content
+                        break;
+                    case 6:
+                        $menu = 'END Thank you for subscribing to Eur News.';
+                        //subscribe user and terminate session
+                        $this->subscribe($session->MSISDN, '001006928145');
+                        break;
+                }
+                break;
+            case 3:
+                break;
+            case 4:
+                break;
+            default:
         }
-        return 0;
+        return [$menu, $min, $max];
     }
-    function checksubscripton($service, $msisdn, $song)
-    {
-        $subscribed = Subscription::where([['service', '=', $service], ['msisdn', '=', $msisdn], ['song', '=', $song]])->first();
-        if ($subscribed) {
-            return $subscribed->status;
-        }
-        return 0;
-    }
+
 
     function subscribe($telephone, $offercode)
     {
         $apiurl = 'https://ktnkenya.com/vas/public/api/SubscribeUser';
         $payload = [
-            'msisdn' =>$telephone,
+            'msisdn' => $telephone,
             'offercode' => $offercode
         ];
         $client = new Client();

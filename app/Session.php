@@ -8,12 +8,15 @@ class Session extends Model
 {
     public $timestamps = false;
     protected $fillable = [
-        'menus',
-        'ussd_string',
-        'ussd_level',
-        'current_selection',
-        'expected_input',
-        'min_selection',
-        'max_selection'
+        'SESSION_ID',
+        'SERVICE_CODE',
+        'MSISDN',
+        'USSD_STRING',
+        'LEVEL',
+        'MENU',
+        'SELECTION',
+        'MIN_VAL',
+        'MAX_VAL',
+        'SESSION_DATE'
     ];
 }
