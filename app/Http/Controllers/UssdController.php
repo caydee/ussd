@@ -139,11 +139,11 @@ class UssdController extends Controller
     {
         $session->update([
             'USSD_STRING' => $ussdstring,
-            'SELECTION' =>  $selection,
+            'SELECTION' =>  (int)$selection,
             'LEVEL' => $session->LEVEL + 1,
             'MENU' => $menus,
-            'MIN_VAL' => $min,
-            'MAX_VAL' => $max,
+            'MIN_VAL' => (int)$min,
+            'MAX_VAL' =>(int) $max,
             'SESSION_DATE' => Carbon::now()
         ]);
     }
