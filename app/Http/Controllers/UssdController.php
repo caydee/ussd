@@ -24,14 +24,13 @@ class UssdController extends Controller
 {
     public function Request(Request $request)
     {
-
         $menu_items = '';
         $msisdn = $_GET['MSISDN'];
         $serviceCode = $_GET['SERVICE_CODE'];
         $ussdString = $_GET['USSD_STRING'];
         $sessionId = $_GET['SESSION_ID'];
         $selection = '';
-
+        Log::alert(json_encode($request));
         if ($serviceCode == '*395#') {
             //get menus from moobifun and return to safaricom
             $apiurl = 'http://standardmedia-ussd.moobifun.com/ubc/ussdgtw/standardmedia';
