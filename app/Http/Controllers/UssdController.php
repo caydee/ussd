@@ -31,8 +31,8 @@ class UssdController extends Controller
         $sessionId = $_GET['SESSION_ID'];
         $selection = '';
         return response("END Thank you for contacting the standard VAS. We are updating this service and will be up soon.", 200)
-        ->header('Content-Type', 'text/plain');
-        Log::alert(json_encode($request));
+            ->header('Content-Type', 'text/plain');
+
         if ($serviceCode == '*395#') {
             //get menus from moobifun and return to safaricom
             $apiurl = 'http://standardmedia-ussd.moobifun.com/ubc/ussdgtw/standardmedia';
