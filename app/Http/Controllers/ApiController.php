@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Confirmedsubscription;
+use App\Content;
 use App\Feedback;
 use App\Mpesatransaction;
 use App\Mpesatransactions;
@@ -22,7 +23,7 @@ use Illuminate\Support\Facades\Validator;
 
 class ApiController extends Controller
 {
-    public function GetSubscribers()
+    public function content()
     {
         $headers = getallheaders();
         if (!isset($headers['api_key'])) {
@@ -32,15 +33,9 @@ class ApiController extends Controller
         if ($apikey != '4e0bf5d2975c44c3b194aac300dae162') {
             return response()->json("Invalid API Key", 403);
         }
-        if (array_key_exists("status", $_GET)) {
-            $status = $_GET['status'];
-        } else {
-            $status = 9;
-        }
-       $response=$status == 0 ? Subscription::where('status', 0)->get() : ($status == 1 ? Subscription::where('status', 1)->get() : Subscription::all());
-        return response()->json($response->toArray());
+        return response()->json(Content::all());
     }
-    public function GetSessions()
+    public function CreateContent(Request $request)
     {
         $headers = getallheaders();
         if (!isset($headers['api_key'])) {
@@ -50,20 +45,30 @@ class ApiController extends Controller
         if ($apikey != '4e0bf5d2975c44c3b194aac300dae162') {
             return response()->json("Invalid API Key", 403);
         }
-        if (!array_key_exists("fromdate", $_GET)) {
-            return response()->json('From date required.');
-        }
-        if (!array_key_exists("todate", $_GET)) {
-            return response()->json('To date required.');
-        }
-       
-        $fromdate = $_GET['fromdate'];
-        $todate = $_GET['todate'];
 
-        return response()->json(Session::wheredate('session_date', '>=', Carbon::parse($fromdate)->toDateString())
-        ->whereDate('session_date', '<=', Carbon::parse($todate)->toDateString())->get()->toArray());
+        $rules = array(
+            'ussdmenu' => 'required',
+            'ussdlistnumber' => 'required',
+            'title' => 'required'
+        );
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            $errors = $validator->getMessagebag()->toarray();
+            $array = array_values($errors);
+            $msg = '';
+            for ($i = 1; $i <= sizeof($array); $i++) {
+                $msg .= $array[$i - 1][0] . PHP_EOL;
+            }
+            return response()->json(['errors' =>  $msg], 500);
+        }
+        $content = Content::create([
+            'ussdmenu' => $request->ussdmenu,
+            'ussdlistnumber' => $request->ussdlistnumber,
+            'title' => $request->title
+        ]);
+        return response()->json($content, 201);
     }
-    public function Songs()
+    public function EditContent(Request $request)
     {
         $headers = getallheaders();
         if (!isset($headers['api_key'])) {
@@ -73,128 +78,32 @@ class ApiController extends Controller
         if ($apikey != '4e0bf5d2975c44c3b194aac300dae162') {
             return response()->json("Invalid API Key", 403);
         }
-        if (!array_key_exists("genre", $_GET)) {
-            return response()->json('Music Genre required.');
+
+        $rules = array(
+            'id' => 'required|integer|gt0',
+            'ussdmenu' => 'required',
+            'ussdlistnumber' => 'required',
+            'title' => 'required'
+        );
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            $errors = $validator->getMessagebag()->toarray();
+            $array = array_values($errors);
+            $msg = '';
+            for ($i = 1; $i <= sizeof($array); $i++) {
+                $msg .= $array[$i - 1][0] . PHP_EOL;
+            }
+            return response()->json(['errors' =>  $msg], 500);
         }
-        $genre = $_GET['genre'];
-        return response()->json($this->getmusic($genre));
-    }
-    function getmusic($genre){
-        switch ($genre) {
-            case "Songofthehour":
-                return Songofthehour::all();
-                break;
-            case "Topgospel":
-                return Topgospel::all();
-                break;
-            case "KesiMashinani":
-                return Topmusic::all();
-                break;
+        $content = Content::where('id', $request->id)->first();
+        if ($content) {
+            $content->update([
+                'ussdmenu' => $request->ussdmenu,
+                'ussdlistnumber' => $request->ussdlistnumber,
+                'title' => $request->title
+            ]);
+            return response()->json($content, 201);
         }
-    }
-    public function AddSongs(Request $request)
-    {
-        $headers = getallheaders();
-        if (!isset($headers['api_key'])) {
-            return response()->json("Access to resource Forbidden", 403);
-        }
-        $apikey = $headers['api_key'];
-        if ($apikey != '4e0bf5d2975c44c3b194aac300dae162') {
-            return response()->json("Invalid API Key", 403);
-        }
-        switch ($request->genre) {
-            case "Songofthehour":
-                Songofthehour::insert([
-                    'menunumber' => $request->menunumber,
-                    'name' => $request->name,
-                    'genre' => $request->genre,
-                    'url' => $request->url,
-                    'date' => Carbon::parse($request->date)
-                ]);
-                break;
-            case "Topgospel":
-                Topgospel::insert([
-                    'menunumber' => $request->menunumber,
-                    'name' => $request->name,
-                    'genre' => $request->genre,
-                    'url' => $request->url,
-                    'date' => Carbon::parse($request->date)
-                ]);
-                break;
-            case "Topmusic":
-                Topmusic::insert([
-                    'menunumber' => $request->menunumber,
-                    'name' => $request->name,
-                    'genre' => $request->genre,
-                    'url' => $request->url,
-                    'date' => Carbon::parse($request->date)
-                ]);
-                break;
-        }
-        return response()->json($this->getmusic($request->genre));
-    }
-    public function EditSongs(Request $request)
-    {
-        $headers = getallheaders();
-        if (!isset($headers['api_key'])) {
-            return response()->json("Access to resource Forbidden", 403);
-        }
-        $apikey = $headers['api_key'];
-        if ($apikey != '4e0bf5d2975c44c3b194aac300dae162') {
-            return response()->json("Invalid API Key", 403);
-        }
-        switch ($request->genre) {
-            case "Songofthehour":
-                Songofthehour::where('id', $request->id)->update([
-                    'menunumber' => $request->menunumber,
-                    'genre' => $request->genre,
-                    'name' => $request->name,
-                    'url' => $request->url,
-                    'date' => Carbon::parse($request->date)
-                ]);
-                break;
-            case "Topgospel":
-                Topgospel::where('id', $request->id)->update([
-                    'menunumber' => $request->menunumber,
-                    'genre' => $request->genre,
-                    'name' => $request->name,
-                    'url' => $request->url,
-                    'date' => Carbon::parse($request->date)
-                ]);
-                break;
-            case "Topmusic":
-                Topmusic::where('id', $request->id)->update([
-                    'menunumber' => $request->menunumber,
-                    'genre' => $request->genre,
-                    'name' => $request->name,
-                    'url' => $request->url,
-                    'date' => Carbon::parse($request->date)
-                ]);
-                break;
-        }
-        return response()->json($this->getmusic($request->genre));
-    }
-    public function GetServices(){
-        $headers = getallheaders();
-        if (!isset($headers['api_key'])) {
-            return response()->json("Access to resource Forbidden", 403);
-        }
-        $apikey = $headers['api_key'];
-        if ($apikey != '4e0bf5d2975c44c3b194aac300dae162') {
-            return response()->json("Invalid API Key", 403);
-        }
-        return response()->json(Service::all()->toArray());
-    }
-    public function UpdateSubscriber(Request $request){
-        $headers = getallheaders();
-        if (!isset($headers['api_key'])) {
-            return response()->json("Access to resource Forbidden", 403);
-        }
-        $apikey = $headers['api_key'];
-        if ($apikey != '4e0bf5d2975c44c3b194aac300dae162') {
-            return response()->json("Invalid API Key", 403);
-        }
-        Subscription::where([['msisdn','=',$request->msisdn],['offercode','=',$request->offercode]])->update(['status'=>$request->status]);
-        return 0;
+        return response()->json('Content with ID ' . $request->id . ' NOT FOUND', 404);
     }
 }

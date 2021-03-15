@@ -22,15 +22,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 //     'reason'=>'Not Defined'
 // ]);
 
-Route::get('Request','UssdController@Request');
-
-Route::post('ussdpayment', 'ApiController@payment')->name('ussdpayment');
-
-Route::get('GetSubscribers', 'ApiController@GetSubscribers')->name('GetSubscribers');
-Route::get('GetSessions', 'ApiController@GetSessions')->name('GetSessions');
-Route::get('Songs', 'ApiController@Songs')->name('Songs');
-Route::get('GetServices', 'ApiController@GetServices')->name('GetServices');
-
-Route::post('AddSongs', 'ApiController@AddSongs')->name('AddSongs');
-Route::post('EditSongs', 'ApiController@EditSongs')->name('EditSongs');
-Route::post('UpdateSubscriber', 'ApiController@UpdateSubscriber')->name('UpdateSubscriber');
+Route::get('Request', 'UssdController@Request');
+Route::get('content', 'ApiController@content')->name('content');
+Route::post('createcontent', 'ApiController@CreateContent')->name('CreateContent');
+Route::post('editcontent', 'ApiController@EditContent')->name('CreateContent');
