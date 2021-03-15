@@ -274,10 +274,10 @@ class UssdController extends Controller
         foreach ($content as $c) {
             $menu .= $c->ussdlistnumber . '. ' . $c->title;
         }
-        if(sizeof($content)>0){
-            return [$menu, min($content->pluck('ussdlistnumber')), max($content->pluck('ussdlistnumber'))];
+        if (sizeof($content) > 0) {
+            return [$menu, min($content->pluck('ussdlistnumber')->toArray()), max($content->pluck('ussdlistnumber')->toArray())];
         }
-        return [$class,0,0];
+        return [$class, 0, 0];
     }
 
     function subscribe($telephone, $offercode)
