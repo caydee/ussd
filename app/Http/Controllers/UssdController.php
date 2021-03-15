@@ -272,7 +272,7 @@ class UssdController extends Controller
         $menu = '';
         $content = Content::where('ussdmenu', $class)->orderby('ussdlistnumber', 'Asc')->get();
         foreach ($content as $c) {
-            $menu .= $c->ussdlistnumber . '. ' . $c->title;
+            $menu .= $c->ussdlistnumber . '. ' . $c->title .PHP_EOL;
         }
         if (sizeof($content) > 0) {
             return [$menu, min($content->pluck('ussdlistnumber')->toArray()), max($content->pluck('ussdlistnumber')->toArray())];
