@@ -49,7 +49,8 @@ class ApiController extends Controller
         $rules = array(
             'ussdmenu' => 'required',
             'ussdlistnumber' => 'required',
-            'title' => 'required'
+            'title' => 'required',
+            'location' => 'required',
         );
         $validator = Validator::make($request->all(), $rules);
         if ($validator->fails()) {
@@ -64,7 +65,8 @@ class ApiController extends Controller
         $content = Content::create([
             'ussdmenu' => $request->ussdmenu,
             'ussdlistnumber' => $request->ussdlistnumber,
-            'title' => $request->title
+            'title' => $request->title,
+            'location' => $request->location
         ]);
         return response()->json($content, 201);
     }
@@ -83,7 +85,8 @@ class ApiController extends Controller
             'id' => 'required|integer|gt0',
             'ussdmenu' => 'required',
             'ussdlistnumber' => 'required',
-            'title' => 'required'
+            'title' => 'required',
+            'location' => 'required',
         );
         $validator = Validator::make($request->all(), $rules);
         if ($validator->fails()) {
@@ -100,7 +103,8 @@ class ApiController extends Controller
             $content->update([
                 'ussdmenu' => $request->ussdmenu,
                 'ussdlistnumber' => $request->ussdlistnumber,
-                'title' => $request->title
+                'title' => $request->title,
+                'location' => $request->location
             ]);
             return response()->json($content, 201);
         }

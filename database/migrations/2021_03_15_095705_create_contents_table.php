@@ -18,6 +18,7 @@ class CreateContentsTable extends Migration
             $table->string('ussdmenu');
             $table->integer('ussdlistnumber');
             $table->string('title');
+            $table->text('location');
             $table->timestamps();
         });
     }
