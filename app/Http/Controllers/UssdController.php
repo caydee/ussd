@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Content;
 use App\Feedback;
 use App\Menu;
 use App\Service;
@@ -31,7 +32,7 @@ class UssdController extends Controller
         $sessionId = $_GET['SESSION_ID'];
         $selection = '';
         //$url = $request->fullUrl();
-        
+
 
         if ($serviceCode == '*395#') {
             //get menus from moobifun and return to safaricom
@@ -200,41 +201,37 @@ class UssdController extends Controller
                         break;
                     case 2:
                         $menu = 'CON Wrong Number. Select' . PHP_EOL;
-                        $menu .= '1. Content 1' . PHP_EOL;
-                        $menu .= '2. Content 2' . PHP_EOL;
-                        $menu .= '99. Back' . PHP_EOL;
-                        $min = 1;
-                        $max = 2;
+                        $items = $this->getContent('Wrong Number');
+                        $menu .= $items[0];
+                        $min = $items[1];
+                        $max = $items[2];
                         $title = 'Wrong number';
                         break;
                     case 3:
                         //list available content
                         $menu = 'CON Adult in the Room. Select' . PHP_EOL;
-                        $menu .= '1. Content 1' . PHP_EOL;
-                        $menu .= '2. Content 2' . PHP_EOL;
-                        $menu .= '99. Back' . PHP_EOL;
-                        $min = 1;
-                        $max = 2;
+                        $items = $this->getContent('Adult in the Room');
+                        $menu .= $items[0];
+                        $min = $items[1];
+                        $max = $items[2];
                         $title = 'Adult in the Room';
                         break;
                     case 4:
                         //list available content
                         $menu = 'CON Kesi Mashinani. Select' . PHP_EOL;
-                        $menu .= '1. Kesi 1' . PHP_EOL;
-                        $menu .= '2. Kesi 2' . PHP_EOL;
-                        $menu .= '99. Back' . PHP_EOL;
-                        $min = 1;
-                        $max = 2;
+                        $items = $this->getContent('Kesi Mashinani');
+                        $menu .= $items[0];
+                        $min = $items[1];
+                        $max = $items[2];
                         $title = 'Kesi Mashinani';
                         break;
                     case 5:
                         //list available content
                         $menu = 'CON Situation Room. Select' . PHP_EOL;
-                        $menu .= '1. Content 1' . PHP_EOL;
-                        $menu .= '2. Content 2' . PHP_EOL;
-                        $menu .= '99. Back' . PHP_EOL;
-                        $min = 1;
-                        $max = 2;
+                        $items = $this->getContent('Situation Room');
+                        $menu .= $items[0];
+                        $min = $items[1];
+                        $max = $items[2];
                         $title = 'Situation Room';
                         break;
                     case 6:
@@ -270,7 +267,18 @@ class UssdController extends Controller
 
         return [$menu, $min, $max, $title];
     }
-
+    function getContent($class)
+    {
+        $menu = '';
+        $content = Content::where('ussdmenu', $class)->orderby('ussdlistnumber', 'Asc')->get();
+        foreach ($$content as $c) {
+            $menu .= $c->ussdlistnumber . '. ' . $c->title;
+        }
+        if(sizeof($content)>0){
+            return [$menu, min($content->pluck('ussdlistnumber')), max($content->pluck('ussdlistnumber'))];
+        }
+        return [$class,0,0];
+    }
 
     function subscribe($telephone, $offercode)
     {
