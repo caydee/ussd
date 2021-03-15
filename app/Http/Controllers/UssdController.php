@@ -238,7 +238,7 @@ class UssdController extends Controller
                         $menu = 'END Thank you for subscribing to Euro News.';
                         //subscribe user and terminate session
                         $title = 'Euro News';
-                        $this->subscribe($session->MSISDN, '001006928145');
+                        $this->subscribe($session->MSISDN, '001006928422');
                         break;
                 }
                 break;
@@ -255,7 +255,7 @@ class UssdController extends Controller
                         $this->subscribe($session->MSISDN, '001006928145');
                         break;
                     case 'Adult in the Room':
-                        $this->subscribe($session->MSISDN, '001006928145');
+                        $this->subscribe($session->MSISDN, '001006928423');
                         break;
                 }
                 $menu = 'END Thank you for subscribing to ' . $session->TITLE . ' Content.';
@@ -272,7 +272,7 @@ class UssdController extends Controller
         $menu = '';
         $content = Content::where('ussdmenu', $class)->orderby('ussdlistnumber', 'Asc')->get();
         foreach ($content as $c) {
-            $menu .= $c->ussdlistnumber . '. ' . $c->title .PHP_EOL;
+            $menu .= $c->ussdlistnumber . '. ' . $c->title . PHP_EOL;
         }
         if (sizeof($content) > 0) {
             return [$menu, min($content->pluck('ussdlistnumber')->toArray()), max($content->pluck('ussdlistnumber')->toArray())];
