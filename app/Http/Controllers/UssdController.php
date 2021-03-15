@@ -271,7 +271,7 @@ class UssdController extends Controller
     {
         $menu = '';
         $content = Content::where('ussdmenu', $class)->orderby('ussdlistnumber', 'Asc')->get();
-        foreach ($$content as $c) {
+        foreach ($content as $c) {
             $menu .= $c->ussdlistnumber . '. ' . $c->title;
         }
         if(sizeof($content)>0){
