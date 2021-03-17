@@ -82,7 +82,7 @@ class ApiController extends Controller
         }
 
         $rules = array(
-            'id' => 'required|integer|gt0',
+            'id' => 'required|integer',
             'ussdmenu' => 'required',
             'ussdlistnumber' => 'required',
             'title' => 'required',
