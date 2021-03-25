@@ -107,6 +107,10 @@ class UssdController extends Controller
             } else {
                 $len = strlen($session->USSD_STRING);
                 $selection = substr($ussdString,  $len);
+                if ($selection == "0") {
+                    return response("END Thank you for checking out our USSD Platform. Dial *207# to get more services.", 200)
+                        ->header('Content-Type', 'text/plain');
+                }
                 $response = $this->get_menus($session, $session->LEVEL + 1, $selection);
                 $menu_items = $response[0];
                 $min = $response[1];
