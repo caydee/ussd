@@ -31,8 +31,8 @@ class UssdController extends Controller
         $ussdString = $_GET['USSD_STRING'];
         $sessionId = $_GET['SESSION_ID'];
         $selection = '';
-        //$url = $request->fullUrl();
-
+        $url = $request->fullUrl();
+        Log::alert($url);
 
         if ($serviceCode == '*395#') {
             //get menus from moobifun and return to safaricom
