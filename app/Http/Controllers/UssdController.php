@@ -31,8 +31,8 @@ class UssdController extends Controller
         $ussdString = $_GET['USSD_STRING'];
         $sessionId = $_GET['SESSION_ID'];
         $selection = '';
-       // $url = $request->fullUrl();
-       // Log::alert($url);
+        // $url = $request->fullUrl();
+        // Log::alert($url);
 
         if ($serviceCode == '*395#') {
             //get menus from moobifun and return to safaricom
@@ -191,6 +191,7 @@ class UssdController extends Controller
                 $menu .= '4. Kesi Mashinani' . PHP_EOL;
                 $menu .= '5. Situation Room' . PHP_EOL;
                 $menu .= '6. Euro News' . PHP_EOL;
+                $menu .= '6. Buy Airtime' . PHP_EOL;
                 $menu .= '0. Exit';
                 $min = 1;
                 $max = 6;
@@ -244,6 +245,14 @@ class UssdController extends Controller
                         $title = 'Euro News';
                         $this->subscribe($session->MSISDN, '001006928422');
                         break;
+                    case 7:
+                        $menu = 'CON Buy Airtime';
+                        $menu .= '1. Self';
+                        $menu .= '2. Other number';
+                        $min = 1;
+                        $max = 2;
+                        $title = 'Buy Airtime';
+                        break;
                 }
                 break;
             case 3:
@@ -261,10 +270,49 @@ class UssdController extends Controller
                     case 'Adult in the Room':
                         $this->subscribe($session->MSISDN, '001006928423');
                         break;
+                    case 'Buy Airtime':
+                        switch ($selection) {
+                            case 1:
+                                $menu = 'CON Buy Airtime';
+                                $menu .= '1. Enter amount';
+                                $min = 10;
+                                $max = 1000;
+                                $title = 'Airtime Self';
+                                break;
+                            case 2:
+                                $menu = 'CON Buy Airtime';
+                                $menu .= '1. Enter Recipient Number';
+                                $min = 0;
+                                $max = 9999999999;
+                                $title = 'Airtime Other';
+                                break;
+                        }
+                        break;
                 }
                 $menu = 'END Thank you for subscribing to ' . $session->TITLE . ' Content.';
                 break;
             case 4:
+                switch ($session->TITLE) {
+                    case 'Airtime Self':
+                        //submit amount and telephone
+                        $menu = 'END Thank you. You will receive airtime of value of ' . $selection . ' on your phone shortly.';
+                        break;
+                    case 'Airtime Other':
+                        $menu = 'CON Buy Airtime';
+                        $menu .= '1. Enter amount';
+                        $min = 10;
+                        $max = 1000;
+                        $title = 'Airtime Other';
+                        break;
+                }
+                break;
+            case 5:
+                switch ($session->TITLE) {
+                    case 'Airtime Other':
+                        //submit amount and telephone
+                        $menu = 'END Thank you. You will receive airtime of value of ' . $selection . ' on your phone shortly.';
+                        break;
+                }
                 break;
             default:
         }
