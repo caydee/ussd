@@ -24,8 +24,8 @@ class CreateSessionsTable extends Migration
             $table->text('MENU');
             $table->text('TITLE')->nullable();
             $table->integer('SELECTION');
-            $table->integer('MIN_VAL');
-            $table->integer('MAX_VAL');
+            $table->bigInteger('MIN_VAL');
+            $table->bigInteger('MAX_VAL');
             $table->dateTime('SESSION_DATE')->default(Carbon::now());
         });
     }
