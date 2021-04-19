@@ -21,6 +21,8 @@ class CreateAirtimerequestsTable extends Migration
             $table->decimal('amount')->default(0);
             $table->dateTime('timein')->default(now());
             $table->smallInteger('status')->default(0);
+            $table->string('mpesa_account')->nullable();
+            $table->tinyInteger('mpesa_confirmed')->default(0);
             $table->timestamps();
         });
     }

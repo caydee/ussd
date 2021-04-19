@@ -289,7 +289,7 @@ class UssdController extends Controller
                                 break;
                             case 2:
                                 $menu = 'CON Buy Airtime' . PHP_EOL;
-                                $menu .= 'Enter Recipient Number:';
+                                $menu .= 'Enter Recipient Number(254...):';
                                 $min = 0;
                                 $max = 9999999999;
                                 $title = 'Airtime Other';
@@ -305,11 +305,13 @@ class UssdController extends Controller
             case 4:
                 switch ($session->TITLE) {
                     case 'Airtime Self':
-                        Airtimerequest::where([['session_id', '=', $session->SESSION_ID], ['msisdn', '=', $session->MSISDN]])->update([
-                            'amount' => $selection, 'status' => 1
+                        $air = Airtimerequest::where([['session_id', '=', $session->SESSION_ID], ['msisdn', '=', $session->MSISDN]])->first();
+                        $air->update([
+                            'amount' => $selection, 'status' => 1, 'mpesa_account' => 'AIR' . $air->id
                         ]);
                         //submit amount and telephone
-                        $menu = 'END Thank you. You will receive airtime of value of ' . $selection . ' on your phone shortly.';
+                        $menu = 'END Thank you. Please confirm your airtime purchase of KES.' . $selection . ' by supplying your M-Pesa pin on your phone.';
+                        $this->doSTKPush('AIR' . $air->id, (float)$selection, $air->msisdn);
                         break;
                     case 'Airtime Other':
                         $menu = 'CON Buy Airtime' . PHP_EOL;
@@ -328,10 +330,11 @@ class UssdController extends Controller
                     case 'Airtime Other':
                         //submit amount and telephone
                         $a = Airtimerequest::where([['session_id', '=', $session->SESSION_ID], ['msisdn', '=', $session->MSISDN]])->first();
-                        $menu = 'END Thank you. You will receive airtime of value of KES. ' . $selection . ' on ' .$a->creditphone . ' shortly.';
+                        $menu = 'END Thank you. Please confirm your airtime purchase of KES.' . $selection . ' for telephone (' . $a->creditphone . ') by supplying your M-Pesa pin on your phone.';
                         $a->update([
-                            'amount' => $selection, 'status' => 1
+                            'amount' => $selection, 'status' => 1, 'mpesa_account' =>  'AIR' . $a->id
                         ]);
+                        $this->doSTKPush('AIR' . $a->id, (float)$selection, $a->msisdn);
                         break;
                 }
                 break;
@@ -387,5 +390,26 @@ class UssdController extends Controller
             $tel = '';
         }
         return $tel;
+    }
+    function doSTKPush($account, $amount, $telephone)
+    {
+        $payload = array(
+            'account' => $account,
+            'group' => 'digital',
+            'amount' => $amount,
+            'msisdn' => $telephone,
+            'description' => 'Mawingu Airtime Purchase'
+        );
+        $apiurl = 'https://trans.standardmedia.co.ke/api/checkout';
+        $client = new Client();
+        $response = $client->request('POST', $apiurl, [
+            'form_params' => $payload,
+            'headers' => ["Accept: application/json", "Accept-Language: en-us"]
+        ]);
+        $headers = $response->getHeaders();
+        $body = $response->getBody();
+        $body_array = json_decode($body);
+
+        return $body_array;
     }
 }

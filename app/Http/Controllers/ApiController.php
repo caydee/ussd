@@ -8,6 +8,7 @@ use App\Content;
 use App\Feedback;
 use App\Mpesatransaction;
 use App\Mpesatransactions;
+use App\Payment;
 use App\Prefix;
 use App\Service;
 use App\Subscription;
@@ -116,13 +117,13 @@ class ApiController extends Controller
     }
     public function postairtime()
     {
-        $records = Airtimerequest::where('status', 1)->get();
+        $records = Airtimerequest::where([['status', '=', 1], ['mpesa_confirmed', '=', 1]])->get();
 
         if (sizeof($records) < 1) return;
 
         $payload = [];
         foreach ($records as $record) {
-            Log::alert(substr($record->creditphone, 0, 6));
+
             $prefix = Prefix::where('prefix', substr($record->creditphone, 0, 6))->first();
             array_push($payload, [
                 "msisdn" => $record->creditphone,
@@ -203,5 +204,28 @@ class ApiController extends Controller
         ]);
 
         return 0;
+    }
+
+    public function mpesa_callback(Request $request)
+    {
+        $request = json_decode((file_get_contents("php://input")), true);
+        $p = Payment::where('reference', $request['mpesa_code'])->first();
+        if (!$p) {
+            Payment::insert([
+                'msisdn'  => $request['sender_phone'],
+                'account'  => $request['transaction'],
+                'amount'  => $request['amount'],
+                'reference'  => $request['mpesa_code'],
+                'origin'  => $request['origin'],
+                'mode'  => $request['type']
+            ]);
+            $req = Airtimerequest::where([['mpesa_account', '=', $request['transaction']], 'amount', '=', (float)$request['amount']])->first();
+            if ($req) {
+                $req->update(['mpesa_confirmed' => 1]);
+            }
+        } else {
+            return response()->json('Duplicate Payment received', 400);
+        }
+        return response()->json('Payment received');
     }
 }

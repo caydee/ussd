@@ -29,3 +29,5 @@ Route::post('editcontent', 'ApiController@EditContent')->name('CreateContent');
 
 Route::get('prefixes', 'ApiController@prefixes');
 Route::get('postairtime', 'ApiController@postairtime');
+
+Route::post('airtimepayment', 'ApiController@mpesa_callback');
