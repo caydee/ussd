@@ -246,8 +246,8 @@ class UssdController extends Controller
                         $this->subscribe($session->MSISDN, '001006928422');
                         break;
                     case 7:
-                        $menu = 'CON Buy Airtime';
-                        $menu .= '1. Self';
+                        $menu = 'CON Buy Airtime' . PHP_EOL;
+                        $menu .= '1. Self' . PHP_EOL;
                         $menu .= '2. Other number';
                         $min = 1;
                         $max = 2;
@@ -260,27 +260,31 @@ class UssdController extends Controller
                 switch ($session->TITLE) {
                     case 'Wrong number':
                         $this->subscribe($session->MSISDN, '001006928145');
+                        $menu = 'END Thank you for subscribing to ' . $session->TITLE . ' Content.';
                         break;
                     case 'Kesi Mashinani':
                         $this->subscribe($session->MSISDN, '001006928147');
+                        $menu = 'END Thank you for subscribing to ' . $session->TITLE . ' Content.';
                         break;
                     case 'Situation Room':
                         $this->subscribe($session->MSISDN, '001006928145');
+                        $menu = 'END Thank you for subscribing to ' . $session->TITLE . ' Content.';
                         break;
                     case 'Adult in the Room':
                         $this->subscribe($session->MSISDN, '001006928423');
+                        $menu = 'END Thank you for subscribing to ' . $session->TITLE . ' Content.';
                         break;
                     case 'Buy Airtime':
                         switch ($selection) {
                             case 1:
-                                $menu = 'CON Buy Airtime';
+                                $menu = 'CON Buy Airtime' . PHP_EOL;
                                 $menu .= '1. Enter amount';
                                 $min = 10;
                                 $max = 1000;
                                 $title = 'Airtime Self';
                                 break;
                             case 2:
-                                $menu = 'CON Buy Airtime';
+                                $menu = 'CON Buy Airtime' . PHP_EOL;
                                 $menu .= '1. Enter Recipient Number';
                                 $min = 0;
                                 $max = 9999999999;
@@ -289,7 +293,7 @@ class UssdController extends Controller
                         }
                         break;
                 }
-                $menu = 'END Thank you for subscribing to ' . $session->TITLE . ' Content.';
+
                 break;
             case 4:
                 switch ($session->TITLE) {
@@ -298,7 +302,7 @@ class UssdController extends Controller
                         $menu = 'END Thank you. You will receive airtime of value of ' . $selection . ' on your phone shortly.';
                         break;
                     case 'Airtime Other':
-                        $menu = 'CON Buy Airtime';
+                        $menu = 'CON Buy Airtime' . PHP_EOL;
                         $menu .= '1. Enter amount';
                         $min = 10;
                         $max = 1000;
