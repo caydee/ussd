@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Airtimerequest;
 use App\Content;
 use App\Feedback;
 use App\Menu;
@@ -282,6 +283,9 @@ class UssdController extends Controller
                                 $min = 10;
                                 $max = 1000;
                                 $title = 'Airtime Self';
+                                Airtimerequest::create([
+                                    'session_id' => $session->SESSION_ID, 'msisdn' => $session->MSISDN, 'creditphone' => $session->MSISDN,
+                                ]);
                                 break;
                             case 2:
                                 $menu = 'CON Buy Airtime' . PHP_EOL;
@@ -289,6 +293,9 @@ class UssdController extends Controller
                                 $min = 0;
                                 $max = 9999999999;
                                 $title = 'Airtime Other';
+                                Airtimerequest::create([
+                                    'session_id' => $session->SESSION_ID, 'msisdn' => $session->MSISDN
+                                ]);
                                 break;
                         }
                         break;
@@ -298,6 +305,9 @@ class UssdController extends Controller
             case 4:
                 switch ($session->TITLE) {
                     case 'Airtime Self':
+                        Airtimerequest::where([['session_id', '=', $session->SESSION_ID], ['msisdn', '=', $session->MSISDN]])->update([
+                            'amount' => $session->SELECTION, 'status' => 1
+                        ]);
                         //submit amount and telephone
                         $menu = 'END Thank you. You will receive airtime of value of ' . $selection . ' on your phone shortly.';
                         break;
@@ -307,6 +317,9 @@ class UssdController extends Controller
                         $min = 10;
                         $max = 1000;
                         $title = 'Airtime Other';
+                        Airtimerequest::where([['session_id', '=', $session->SESSION_ID], ['msisdn', '=', $session->MSISDN]])->update([
+                            'creditphone' => $session->SELECTION
+                        ]);
                         break;
                 }
                 break;
@@ -315,6 +328,9 @@ class UssdController extends Controller
                     case 'Airtime Other':
                         //submit amount and telephone
                         $menu = 'END Thank you. You will receive airtime of value of ' . $selection . ' on your phone shortly.';
+                        Airtimerequest::where([['session_id', '=', $session->SESSION_ID], ['msisdn', '=', $session->MSISDN]])->update([
+                            'amount' => $session->SELECTION, 'status' => 1
+                        ]);
                         break;
                 }
                 break;
