@@ -13,8 +13,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
+// Route::get('/', function () {
+//     return view('welcome');
+// });
+Route::fallback(fn () => [
+    'code' => '404',
+    'reason' => 'Not Defined'
+]);
 // Route::post('/sendfeedback','UssdController@postfeedback');
+//254726992173
