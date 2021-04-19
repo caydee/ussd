@@ -117,12 +117,16 @@ class ApiController extends Controller
     public function postairtime()
     {
         $records = Airtimerequest::where('status', 1)->get();
+
+        if (sizeof($records) < 1) return;
+
         $payload = [];
         foreach ($records as $record) {
-            $prefix = Prefix::where('prefix', substr($record->creditphone, 6))->first();
+            Log::alert(substr($record->creditphone, 0, 6));
+            $prefix = Prefix::where('prefix', substr($record->creditphone, 0, 6))->first();
             array_push($payload, [
                 "msisdn" => $record->creditphone,
-                "amount" => $record->amount,
+                "amount" => (int) $record->amount,
                 "network" => $prefix ? $prefix->telco : 'Safaricom'
             ]);
         }
@@ -130,7 +134,11 @@ class ApiController extends Controller
 
         //post
         $api_url = 'https://ktnkenya.com/vas/public/api/request_airtime';
+        // $api_url = 'http://sms.test/api/request_airtime';
         $client = new Client();
+        // $testapikey = 'af3b0666-397b-4523-b093-a4639af063da';
+        $liveapikey = '92560ef9-d9bb-46dc-b1b1-c2649f6256b4';
+        $req = ['creditrequest' => $payload];
         $response = $client->request(
             'POST',
             $api_url,
@@ -138,9 +146,9 @@ class ApiController extends Controller
                 'headers' => [
                     'Content-Type' => ' application/json',
                     'email' => 'ussd@standardmeedia.co.ke',
-                    'api_key' => '92560ef9-d9bb-46dc-b1b1-c2649f6256b4',
+                    'api_key' =>  $liveapikey,
                 ],
-                'body' => json_encode(['creditrequest' => $payload]),
+                'body' => json_encode($req),
             ]
         );
         Log::alert('Airtime Response: ' . $response->getBody());
