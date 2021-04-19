@@ -318,7 +318,7 @@ class UssdController extends Controller
                         $max = 1000;
                         $title = 'Airtime Other';
                         Airtimerequest::where([['session_id', '=', $session->SESSION_ID], ['msisdn', '=', $session->MSISDN]])->update([
-                            'creditphone' => $selection
+                            'creditphone' => $this->FormatTelephone($selection)
                         ]);
                         break;
                 }
@@ -328,7 +328,7 @@ class UssdController extends Controller
                     case 'Airtime Other':
                         //submit amount and telephone
                         $a = Airtimerequest::where([['session_id', '=', $session->SESSION_ID], ['msisdn', '=', $session->MSISDN]])->first();
-                        $menu = 'END Thank you. You will receive airtime of value of KES. ' . $selection . ' on ' . $a->creditphone . ' shortly.';
+                        $menu = 'END Thank you. You will receive airtime of value of KES. ' . $selection . ' on ' .$a->creditphone . ' shortly.';
                         $a->update([
                             'amount' => $selection, 'status' => 1
                         ]);
@@ -366,5 +366,26 @@ class UssdController extends Controller
             'headers' => ['Content-Type' => 'application/json', 'app_key' => '12345'],
         ]);
         return 0;
+    }
+    function FormatTelephone($tel)
+    {
+        $tel = trim($tel);
+
+        if (substr($tel, 0, 1) == '0') { //0720076063
+            $tel = '254' . substr(trim($tel), 1);
+        } elseif (substr($tel, 0, 1) == '7' || substr($tel, 0, 1) == '1') { //720076063
+            $tel = '254' . $tel;
+        } elseif (substr($tel, 0, 5) == '+2547' || substr($tel, 0, 5) == '+2541') { //+254720076063
+            $tel = substr($tel, 1);
+        } elseif (substr($tel, 0, 4) == '2547' || substr($tel, 0, 4) == '2541') { //254720076063
+            $tel = $tel;
+        } elseif (substr($tel, 0, 5) == '25407' || substr($tel, 0, 5) == '25401') { //2540720076063
+            $tel = substr($tel, 0, 3) . substr($tel, 4);
+        } elseif (substr($tel, 0, 6) == '+25407' || substr($tel, 0, 6) == '+25401') { //+2540720076063
+            $tel = substr($tel, 1, 3) . substr($tel, 5);
+        } else {
+            $tel = '';
+        }
+        return $tel;
     }
 }

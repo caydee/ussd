@@ -26,3 +26,6 @@ Route::get('Request', 'UssdController@Request');
 Route::get('content', 'ApiController@content')->name('content');
 Route::post('createcontent', 'ApiController@CreateContent')->name('CreateContent');
 Route::post('editcontent', 'ApiController@EditContent')->name('CreateContent');
+
+Route::get('prefixes', 'ApiController@prefixes');
+Route::get('postairtime', 'ApiController@postairtime');
