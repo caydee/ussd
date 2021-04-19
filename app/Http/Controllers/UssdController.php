@@ -191,10 +191,10 @@ class UssdController extends Controller
                 $menu .= '4. Kesi Mashinani' . PHP_EOL;
                 $menu .= '5. Situation Room' . PHP_EOL;
                 $menu .= '6. Euro News' . PHP_EOL;
-                $menu .= '6. Buy Airtime' . PHP_EOL;
+                $menu .= '7. Buy Airtime' . PHP_EOL;
                 $menu .= '0. Exit';
                 $min = 1;
-                $max = 6;
+                $max = 7;
                 $title = 'Main Menu';
                 break;
             case 2:
