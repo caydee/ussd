@@ -210,18 +210,19 @@ class ApiController extends Controller
     {
 
         // '{"msisdn":"254720076063","amount":"1_00","orderid":"4","type":"Pay_Bill","transactioncode":"PDK21RQKVC","timecomplete":"2021-04-20_13:34:03","origin":"mawingu"}' => NULL,request = json_decode((file_get_contents("php://input")), true);
-        log::alert($request['msisdn']);
-        $p = Payment::where('reference', $request['transactioncode'])->first();
+        log::alert($request);
+        $payment = json_decode($request, true);
+        $p = Payment::where('reference', $payment->transactioncode)->first();
         if (!$p) {
             Payment::insert([
-                'msisdn'  => $request['msisdn'],
-                'account'  => 'AIR' . $request['orderid'],
-                'amount'  => (float)str_replace('_', '.', $request['amount']),
-                'reference'  => $request['transactioncode'],
-                'origin'  => $request['origin'],
-                'mode'  => $request['type']
+                'msisdn'  => $payment->msisdn,
+                'account'  => 'AIR' . $payment->orderid,
+                'amount'  => (float)str_replace('_', '.', $payment->amount),
+                'reference'  => $payment->transactioncode,
+                'origin'  => $payment->origin,
+                'mode'  => $payment->type
             ]);
-            $req = Airtimerequest::where([['mpesa_account', '=', 'AIR' . $request['orderid']], ['amount', '=', (float)str_replace('_', '.', $request['amount'])]])->first();
+            $req = Airtimerequest::where([['mpesa_account', '=', 'AIR' . $payment->orderid], ['amount', '=', (float)str_replace('_', '.', $payment->amount)]])->first();
             if ($req) {
                 $req->update(['mpesa_confirmed' => 1]);
             }
