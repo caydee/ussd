@@ -210,7 +210,7 @@ class ApiController extends Controller
     {
 
         // '{"msisdn":"254720076063","amount":"1_00","orderid":"4","type":"Pay_Bill","transactioncode":"PDK21RQKVC","timecomplete":"2021-04-20_13:34:03","origin":"mawingu"}' => NULL,request = json_decode((file_get_contents("php://input")), true);
-        $pay = json_decode($request->getContent());
+        $pay =json_decode($request,true);
         log::alert($pay);
         $p = Payment::where('reference', $pay->transactioncode)->first();
         if (!$p) {
