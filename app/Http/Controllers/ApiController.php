@@ -115,7 +115,7 @@ class ApiController extends Controller
         }
         return response()->json('Content with ID ' . $request->id . ' NOT FOUND', 404);
     }
-    public function postairtime()
+    function postairtime()
     {
         $records = Airtimerequest::where([['status', '=', 1], ['mpesa_confirmed', '=', 1]])->get();
 
@@ -208,22 +208,24 @@ class ApiController extends Controller
 
     public function mpesa_callback(Request $request)
     {
-        
+
         // '{"msisdn":"254720076063","amount":"1_00","orderid":"4","type":"Pay_Bill","transactioncode":"PDK21RQKVC","timecomplete":"2021-04-20_13:34:03","origin":"mawingu"}' => NULL,request = json_decode((file_get_contents("php://input")), true);
+        log::alert($request['msisdn']);
         $p = Payment::where('reference', $request['transactioncode'])->first();
         if (!$p) {
             Payment::insert([
-                'msisdn'  => $request['sender_phone'],
+                'msisdn'  => $request['msisdn'],
                 'account'  => 'AIR' . $request['orderid'],
                 'amount'  => (float)str_replace('_', '.', $request['amount']),
                 'reference'  => $request['transactioncode'],
                 'origin'  => $request['origin'],
                 'mode'  => $request['type']
             ]);
-            $req = Airtimerequest::where([['mpesa_account', '=', 'AIR' . $request['orderid']], 'amount', '=', (float)str_replace('_', '.', $request['amount'])])->first();
+            $req = Airtimerequest::where([['mpesa_account', '=', 'AIR' . $request['orderid']], ['amount', '=', (float)str_replace('_', '.', $request['amount'])]])->first();
             if ($req) {
                 $req->update(['mpesa_confirmed' => 1]);
             }
+            $this->postairtime();
         } else {
             return response()->json('Duplicate Payment received', 400);
         }
