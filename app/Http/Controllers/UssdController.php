@@ -77,14 +77,15 @@ class UssdController extends Controller
                 Log::alert($msisdn);
                 Log::alert($telephone);
                 Log::alert($amount);
-                $air = Airtimerequest::create([[
+                $air = Airtimerequest::create([
                     'session_id' => $sessionId,
                     'msisdn' =>  $msisdn,
                     'creditphone' => $telephone,
                     'amount' => (int)$amount,
                     'status' => 1,
-                    'updated_at' => Carbon::now(), 'created_at' => Carbon::now()
-                ]]);
+                    'updated_at' => Carbon::now(), 
+                    'created_at' => Carbon::now()
+                ]);
                 $air->update(['mpesa_account' => 'AIR' . $air->id]);
                 $this->doSTKPush('AIR' . $air->id, (float)$selection, $air->msisdn);
                 return response($menu, 200)
