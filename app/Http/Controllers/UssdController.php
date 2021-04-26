@@ -81,8 +81,9 @@ class UssdController extends Controller
                     'session_id' => $sessionId,
                     'msisdn' =>  $msisdn,
                     'creditphone' => $telephone,
-                    'amount' => $amount,
-                    'status' => 1
+                    'amount' => (int)$amount,
+                    'status' => 1,
+                    'updated_at' => Carbon::now(), 'created_at' => Carbon::now()
                 ]]);
                 $air->update(['mpesa_account' => 'AIR' . $air->id]);
                 $this->doSTKPush('AIR' . $air->id, (float)$selection, $air->msisdn);
