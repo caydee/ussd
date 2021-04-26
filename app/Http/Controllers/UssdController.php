@@ -74,8 +74,8 @@ class UssdController extends Controller
                 //send back the mpesa push
                 $menu = 'END Thank you. Please confirm your airtime purchase of KES.' . $amount . ' for telephone number: ' . $telephone . ' by supplying your M-Pesa pin on your phone.';
                 $air = Airtimerequest::create([[
-                    'session_id' => $session->SESSION_ID,
-                    'msisdn' => $session->MSISDN,
+                    'session_id' => $sessionId,
+                    'msisdn' =>  $msisdn,
                     'creditphone' => $telephone,
                     'amount' => $amount,
                     'status' => 1
