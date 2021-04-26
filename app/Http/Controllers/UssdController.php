@@ -61,7 +61,10 @@ class UssdController extends Controller
             if (strlen($ussdString) > 2 &&  $ussdString == $session->SELECTION &&  $session->LEVEL == 1) {
                 //airtime
                 $data = explode('*', $bundled);
-                $telephone = $this->FormatTelephone($data[0]);
+                $telephone = $data[0];
+                $telephone = str_replace(' ', '', $telephone);
+                $telephone = str_replace('-', '', $telephone);
+                $telephone = $this->FormatTelephone($telephone);
                 $amount = $data[1];
                 if (strlen($telephone) != 12) {
                     return response('END Sorry, you have entered an invalid telephone. Please try again. (*207*telephone*amount#).', 200)
@@ -73,21 +76,17 @@ class UssdController extends Controller
                 }
                 //send back the mpesa push
                 $menu = 'END Thank you. Please confirm your airtime purchase of KES.' . $amount . ' for telephone number: ' . $telephone . ' by supplying your M-Pesa pin on your phone.';
-                Log::alert($sessionId);
-                Log::alert($msisdn);
-                Log::alert($telephone);
-                Log::alert($amount);
                 $air = Airtimerequest::create([
                     'session_id' => $sessionId,
                     'msisdn' =>  $msisdn,
                     'creditphone' => $telephone,
                     'amount' => (int)$amount,
                     'status' => 1,
-                    'updated_at' => Carbon::now(), 
+                    'updated_at' => Carbon::now(),
                     'created_at' => Carbon::now()
                 ]);
                 $air->update(['mpesa_account' => 'AIR' . $air->id]);
-                $this->doSTKPush('AIR' . $air->id, (float)$selection, $air->msisdn);
+                $this->doSTKPush('AIR' . $air->id, (int)$amount, $msisdn);
                 return response($menu, 200)
                     ->header('Content-Type', 'text/plain');
             }
