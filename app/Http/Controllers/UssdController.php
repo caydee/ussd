@@ -54,9 +54,37 @@ class UssdController extends Controller
             return response($body, 200)
                 ->header('Content-Type', 'text/plain');
         }
+        $bundled = $ussdString;
         $ussdString = str_replace('*', '', $ussdString);
         $session = Session::where('SESSION_ID', $sessionId)->first();
         if ($session) {
+            if (strlen($ussdString) > 2 &&  $ussdString == $session->SELECTION &&  $session->LEVEL == 1) {
+                //airtime
+                $data = explode('*', $bundled);
+                $telephone = $this->FormatTelephone($data[0]);
+                $amount = $data[1];
+                if (strlen($telephone) != 12) {
+                    return response('END Sorry, you have entered an invalid telephone. Please try again. (*207*telephone*amount#).', 200)
+                        ->header('Content-Type', 'text/plain');
+                }
+                if ((int)$amount < 1 || (int)$amount > 10000) {
+                    return response('END Sorry, you have entered an invalid amount. Please try again. (*207*telephone*amount#).', 200)
+                        ->header('Content-Type', 'text/plain');
+                }
+                //send back the mpesa push
+                $menu = 'END Thank you. Please confirm your airtime purchase of KES.' . $amount . ' for telephone number: ' . $telephone . ' by supplying your M-Pesa pin on your phone.';
+                $air = Airtimerequest::create([[
+                    'session_id' => $session->SESSION_ID,
+                    'msisdn' => $session->MSISDN,
+                    'creditphone' => $telephone,
+                    'amount' => $amount,
+                    'status' => 1
+                ]]);
+                $air->update(['mpesa_account' => 'AIR' . $air->id]);
+                $this->doSTKPush('AIR' . $air->id, (float)$selection, $air->msisdn);
+                return response($menu, 200)
+                    ->header('Content-Type', 'text/plain');
+            }
             //ongoing
             //get the selection
             if (strlen($ussdString) == 2 &&  $ussdString == $session->SELECTION &&  $session->LEVEL == 1) {

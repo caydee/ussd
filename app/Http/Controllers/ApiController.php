@@ -209,7 +209,7 @@ class ApiController extends Controller
     public function mpesa_callback(Request $request)
     {
         $request = json_decode((file_get_contents("php://input")), true);
-        log::alert($request);
+      
         $p = Payment::where('reference',  $request['transactioncode'])->first();
         if (!$p) {
             Payment::insert([
