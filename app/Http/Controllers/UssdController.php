@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Airtimerequest;
+use App\Allsessions;
 use App\Content;
 use App\Feedback;
 use App\Menu;
@@ -34,7 +35,18 @@ class UssdController extends Controller
         $selection = '';
         // $url = $request->fullUrl();
         // Log::alert($url);
-
+        $allsess = Allsessions::where('SESSION_ID', $sessionId)->first();
+        if (!$allsess) {
+            Allsessions::create(
+                [
+                    'SESSION_ID' => $sessionId,
+                    'SERVICE_CODE' => $serviceCode,
+                    'MSISDN' => $msisdn,
+                    'created_at' => now(),
+                    'updated_at' => now()
+                ]
+            );
+        }
         if ($serviceCode == '*395#') {
             //get menus from moobifun and return to safaricom
             $apiurl = 'http://standardmedia-ussd.moobifun.com/ubc/ussdgtw/standardmedia';
