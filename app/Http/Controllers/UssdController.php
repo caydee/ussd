@@ -66,6 +66,25 @@ class UssdController extends Controller
             return response($body, 200)
                 ->header('Content-Type', 'text/plain');
         }
+        if ($serviceCode == '*207#' && substr($ussdString,0,3)=='555') {
+            //get menus from mSafiri
+            $apiurl = 'https://portal.msafari.co.ke/ussd';
+            $client = new Client();
+            $response = $client->request('GET', $apiurl, [
+                'headers' => ['Content-Type' => 'application/json'],
+                'query' => [
+                    'msisdn' => $msisdn, 'servicecode' => 395,
+                    'ussdstring' => $ussdString, 'sessionid' => $sessionId
+                ]
+            ]);
+            $body = $response->getBody();
+            if (trim($body) == '') {
+                return response('END This service is currently under maintenance. Please try again later.', 200)
+                    ->header('Content-Type', 'text/plain');
+            }
+            return response($body, 200)
+                ->header('Content-Type', 'text/plain');
+        }
         $bundled = $ussdString;
         $ussdString = str_replace('*', '', $ussdString);
         $session = Session::where('SESSION_ID', $sessionId)->first();
